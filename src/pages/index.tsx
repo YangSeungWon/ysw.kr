@@ -8,7 +8,7 @@ import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
 function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
+  const { siteConfig } = useDocusaurusContext();
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
@@ -23,14 +23,19 @@ function HomepageHeader() {
             to="/about">
             About Me
           </Link>
-        </div>
-        <p></p>
-        <div className={styles.buttons}>
+          <p>&nbsp;</p>
           <Link
             className="button button--success button--lg"
             to="misc">
             Misc
           </Link>
+          <p>&nbsp;</p>
+          <a href={require("/cv.pdf").default}>
+            <Link
+              className="button button--warning button--lg">
+              CV
+            </Link>
+          </a>
         </div>
       </div>
     </header>
@@ -38,7 +43,7 @@ function HomepageHeader() {
 }
 
 export default function Home(): JSX.Element {
-  const {siteConfig} = useDocusaurusContext();
+  const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
       title={`${siteConfig.title}`}
