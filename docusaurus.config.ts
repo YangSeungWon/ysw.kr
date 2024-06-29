@@ -3,20 +3,20 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  title: 'Seungwon Yang',
+  tagline: 'M.S. Student | POSTECH',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
+  url: 'https://ysw.kr/',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'YangSeungWon', // Usually your GitHub org/user name.
+  projectName: 'ysw.kr', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -33,20 +33,20 @@ const config: Config = {
     [
       'classic',
       {
-        docs: {
-          sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-        },
+        // docs: {
+        //   sidebarPath: './sidebars.ts',
+        //   // Please change this to your repo.
+        //   // Remove this to remove the "edit this page" links.
+        //   editUrl:
+        //     'https://github.com/YangSeungWon/ysw.kr/tree/gh-pages/',
+        // },
+        // blog: {
+        //   showReadingTime: true,
+        //   // Please change this to your repo.
+        //   // Remove this to remove the "edit this page" links.
+        //   editUrl:
+        //     'https://github.com/YangSeungWon/ysw.kr/tree/gh-pages/',
+        // },
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -56,23 +56,25 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/seungwon.jpg',
     navbar: {
-      title: 'My Site',
+      title: 'Seungwon Yang',
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        alt: 'photo',
+        src: 'img/seungwon.jpg',
       },
       items: [
+        // {
+        //   type: 'docSidebar',
+        //   sidebarId: 'tutorialSidebar',
+        //   position: 'left',
+        //   label: 'Tutorial',
+        // },
+        {to: '/about', label: 'About', position: 'left'},
+        {to: '/misc', label: 'Misc', position: 'left'},
+        // {to: '/blog', label: 'Blog', position: 'left'},
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Tutorial',
-        },
-        {to: '/blog', label: 'Blog', position: 'left'},
-        {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/YangSeungWon/ysw.kr',
           label: 'GitHub',
           position: 'right',
         },
@@ -82,46 +84,58 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'Work',
           items: [
             {
-              label: 'Tutorial',
-              to: '/docs/intro',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: 'GitHub',
+              href: 'https://github.com/YangSeungWon',
             },
             {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              label: 'LinkedIn',
+              href: 'https://www.linkedin.com/in/seungwon-yang',
+            },
+            {
+              label: 'Facebook',
+              href: 'https://www.facebook.com/people/Seungwon-Yang/pfbid026Aa4y6SUpBA1Sm7Q3Uda44AZYEpXrtPjC9d16jQiuYtDS4d5YaruL8m5w8Sep9mvl/',
+            },
+            {
+              label: 'ORCID',
+              href: 'https://orcid.org/0009-0009-0755-2450',
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
+              href: 'https://twitter.com/whysw_p',
+            }
+          ],
+        },
+        {
+          title: 'Hack',
+          items: [
+            {
+              label: 'CTFTime',
+              href: 'https://ctftime.org/user/64930',
+            },
+            {
+              label: 'HackMD',
+              href: 'https://hackmd.io/@whysw',
             },
           ],
         },
         {
-          title: 'More',
+          title: 'Contact',
           items: [
             {
-              label: 'Blog',
-              to: '/blog',
+              label: 'Mail',
+              href: 'mailto:sw.yang43@gmail.com',
             },
             {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              label: 'WebSite',
+              href: 'https://ysw.kr/',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Seungwon Yang. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,

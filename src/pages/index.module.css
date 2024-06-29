@@ -21,3 +21,10 @@
   align-items: center;
   justify-content: center;
 }
+
+.heroAvatar {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  border-radius: 200px;
+}
