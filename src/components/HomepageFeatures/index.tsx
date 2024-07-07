@@ -15,7 +15,7 @@ const FeatureList: FeatureItem[] = [
     description: (
       <>
         I am a M.S. student in <a href='https://his-lab.org'>HISLab</a>@POSTECH, South Korea. 
-        My research interests are in Accessibility, Crowdsourcing, and LLMs.
+        My research interests are in Accessibility, Gamification, and LLMs.
       </>
     ),
   },
