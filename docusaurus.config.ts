@@ -60,6 +60,7 @@ const config: Config = {
         // },
         {to: '/about', label: 'About', position: 'left'},
         {to: '/misc', label: 'Misc', position: 'left'},
+        {to: '/tools', label: 'Tools', position: 'left'},
         // {to: '/blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/YangSeungWon/ysw.kr',
