@@ -13,6 +13,10 @@ const Tools: React.FC = () => {
             <span className={styles.toolName}>IP</span>
             <span className={styles.toolDescription}>Get your IP address</span>
           </Link>
+          <Link to="/tools/coordinates" className={styles.toolButton}>
+            <span className={styles.toolName}>Coordinates</span>
+            <span className={styles.toolDescription}>Verify coordinates</span>
+          </Link>
         </div>
       </div>
     </Layout>
