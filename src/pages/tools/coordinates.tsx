@@ -39,7 +39,7 @@ export default function CoordinatesPage() {
     const mapContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // Leaflet를 클라이언트 사이드에서만 초기화
+        // Initialize Leaflet only on client-side
         if (typeof window !== 'undefined') {
             const L = require('leaflet');
 
@@ -96,7 +96,7 @@ export default function CoordinatesPage() {
 
     const handleConversion = (lat: number, lon: number) => {
         if (isNaN(lat) || isNaN(lon)) {
-            setConvertedCoordinates({ error: '잘못된 좌표 형식입니다' });
+            setConvertedCoordinates({ error: 'Invalid coordinate format' });
             return;
         }
 
@@ -173,35 +173,35 @@ export default function CoordinatesPage() {
     };
 
     return (
-        <Layout title="좌표 변환 도구">
+        <Layout title="Coordinate Conversion Tool">
             <div className="container">
-                <h1>좌표 변환 도구</h1>
+                <h1>Coordinate Conversion Tool</h1>
                 <div style={{ marginBottom: '20px' }}>
                     <input
                         type="text"
                         value={coordinates}
                         onChange={(e) => setCoordinates(e.target.value)}
-                        placeholder="좌표 입력 (예: 36.009400, 129.323933)"
+                        placeholder="Enter coordinates (e.g., 36.009400, 129.323933)"
                         className="form-input"
                         style={{ marginRight: '10px' }}
                     />
                     <button onClick={convertCoordinates} className="button button--primary">
-                        변환
+                        Convert
                     </button>
                 </div>
 
                 <div style={{ marginBottom: '20px' }}>
                     <div ref={mapContainerRef} style={{ height: '400px', width: '100%' }} />
-                    <p className="margin-top--sm">지도를 클릭하여 좌표를 선택할 수 있습니다.</p>
+                    <p className="margin-top--sm">Click on the map to select coordinates.</p>
                 </div>
 
                 {convertedCoordinates && !convertedCoordinates.error && (
                     <div className="margin-top--md">
-                        <p><strong>입력된 좌표:</strong> {coordinates}</p>
+                        <p><strong>Input Coordinates:</strong> {coordinates}</p>
                         <hr style={{ margin: '10px 0' }} />
-                        <p><strong>십진수 좌표 (DD):</strong> {convertedCoordinates.DecimalDegrees.CoordinateString}</p>
-                        <p><strong>도분초 좌표 (DMS):</strong> {convertedCoordinates.DegreesMinutesSeconds.CoordinateString}</p>
-                        <p><strong>도분 좌표 (DM):</strong> {convertedCoordinates.DegreesMinutes.CoordinateString}</p>
+                        <p><strong>Decimal Degrees (DD):</strong> {convertedCoordinates.DecimalDegrees.CoordinateString}</p>
+                        <p><strong>Degrees Minutes Seconds (DMS):</strong> {convertedCoordinates.DegreesMinutesSeconds.CoordinateString}</p>
+                        <p><strong>Degrees Minutes (DM):</strong> {convertedCoordinates.DegreesMinutes.CoordinateString}</p>
                     </div>
                 )}
                 {convertedCoordinates?.error && (
