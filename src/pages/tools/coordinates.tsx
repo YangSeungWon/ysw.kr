@@ -34,6 +34,7 @@ const markerStyle = {
 export default function CoordinatesPage() {
     const [coordinates, setCoordinates] = useState<string>('');
     const [convertedCoordinates, setConvertedCoordinates] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const mapRef = useRef<any>(null);
     const markerRef = useRef<any>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -44,7 +45,7 @@ export default function CoordinatesPage() {
             const L = require('leaflet');
 
             if (!mapRef.current && mapContainerRef.current) {
-                // 서울 중심으로 초기화
+                // Initialize centered on Seoul
                 mapRef.current = L.map(mapContainerRef.current).setView([37.5665, 126.9780], 13);
 
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -150,6 +151,55 @@ export default function CoordinatesPage() {
         }
     };
 
+    const getCurrentLocation = () => {
+        setIsLoading(true);
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    setCoordinates(`${latitude}, ${longitude}`);
+                    handleConversion(latitude, longitude);
+
+                    // 지도 업데이트
+                    if (mapRef.current) {
+                        const L = require('leaflet');
+                        const CustomIcon = L.divIcon({
+                            className: 'custom-marker',
+                            html: `<div style="
+                                width: 20px;
+                                height: 20px;
+                                border-radius: 50% 50% 50% 0;
+                                background: #3388ff;
+                                position: relative;
+                                transform: rotate(-45deg);
+                                border: 2px solid white;
+                                box-shadow: 0 0 6px rgba(0,0,0,0.4);
+                            "></div>`,
+                            iconSize: [20, 20],
+                            iconAnchor: [10, 20],
+                        });
+
+                        if (markerRef.current) {
+                            markerRef.current.setLatLng([latitude, longitude]);
+                        } else {
+                            markerRef.current = L.marker([latitude, longitude], { icon: CustomIcon }).addTo(mapRef.current);
+                        }
+                        mapRef.current.setView([latitude, longitude], 13);
+                    }
+                    setIsLoading(false);
+                },
+                (error) => {
+                    console.error("Error getting location:", error);
+                    alert("Failed to get location. Please check location permissions.");
+                    setIsLoading(false);
+                }
+            );
+        } else {
+            alert("Geolocation is not supported in this browser.");
+            setIsLoading(false);
+        }
+    };
+
     // Utility functions for coordinate conversion
     const decimalToDMS = (deg: number, isLat: boolean) => {
         const d = Math.floor(Math.abs(deg));
@@ -185,8 +235,15 @@ export default function CoordinatesPage() {
                         className="form-input"
                         style={{ marginRight: '10px' }}
                     />
-                    <button onClick={convertCoordinates} className="button button--primary">
+                    <button onClick={convertCoordinates} className="button button--primary" style={{ marginRight: '10px' }}>
                         Convert
+                    </button>
+                    <button
+                        onClick={getCurrentLocation}
+                        className="button button--secondary"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Getting location..." : "Get Current Location"}
                     </button>
                 </div>
 
