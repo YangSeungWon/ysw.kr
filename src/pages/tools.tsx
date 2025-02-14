@@ -15,7 +15,7 @@ const Tools: React.FC = () => {
           </Link>
           <Link to="/tools/coordinates" className={styles.toolButton}>
             <span className={styles.toolName}>Coordinates</span>
-            <span className={styles.toolDescription}>Verify coordinates</span>
+            <span className={styles.toolDescription}>Get GPS coordinates and convert to multiple formats</span>
           </Link>
           <Link to="/tools/signature" className={styles.toolButton}>
             <span className={styles.toolName}>Email Signature</span>

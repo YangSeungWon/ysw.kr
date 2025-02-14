@@ -19,23 +19,28 @@ function HomepageHeader() {
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link
-            className="button button--secondary button--lg"
+            className="button button--success button--lg"
             to="/about">
             About Me
           </Link>
-          <p>&nbsp;</p>
-          <Link
-            className="button button--success button--lg"
-            to="misc">
-            Misc
-          </Link>
-          <p>&nbsp;</p>
           <a href={require("/cv.pdf").default}>
             <Link
-              className="button button--warning button--lg">
+              className="button button--info button--lg">
               CV
             </Link>
           </a>
+        </div>
+        <div className={styles.buttons}>
+          <Link
+            className="button button--secondary button--md"
+            to="misc">
+            Misc
+          </Link>
+          <Link
+            className="button button--secondary button--md"
+            to="tools">
+            Tools
+          </Link>
         </div>
       </div>
     </header>
