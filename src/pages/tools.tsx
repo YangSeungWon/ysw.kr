@@ -21,6 +21,10 @@ const Tools: React.FC = () => {
             <span className={styles.toolName}>Email Signature</span>
             <span className={styles.toolDescription}>Generate email signature</span>
           </Link>
+          <Link to="/tools/base64" className={styles.toolButton}>
+            <span className={styles.toolName}>Base64</span>
+            <span className={styles.toolDescription}>Encode/Decode Base64 with text and images</span>
+          </Link>
         </div>
       </div>
     </Layout>
