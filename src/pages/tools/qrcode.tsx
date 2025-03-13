@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef, type ChangeEvent } from "react"
 import { QRCodeSVG } from "qrcode.react"
 import { Copy, Download, Image, QrCode } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { toast } from 'sonner'
 import Layout from '@theme/Layout';
+import { Toaster } from 'sonner'
+import { Label } from "@/components/ui/label"
 
 export default function QRCodeGenerator() {
     const [text, setText] = useState("")
@@ -135,7 +137,9 @@ export default function QRCodeGenerator() {
 
                         if (code) {
                             setScannedResult(code.data)
-                            toast.success("QR Code Scanned")
+                            toast.success("QR Code Scanned", {
+                                description: "The QR code was successfully scanned."
+                            })
                         } else {
                             toast.error("No QR Code Found", {
                                 description: "The image doesn't contain a valid QR code"
@@ -165,7 +169,7 @@ export default function QRCodeGenerator() {
         } catch (error) {
             console.error("File handling error:", error)
             toast.error("Scan Failed", {
-                description: "Failed to process the image file"
+                description: "Failed to process the image file. Please try again with a different image."
             })
             setIsScanning(false)
         }
@@ -173,6 +177,7 @@ export default function QRCodeGenerator() {
 
     return (
         <Layout title="QR Code Generator">
+            <Toaster />
             <div className="container mx-auto px-4 py-8 max-w-5xl">
                 <div className="flex flex-col items-center mb-8">
                     <div className="flex items-center gap-2 mb-2">
@@ -182,71 +187,77 @@ export default function QRCodeGenerator() {
                     <p className="text-muted-foreground text-center">Generate and scan QR codes easily</p>
                 </div>
 
-                <Tabs defaultValue="generate" className="w-full">
-                    <TabsList className="grid w-full grid-cols-2 mb-8">
-                        <TabsTrigger value="generate">Generate</TabsTrigger>
-                        <TabsTrigger value="scan">Scan</TabsTrigger>
+                <Tabs defaultValue="generate" className="w-[600px] mx-auto">
+                    <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger value="generate" >Generate</TabsTrigger>
+                        <TabsTrigger value="scan" >Scan</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="generate">
                         <Card>
                             <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <QrCode className="h-5 w-5" />
-                                    Generate QR Code
-                                </CardTitle>
+                                <CardTitle>Generate QR Code</CardTitle>
+                                <CardDescription>
+                                    Enter text or URL to generate a QR code
+                                </CardDescription>
                             </CardHeader>
-                            <CardContent>
-                                <div className="space-y-6">
-                                    <div>
-                                        <label className="block mb-2 text-sm font-medium">Enter text for QR code</label>
-                                        <Input
-                                            type="text"
-                                            value={text}
-                                            onChange={(e) => setText(e.target.value)}
-                                            placeholder="Enter URL, text, or contact information..."
-                                            className="w-full"
-                                        />
-                                    </div>
-
-                                    {debouncedText ? (
-                                        <div className="flex flex-col items-center pt-4">
-                                            <div ref={qrRef} className="border-2 border-primary/10 p-4 bg-white rounded-lg shadow-sm">
-                                                <QRCodeSVG value={debouncedText} size={256} level="H" includeMargin={true} />
-                                            </div>
-                                            <div className="mt-6 flex flex-col sm:flex-row gap-3 w-full">
-                                                <Button onClick={copyToClipboard} className="flex-1 gap-2" variant="outline">
-                                                    <Copy className="w-4 h-4" />
-                                                    Copy to Clipboard
-                                                </Button>
-                                                <Button onClick={downloadQRCode} className="flex-1 gap-2">
-                                                    <Download className="w-4 h-4" />
-                                                    Download PNG
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="flex flex-col items-center justify-center p-10 border-2 border-dashed border-muted rounded-lg">
-                                            <QrCode className="h-16 w-16 text-muted mb-4" />
-                                            <p className="text-muted-foreground text-center">Enter text above to generate a QR code</p>
-                                        </div>
-                                    )}
+                            <CardContent className="space-y-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="qr-text">Text for QR code</Label>
+                                    <Input
+                                        id="qr-text"
+                                        type="text"
+                                        value={text}
+                                        onChange={(e) => setText(e.target.value)}
+                                        placeholder="Enter URL, text, or contact information..."
+                                    />
                                 </div>
+
+                                {debouncedText ? (
+                                    <div className="flex flex-col items-center pt-4">
+                                        <div ref={qrRef} className="border-2 border-primary/10 p-4 bg-white rounded-lg">
+                                            <QRCodeSVG value={debouncedText} size={256} level="H" includeMargin={true} />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center p-10 border-2 border-dashed border-muted rounded-lg">
+                                        <QrCode className="h-16 w-16 text-muted mb-4" />
+                                        <p className="text-muted-foreground text-center">Enter text above to generate a QR code</p>
+                                    </div>
+                                )}
                             </CardContent>
+                            {debouncedText && (
+                                <CardFooter className="flex flex-col sm:flex-row gap-3">
+                                    <Button onClick={copyToClipboard} className="flex-1 gap-2" variant="outline">
+                                        <Copy className="w-4 h-4" />
+                                        Copy to Clipboard
+                                    </Button>
+                                    <Button onClick={downloadQRCode} className="flex-1 gap-2">
+                                        <Download className="w-4 h-4" />
+                                        Download PNG
+                                    </Button>
+                                </CardFooter>
+                            )}
                         </Card>
                     </TabsContent>
 
                     <TabsContent value="scan">
                         <Card>
                             <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <Image className="h-5 w-5" />
-                                    Scan QR Code
-                                </CardTitle>
+                                <CardTitle>Scan QR Code</CardTitle>
+                                <CardDescription>
+                                    Upload an image containing a QR code to scan
+                                </CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <div className="flex flex-col items-center">
-                                    <input type="file" ref={fileInputRef} onChange={handleFileUpload} accept="image/*" className="hidden" />
+                                    <Input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        onChange={handleFileUpload}
+                                        accept="image/*"
+                                        style={{ display: 'none' }}
+                                    />
                                     <Button
                                         onClick={() => fileInputRef.current?.click()}
                                         className="w-full sm:w-auto gap-2"
@@ -264,30 +275,22 @@ export default function QRCodeGenerator() {
                                                     {scannedResult}
                                                 </AlertDescription>
                                             </Alert>
-
-                                            {scannedResult.startsWith("http") && (
-                                                <div className="mt-4 flex justify-center">
-                                                    <Button onClick={() => window.open(scannedResult, "_blank")} className="gap-2">
-                                                        Open Link
-                                                    </Button>
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-
-                                    {!scannedResult && !isScanning && (
-                                        <div className="flex flex-col items-center justify-center p-10 border-2 border-dashed border-muted rounded-lg mt-6 w-full">
-                                            <Image className="h-16 w-16 text-muted mb-4" />
-                                            <p className="text-muted-foreground text-center">Upload an image containing a QR code to scan</p>
                                         </div>
                                     )}
                                 </div>
                             </CardContent>
+                            {scannedResult?.startsWith("http") && (
+                                <CardFooter>
+                                    <Button onClick={() => window.open(scannedResult, "_blank")} className="gap-2">
+                                        Open Link
+                                    </Button>
+                                </CardFooter>
+                            )}
                         </Card>
                     </TabsContent>
                 </Tabs>
             </div>
-        </Layout>
+        </Layout >
     )
 }
 
