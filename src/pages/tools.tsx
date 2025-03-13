@@ -45,7 +45,7 @@ const Tools: React.FC = () => {
             <div key={idx} className="col col--4 margin-bottom--lg">
               <Link
                 to={tool.to}
-                className="card padding--lg"
+                className="card padding--sm hover:translate-y-[-4px] transition-all duration-300 hover:shadow-lg"
                 style={{
                   height: '100%',
                   textDecoration: 'none',
@@ -55,10 +55,10 @@ const Tools: React.FC = () => {
                 }}
               >
                 <div className="card__header">
-                  <h3 className="margin-bottom--sm">{tool.name}</h3>
+                  <h2 className="margin-bottom--sm">{tool.name}</h2>
                 </div>
                 <div className="card__body">
-                  <p style={{ color: 'var(--ifm-color-emphasis-700)' }}>
+                  <p style={{ color: 'var(--ifm-color-emphasis-900)' }}>
                     {tool.description}
                   </p>
                 </div>
