@@ -1,6 +1,8 @@
+import React from 'react';
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
+import Link from '@docusaurus/Link';
 
 type FeatureItem = {
   title: string;
@@ -14,7 +16,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        I am a M.S. student in <a href='https://his-lab.org'>HISLab</a>@POSTECH, South Korea. 
+        I am a M.S. student in <Link href='https://his-lab.org'>HISLab</Link>@POSTECH, South Korea.
         My research interests are in Accessibility, Gamification, and LLMs.
       </>
     ),
@@ -24,7 +26,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        I was a member of <a href='https://plus.or.kr'>PLUS</a>@POSTECH, South Korea.
+        I was a member of <Link href='https://plus.or.kr'>PLUS</Link>@POSTECH, South Korea.
         I studied Computer Security, especially in Web Security and Web3, and participated in CTFs.
       </>
     ),
@@ -41,7 +43,7 @@ const FeatureList: FeatureItem[] = [
   },
 ];
 
-function Feature({title, Svg, description}: FeatureItem) {
+function Feature({ title, Svg, description }: FeatureItem) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
@@ -51,6 +53,7 @@ function Feature({title, Svg, description}: FeatureItem) {
         <Heading as="h3">{title}</Heading>
         <p>{description}</p>
       </div>
+      <div className="bg-red-500">Test</div>
     </div>
   );
 }

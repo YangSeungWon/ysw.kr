@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
-import styles from '../components/HomepageFeatures/Tools.module.css';
+import styles from '@/components/HomepageFeatures/Tools.module.css';
 
 const Tools: React.FC = () => {
   return (
@@ -28,6 +28,10 @@ const Tools: React.FC = () => {
           <Link to="/tools/image-crop" className={styles.toolButton}>
             <span className={styles.toolName}>Image Crop</span>
             <span className={styles.toolDescription}>Crop images</span>
+          </Link>
+          <Link to="/tools/qrcode" className={styles.toolButton}>
+            <span className={styles.toolName}>QR Code</span>
+            <span className={styles.toolDescription}>Generate QR code</span>
           </Link>
         </div>
       </div>

@@ -1,42 +1,43 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
-import type * as Preset from '@docusaurus/preset-classic';
+import { themes as prismThemes } from "prism-react-renderer";
+import type { Config } from "@docusaurus/types";
+import type * as Preset from "@docusaurus/preset-classic";
+import path from "path";
 
 const config: Config = {
-  title: 'Seungwon Yang',
-  tagline: 'M.S. Student | POSTECH',
-  favicon: 'img/favicon.ico',
+  title: "Seungwon Yang",
+  tagline: "M.S. Student | POSTECH",
+  favicon: "img/favicon.ico",
 
   // Set the production url of your site here
-  url: 'https://ysw.kr/',
+  url: "https://ysw.kr/",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: "/",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'YangSeungWon', // Usually your GitHub org/user name.
-  projectName: 'ysw.kr', // Usually your repo name.
+  organizationName: "YangSeungWon", // Usually your GitHub org/user name.
+  projectName: "ysw.kr", // Usually your repo name.
 
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: "en",
+    locales: ["en"],
   },
 
   presets: [
     [
-      'classic',
+      "classic",
       {
         docs: false,
         blog: false,
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: "./src/css/custom.css",
         },
       } satisfies Preset.Options,
     ],
@@ -44,12 +45,12 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/seungwon.jpg',
+    image: "img/seungwon.jpg",
     navbar: {
-      title: 'Seungwon Yang',
+      title: "Seungwon Yang",
       logo: {
-        alt: 'photo',
-        src: 'img/seungwon.jpg',
+        alt: "photo",
+        src: "img/seungwon.jpg",
       },
       items: [
         // {
@@ -58,68 +59,68 @@ const config: Config = {
         //   position: 'left',
         //   label: 'Tutorial',
         // },
-        {to: '/about', label: 'About', position: 'left'},
-        {to: '/misc', label: 'Misc', position: 'left'},
-        {to: '/tools', label: 'Tools', position: 'left'},
+        { to: "/about", label: "About", position: "left" },
+        { to: "/misc", label: "Misc", position: "left" },
+        { to: "/tools", label: "Tools", position: "left" },
         // {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/YangSeungWon/ysw.kr',
-          label: 'GitHub',
-          position: 'right',
+          href: "https://github.com/YangSeungWon/ysw.kr",
+          label: "GitHub",
+          position: "right",
         },
       ],
     },
     footer: {
-      style: 'dark',
+      style: "dark",
       links: [
         {
-          title: 'Work',
+          title: "Work",
           items: [
             {
-              label: 'GitHub',
-              href: 'https://github.com/YangSeungWon',
+              label: "GitHub",
+              href: "https://github.com/YangSeungWon",
             },
             {
-              label: 'LinkedIn',
-              href: 'https://www.linkedin.com/in/seungwon-yang',
+              label: "LinkedIn",
+              href: "https://www.linkedin.com/in/seungwon-yang",
             },
             {
-              label: 'Facebook',
-              href: 'https://www.facebook.com/people/Seungwon-Yang/pfbid026Aa4y6SUpBA1Sm7Q3Uda44AZYEpXrtPjC9d16jQiuYtDS4d5YaruL8m5w8Sep9mvl/',
+              label: "Facebook",
+              href: "https://www.facebook.com/people/Seungwon-Yang/pfbid026Aa4y6SUpBA1Sm7Q3Uda44AZYEpXrtPjC9d16jQiuYtDS4d5YaruL8m5w8Sep9mvl/",
             },
             {
-              label: 'ORCID',
-              href: 'https://orcid.org/0009-0009-0755-2450',
+              label: "ORCID",
+              href: "https://orcid.org/0009-0009-0755-2450",
             },
             {
-              label: 'Twitter',
-              href: 'https://twitter.com/whysw_p',
-            }
-          ],
-        },
-        {
-          title: 'Hack',
-          items: [
-            {
-              label: 'CTFTime',
-              href: 'https://ctftime.org/user/64930',
-            },
-            {
-              label: 'HackMD',
-              href: 'https://hackmd.io/@whysw',
+              label: "Twitter",
+              href: "https://twitter.com/whysw_p",
             },
           ],
         },
         {
-          title: 'Contact',
+          title: "Hack",
           items: [
             {
-              label: 'Mail',
-              href: 'mailto:sw.yang43@gmail.com',
+              label: "CTFTime",
+              href: "https://ctftime.org/user/64930",
             },
             {
-              label: 'WebSite',
-              href: 'https://ysw.kr/',
+              label: "HackMD",
+              href: "https://hackmd.io/@whysw",
+            },
+          ],
+        },
+        {
+          title: "Contact",
+          items: [
+            {
+              label: "Mail",
+              href: "mailto:sw.yang43@gmail.com",
+            },
+            {
+              label: "WebSite",
+              href: "https://ysw.kr/",
             },
           ],
         },
@@ -131,6 +132,42 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+
+  // Add webpack configuration for path alias
+  webpack: {
+    jsLoader: (isServer) => ({
+      loader: require.resolve("swc-loader"),
+      options: {
+        jsc: {
+          parser: {
+            syntax: "typescript",
+            tsx: true,
+          },
+          target: "es2017",
+        },
+        module: {
+          type: isServer ? "commonjs" : "es6",
+        },
+      },
+    }),
+  },
+
+  plugins: [
+    function (context, options) {
+      return {
+        name: "webpack-config-plugin",
+        configureWebpack(config, isServer, utils) {
+          return {
+            resolve: {
+              alias: {
+                "@": path.resolve(__dirname, "./src"),
+              },
+            },
+          };
+        },
+      };
+    },
+  ],
 };
 
 export default config;

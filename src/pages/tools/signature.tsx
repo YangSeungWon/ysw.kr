@@ -181,7 +181,12 @@ export default function SignaturePage() {
 
                     <div>
                         <h3>Preview</h3>
-                        <div ref={signatureRef}>
+                        <div ref={signatureRef} style={{
+                            backgroundColor: 'white',
+                            padding: '20px',
+                            borderRadius: '8px',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                        }}>
                             <p>--</p>
                             <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#2b3137' }}>
                                 {signatureData.name}
