@@ -7,7 +7,6 @@
 
 @plugin 'tailwindcss-animate';
 
-
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -44,6 +43,17 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --ifm-color-primary: #ff8534;
+  --ifm-color-primary-dark: #e3791d;
+  --ifm-color-primary-darker: #d15a19;
+  --ifm-color-primary-darkest: #7b471d;
+  --ifm-color-primary-light: #eca832;
+  --ifm-color-primary-lighter: #ffc370;
+  --ifm-color-primary-lightest: #ffd8a2;
+  --ifm-code-font-size: 95%;
+  --ifm-background-color: #fef8f8;
+  --ifm-card-background-color: #f4f2f2;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
 .dark {

@@ -1,38 +1,70 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
-import styles from '@/components/HomepageFeatures/Tools.module.css';
 
 const Tools: React.FC = () => {
+  const tools = [
+    {
+      to: "/tools/ip",
+      name: "IP",
+      description: "Get your IP address"
+    },
+    {
+      to: "/tools/coordinates",
+      name: "Coordinates",
+      description: "Get GPS coordinates and convert to multiple formats"
+    },
+    {
+      to: "/tools/signature",
+      name: "Email Signature",
+      description: "Generate email signature"
+    },
+    {
+      to: "/tools/base64",
+      name: "Base64",
+      description: "Encode/Decode Base64 with text and images"
+    },
+    {
+      to: "/tools/image-crop",
+      name: "Image Crop",
+      description: "Crop images"
+    },
+    {
+      to: "/tools/qrcode",
+      name: "QR Code",
+      description: "Generate QR code"
+    }
+  ];
+
   return (
     <Layout title="Tools">
-      <div className={styles.toolsContainer}>
+      <div className="container margin-vert--lg">
         <h1>Tools</h1>
-        <div className={styles.buttonGrid}>
-          <Link to="/tools/ip" className={styles.toolButton}>
-            <span className={styles.toolName}>IP</span>
-            <span className={styles.toolDescription}>Get your IP address</span>
-          </Link>
-          <Link to="/tools/coordinates" className={styles.toolButton}>
-            <span className={styles.toolName}>Coordinates</span>
-            <span className={styles.toolDescription}>Get GPS coordinates and convert to multiple formats</span>
-          </Link>
-          <Link to="/tools/signature" className={styles.toolButton}>
-            <span className={styles.toolName}>Email Signature</span>
-            <span className={styles.toolDescription}>Generate email signature</span>
-          </Link>
-          <Link to="/tools/base64" className={styles.toolButton}>
-            <span className={styles.toolName}>Base64</span>
-            <span className={styles.toolDescription}>Encode/Decode Base64 with text and images</span>
-          </Link>
-          <Link to="/tools/image-crop" className={styles.toolButton}>
-            <span className={styles.toolName}>Image Crop</span>
-            <span className={styles.toolDescription}>Crop images</span>
-          </Link>
-          <Link to="/tools/qrcode" className={styles.toolButton}>
-            <span className={styles.toolName}>QR Code</span>
-            <span className={styles.toolDescription}>Generate QR code</span>
-          </Link>
+        <div className="row">
+          {tools.map((tool, idx) => (
+            <div key={idx} className="col col--4 margin-bottom--lg">
+              <Link
+                to={tool.to}
+                className="card padding--lg"
+                style={{
+                  height: '100%',
+                  textDecoration: 'none',
+                  border: '1px solid var(--ifm-color-emphasis-200)',
+                  backgroundColor: 'var(--ifm-card-background-color)',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <div className="card__header">
+                  <h3 className="margin-bottom--sm">{tool.name}</h3>
+                </div>
+                <div className="card__body">
+                  <p style={{ color: 'var(--ifm-color-emphasis-700)' }}>
+                    {tool.description}
+                  </p>
+                </div>
+              </Link>
+            </div>
+          ))}
         </div>
       </div>
     </Layout>

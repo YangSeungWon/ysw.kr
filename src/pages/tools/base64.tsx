@@ -17,7 +17,11 @@ export default function Base64Page() {
             }
 
             if (mode === 'encode') {
-                const encoded = btoa(inputText);
+                // 유니코드 문자열을 UTF-8 바이트 배열로 변환
+                const encoder = new TextEncoder();
+                const data = encoder.encode(inputText);
+                // 바이트 배열을 base64로 변환
+                const encoded = btoa(String.fromCharCode(...Array.from(data)));
                 setOutputText(encoded);
                 setImagePreview(null);
             } else {
@@ -27,7 +31,15 @@ export default function Base64Page() {
                         ? inputText.split(',')[1]
                         : inputText;
 
-                    const decoded = atob(base64Input);
+                    // base64를 바이트 배열로 디코딩
+                    const binaryString = atob(base64Input);
+                    const bytes = new Uint8Array(binaryString.length);
+                    for (let i = 0; i < binaryString.length; i++) {
+                        bytes[i] = binaryString.charCodeAt(i);
+                    }
+                    // 바이트 배열을 UTF-8 문자열로 변환
+                    const decoder = new TextDecoder();
+                    const decoded = decoder.decode(bytes);
                     setOutputText(decoded);
 
                     // 디코드한 결과가 이미지인지 확인
@@ -107,96 +119,116 @@ export default function Base64Page() {
             <div className="container margin-vert--lg">
                 <h1>Base64 Encoder/Decoder</h1>
 
-                <div className="margin-bottom--md">
-                    <div className="button-group margin-right--sm">
-                        <button
-                            className={`button button--secondary ${mode === 'encode' ? 'button--active' : ''}`}
-                            onClick={() => setMode('encode')}
+                <div className="card padding--lg margin-bottom--lg">
+                    <div className="margin-bottom--md">
+                        <div className="button-group margin-right--sm">
+                            <button
+                                className={`button button--secondary ${mode === 'encode' ? 'button--active' : ''}`}
+                                onClick={() => setMode('encode')}
+                                style={{
+                                    borderTopRightRadius: 0,
+                                    borderBottomRightRadius: 0,
+                                }}
+                            >
+                                Encode
+                            </button>
+                            <button
+                                className={`button button--secondary ${mode === 'decode' ? 'button--active' : ''}`}
+                                onClick={() => setMode('decode')}
+                                style={{
+                                    borderTopLeftRadius: 0,
+                                    borderBottomLeftRadius: 0,
+                                }}
+                            >
+                                Decode
+                            </button>
+                        </div>
+
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileUpload}
+                            ref={fileInputRef}
                             style={{
-                                borderTopRightRadius: 0,
-                                borderBottomRightRadius: 0,
-                                borderRight: 'none'
+                                display: mode === 'encode' ? 'inline' : 'none',
+                                marginRight: 'var(--ifm-spacing-horizontal)',
                             }}
-                        >
-                            Encode
-                        </button>
+                            className="button button--outline button--primary"
+                        />
+
                         <button
-                            className={`button button--secondary ${mode === 'decode' ? 'button--active' : ''}`}
-                            onClick={() => setMode('decode')}
-                            style={{
-                                borderTopLeftRadius: 0,
-                                borderBottomLeftRadius: 0
-                            }}
+                            onClick={clearAll}
+                            className="button button--danger button--outline"
                         >
-                            Decode
+                            Clear All
                         </button>
                     </div>
 
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileUpload}
-                        ref={fileInputRef}
-                        style={{ display: mode === 'encode' ? 'inline' : 'none' }}
-                        className="margin-right--sm"
-                    />
+                    <div className="row">
+                        <div className="col col--6">
+                            <h3>Input</h3>
+                            <textarea
+                                value={inputText}
+                                onChange={(e) => setInputText(e.target.value)}
+                                rows={10}
+                                className="margin-bottom--sm"
+                                style={{
+                                    width: '100%',
+                                    padding: 'var(--ifm-spacing-vertical) var(--ifm-spacing-horizontal)',
+                                    backgroundColor: 'var(--ifm-background-color)',
+                                    border: '1px solid var(--ifm-color-emphasis-300)',
+                                    borderRadius: 'var(--ifm-card-border-radius)',
+                                    color: 'var(--ifm-font-color-base)',
+                                }}
+                                placeholder={mode === 'encode' ? 'Enter text to encode' : 'Enter base64 to decode'}
+                            />
+                        </div>
 
-                    <button
-                        onClick={clearAll}
-                        className="button button--secondary"
-                    >
-                        Clear All
-                    </button>
+                        <div className="col col--6">
+                            <h3>Output</h3>
+                            <textarea
+                                value={outputText}
+                                readOnly
+                                rows={10}
+                                className="margin-bottom--sm"
+                                style={{
+                                    width: '100%',
+                                    padding: 'var(--ifm-spacing-vertical) var(--ifm-spacing-horizontal)',
+                                    backgroundColor: 'var(--ifm-background-surface-color)',
+                                    border: '1px solid var(--ifm-color-emphasis-300)',
+                                    borderRadius: 'var(--ifm-card-border-radius)',
+                                    color: 'var(--ifm-font-color-base)',
+                                }}
+                            />
+                            <button
+                                onClick={handleCopy}
+                                className="button button--primary"
+                                disabled={!outputText}
+                            >
+                                Copy to Clipboard
+                            </button>
+                        </div>
+                    </div>
+
+                    {imagePreview && (
+                        <div className="margin-top--lg">
+                            <h3>Image Preview</h3>
+                            <div className="card padding--sm" style={{
+                                backgroundColor: 'var(--ifm-background-surface-color)',
+                            }}>
+                                <img
+                                    src={imagePreview}
+                                    alt="Preview"
+                                    style={{
+                                        maxWidth: '100%',
+                                        maxHeight: '400px',
+                                        borderRadius: 'var(--ifm-card-border-radius)',
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    )}
                 </div>
-
-                <div className="row">
-                    <div className="col col--6">
-                        <h3>Input</h3>
-                        <textarea
-                            value={inputText}
-                            onChange={(e) => setInputText(e.target.value)}
-                            rows={10}
-                            className="margin-bottom--sm"
-                            style={{ width: '100%', padding: '8px' }}
-                            placeholder={mode === 'encode' ? 'Enter text to encode' : 'Enter base64 to decode'}
-                        />
-                    </div>
-
-                    <div className="col col--6">
-                        <h3>Output</h3>
-                        <textarea
-                            value={outputText}
-                            readOnly
-                            rows={10}
-                            className="margin-bottom--sm"
-                            style={{ width: '100%', padding: '8px' }}
-                        />
-                        <button
-                            onClick={handleCopy}
-                            className="button button--primary"
-                            disabled={!outputText}
-                        >
-                            Copy to Clipboard
-                        </button>
-                    </div>
-                </div>
-
-                {imagePreview && (
-                    <div className="margin-top--lg">
-                        <h3>Image Preview</h3>
-                        <img
-                            src={imagePreview}
-                            alt="Preview"
-                            style={{
-                                maxWidth: '100%',
-                                maxHeight: '400px',
-                                border: '1px solid #ddd',
-                                borderRadius: '4px',
-                                padding: '4px'
-                            }}
-                        />
-                    </div>
-                )}
             </div>
         </Layout>
     );

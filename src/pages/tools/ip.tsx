@@ -16,7 +16,7 @@ export default function IPPage() {
       <div className="container">
         <h1>IP Address Tool</h1>
         {ipAddress ? (
-          <p>Your public IP address is: {ipAddress}</p>
+          <p>Your public IP address is: <b>{ipAddress}</b></p>
         ) : (
           <p>Loading IP address...</p>
         )}

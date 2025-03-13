@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Layout from '@theme/Layout';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 type DegreeType = 'Master' | 'Integrated' | 'Ph.D';
 
@@ -93,7 +95,7 @@ export default function SignaturePage() {
                                 Accent Color for M. E. H. Labels:
                             </label>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <input
+                                <Input
                                     type="color"
                                     name="highlightColor"
                                     value={signatureData.highlightColor}
@@ -108,7 +110,7 @@ export default function SignaturePage() {
 
                         <div style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', marginBottom: '-2px' }}>Name:</label>
-                            <input
+                            <Input
                                 type="text"
                                 name="name"
                                 value={signatureData.name}
@@ -134,7 +136,7 @@ export default function SignaturePage() {
 
                         <div style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', marginBottom: '-2px' }}>Phone:</label>
-                            <input
+                            <Input
                                 type="tel"
                                 name="phone"
                                 value={signatureData.phone}
@@ -146,7 +148,7 @@ export default function SignaturePage() {
 
                         <div style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', marginBottom: '-2px' }}>Email:</label>
-                            <input
+                            <Input
                                 type="email"
                                 name="email"
                                 value={signatureData.email}
@@ -158,7 +160,7 @@ export default function SignaturePage() {
 
                         <div style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', marginBottom: '-2px' }}>Website:</label>
-                            <input
+                            <Input
                                 type="url"
                                 name="website"
                                 value={signatureData.website}
@@ -170,7 +172,7 @@ export default function SignaturePage() {
 
                         <div style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', marginBottom: '-2px' }}>Photo:</label>
-                            <input
+                            <Input
                                 type="file"
                                 accept="image/*"
                                 onChange={handleImageUpload}
@@ -229,13 +231,13 @@ export default function SignaturePage() {
                                 />
                             )}
                         </div>
-                        <button
+                        <Button
                             onClick={copySignature}
                             className="button button--primary"
                             style={{ marginTop: '15px' }}
                         >
                             Copy Signature
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

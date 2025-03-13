@@ -5,7 +5,7 @@ import path from "path";
 
 const config: Config = {
   title: "Seungwon Yang",
-  tagline: "M.S. Student | POSTECH",
+  tagline: "POSTECH",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here

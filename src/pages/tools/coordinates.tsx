@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Layout from '@theme/Layout';
 import 'leaflet/dist/leaflet.css';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 // CSS를 컴포넌트 상단에 추가
 const markerStyle = {
@@ -227,7 +229,7 @@ export default function CoordinatesPage() {
             <div className="container">
                 <h1>Coordinate Conversion Tool</h1>
                 <div style={{ marginBottom: '20px' }}>
-                    <input
+                    <Input
                         type="text"
                         value={coordinates}
                         onChange={(e) => setCoordinates(e.target.value)}
@@ -235,16 +237,16 @@ export default function CoordinatesPage() {
                         className="form-input"
                         style={{ marginRight: '10px' }}
                     />
-                    <button onClick={convertCoordinates} className="button button--primary" style={{ marginRight: '10px' }}>
+                    <Button onClick={convertCoordinates} className="button button--primary" style={{ marginRight: '10px' }}>
                         Convert
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         onClick={getCurrentLocation}
                         className="button button--secondary"
                         disabled={isLoading}
                     >
                         {isLoading ? "Getting location..." : "Get Current Location"}
-                    </button>
+                    </Button>
                 </div>
 
                 <div style={{ marginBottom: '20px' }}>
