@@ -30,14 +30,19 @@ const Tools: React.FC = () => {
       description: "Crop images"
     },
     {
-      to: "/tools/qrcode",
-      name: "QR Code",
-      description: "Generate QR code"
-    },
-    {
       to: "/tools/emoji",
       name: "Emoji Generator",
       description: "Convert images to Slack/Discord emoji format (transparent background, square, <128KB)"
+    },
+    {
+      to: "/tools/qrcode-scanner",
+      name: "QR Code Scanner",
+      description: "Scan QR codes from images"
+    },
+    {
+      to: "/tools/qrcode-generator",
+      name: "QR Code Generator",
+      description: "Generate QR codes"
     }
   ];
 
