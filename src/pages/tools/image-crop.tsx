@@ -21,6 +21,7 @@ export function ImageCropper() {
     const imageRef = useRef<HTMLImageElement>(null)
     const [displaySize, setDisplaySize] = useState<{ width: number; height: number }>({ width: 0, height: 0 })
     const cropTimeoutRef = useRef<NodeJS.Timeout>()
+    const [croppedSize, setCroppedSize] = useState({ width: 0, height: 0 })
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
@@ -52,8 +53,8 @@ export function ImageCropper() {
         handleCropComplete(initialCrop as Crop)
     }
 
-    const getCroppedImg = useCallback(async (crop: Crop): Promise<string> => {
-        if (!imageSrc || !imageRef.current) return ""
+    const getCroppedImg = useCallback(async (crop: Crop): Promise<{ dataUrl: string, width: number, height: number }> => {
+        if (!imageSrc || !imageRef.current) return { dataUrl: "", width: 0, height: 0 }
 
         const img = imageRef.current
         const { naturalWidth, naturalHeight } = img
@@ -61,9 +62,12 @@ export function ImageCropper() {
         const scaleX = naturalWidth / displaySize.width
         const scaleY = naturalHeight / displaySize.height
 
+        const realCropWidth = (crop.width || 0) * scaleX
+        const realCropHeight = (crop.height || 0) * scaleY
+
         const canvas = document.createElement("canvas")
-        canvas.width = (crop.width || 0) * scaleX
-        canvas.height = (crop.height || 0) * scaleY
+        canvas.width = realCropWidth
+        canvas.height = realCropHeight
 
         const ctx = canvas.getContext("2d")
         if (!ctx) throw new Error("Failed to get canvas context")
@@ -72,19 +76,23 @@ export function ImageCropper() {
             img,
             (crop.x || 0) * scaleX,
             (crop.y || 0) * scaleY,
-            (crop.width || 0) * scaleX,
-            (crop.height || 0) * scaleY,
+            realCropWidth,
+            realCropHeight,
             0,
             0,
-            canvas.width,
-            canvas.height
+            realCropWidth,
+            realCropHeight
         )
 
         return new Promise((resolve) => {
             canvas.toBlob((blob) => {
                 if (!blob) return
                 const reader = new FileReader()
-                reader.onloadend = () => resolve(reader.result as string)
+                reader.onloadend = () => resolve({
+                    dataUrl: reader.result as string,
+                    width: crop.width || 0,
+                    height: crop.height || 0
+                })
                 reader.readAsDataURL(blob)
             }, "image/png")
         })
@@ -92,8 +100,9 @@ export function ImageCropper() {
 
     const handleCropComplete = useCallback(async (cropResult: Crop) => {
         if (!imageSrc || !cropResult.width || !cropResult.height) return
-        const croppedImageUrl = await getCroppedImg(cropResult)
-        setCroppedImage(croppedImageUrl)
+        const result = await getCroppedImg(cropResult)
+        setCroppedImage(result.dataUrl)
+        setCroppedSize({ width: result.width, height: result.height })
     }, [imageSrc, getCroppedImg])
 
     const debouncedCropComplete = useCallback((cropResult: Crop) => {
@@ -191,7 +200,10 @@ export function ImageCropper() {
                                 <CardContent className="p-2">
                                     <img
                                         src={croppedImage}
-                                        className="max-w-full"
+                                        style={{
+                                            width: croppedSize.width,
+                                            height: croppedSize.height,
+                                        }}
                                         alt="Preview"
                                     />
                                 </CardContent>
