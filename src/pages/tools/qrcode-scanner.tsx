@@ -91,7 +91,7 @@ export default function QRCodeScanner() {
                     </div>
                 </div>
 
-                <Card className="w-[600px] mx-auto">
+                <Card className="w-full max-w-[600px] mx-auto">
                     <CardHeader>
                         <CardTitle>Scan QR Code</CardTitle>
                         <CardDescription>
@@ -109,7 +109,7 @@ export default function QRCodeScanner() {
                             />
                             <Button
                                 onClick={() => fileInputRef.current?.click()}
-                                className="w-64 h-12 text-lg font-semibold shadow-lg hover:scale-105 transition-transform"
+                                className="w-full max-w-[256px] h-12 text-lg font-semibold shadow-lg hover:scale-105 transition-transform"
                                 style={{
                                     backgroundColor: "var(--ifm-color-primary-lightest)",
                                     color: "black",
@@ -135,7 +135,7 @@ export default function QRCodeScanner() {
                                     <img
                                         src={uploadedImage}
                                         alt="Uploaded QR Code"
-                                        className="max-w-[300px] max-h-[300px] object-contain rounded-lg border p-2"
+                                        className="w-full max-w-[300px] h-auto object-contain rounded-lg border p-2"
                                     />
                                 </div>
                             )}

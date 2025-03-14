@@ -116,7 +116,7 @@ export default function QRCodeGenerator() {
                     <p className="text-muted-foreground text-center">Generate QR codes easily</p>
                 </div>
 
-                <Card className="w-[600px] mx-auto">
+                <Card className="w-full max-w-[600px] mx-auto">
                     <CardHeader>
                         <CardTitle>Generate QR Code</CardTitle>
                         <CardDescription>
@@ -137,8 +137,13 @@ export default function QRCodeGenerator() {
 
                         {debouncedText ? (
                             <div className="flex flex-col items-center pt-4">
-                                <div ref={qrRef} className="border-2 border-primary/10 p-4 bg-white rounded-lg">
-                                    <QRCodeSVG value={debouncedText} size={256} level="H" includeMargin={true} />
+                                <div ref={qrRef} className="w-full flex justify-center border-2 border-primary/10 p-4 bg-white rounded-lg">
+                                    <QRCodeSVG
+                                        value={debouncedText}
+                                        size={Math.min(256, window.innerWidth - 100)}
+                                        level="H"
+                                        includeMargin={true}
+                                    />
                                 </div>
                             </div>
                         ) : (
@@ -149,12 +154,12 @@ export default function QRCodeGenerator() {
                         )}
                     </CardContent>
                     {debouncedText && (
-                        <CardFooter className="flex flex-col sm:flex-row gap-3">
-                            <Button onClick={copyToClipboard} className="flex-1 gap-2" variant="outline">
+                        <CardFooter className="flex flex-col sm:flex-row gap-3 w-full">
+                            <Button onClick={copyToClipboard} className="w-full sm:flex-1 gap-2" variant="outline">
                                 <Copy className="w-4 h-4" />
                                 Copy to Clipboard
                             </Button>
-                            <Button onClick={downloadQRCode} className="flex-1 gap-2">
+                            <Button onClick={downloadQRCode} className="w-full sm:flex-1 gap-2">
                                 <Download className="w-4 h-4" />
                                 Download PNG
                             </Button>
