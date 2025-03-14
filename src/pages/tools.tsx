@@ -33,6 +33,11 @@ const Tools: React.FC = () => {
       to: "/tools/qrcode",
       name: "QR Code",
       description: "Generate QR code"
+    },
+    {
+      to: "/tools/emoji",
+      name: "Emoji Generator",
+      description: "Convert images to Slack/Discord emoji format (transparent background, square, <128KB)"
     }
   ];
 
