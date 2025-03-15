@@ -1,5 +1,5 @@
-import React, { useState, useRef, type ChangeEvent } from "react"
-import { Image, QrCode } from "lucide-react"
+import React, { useState, useRef, type ChangeEvent, useEffect } from "react"
+import { Image, QrCode, Clipboard } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -13,6 +13,114 @@ export default function QRCodeScanner() {
     const [isScanning, setIsScanning] = useState(false)
     const [uploadedImage, setUploadedImage] = useState<string>("")
     const fileInputRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+        const handleGlobalPaste = async (e: ClipboardEvent) => {
+            if (isScanning) return;
+
+            try {
+                // Try to get image from clipboard items API first
+                if (e.clipboardData?.items) {
+                    const items = Array.from(e.clipboardData.items);
+                    const imageItem = items.find(item => item.type.startsWith('image/'));
+
+                    if (imageItem) {
+                        e.preventDefault();
+                        const blob = await imageItem.getAsFile()?.slice();
+                        if (!blob) return;
+
+                        setIsScanning(true);
+                        setScannedResult("");
+
+                        const imageUrl = URL.createObjectURL(blob);
+                        setUploadedImage(imageUrl);
+
+                        const img = document.createElement('img');
+                        img.crossOrigin = "anonymous";
+                        img.onload = () => processImage(img);
+                        img.onerror = () => {
+                            URL.revokeObjectURL(imageUrl);
+                            setIsScanning(false);
+                            toast.error("Image Error", {
+                                description: "Failed to load the image from clipboard"
+                            });
+                        };
+                        img.src = imageUrl;
+                        return;
+                    }
+                }
+
+                // Fallback to clipboard read API
+                const clipboardItems = await navigator.clipboard.read();
+                const imageType = clipboardItems.find(item =>
+                    item.types.some(type => type.startsWith('image/'))
+                );
+
+                if (!imageType) {
+                    return;
+                }
+
+                e.preventDefault();
+                setIsScanning(true);
+                setScannedResult("");
+
+                const blob = await imageType.getType('image/png');
+                const imageUrl = URL.createObjectURL(blob);
+                setUploadedImage(imageUrl);
+
+                const img = document.createElement('img');
+                img.crossOrigin = "anonymous";
+                img.onload = () => processImage(img);
+                img.onerror = () => {
+                    URL.revokeObjectURL(imageUrl);
+                    setIsScanning(false);
+                    toast.error("Image Error", {
+                        description: "Failed to load the image from clipboard"
+                    });
+                };
+                img.src = imageUrl;
+            } catch (error) {
+                console.error("Clipboard error:", error);
+                toast.error("Clipboard Error", {
+                    description: "Failed to read image from clipboard. Make sure you have an image copied."
+                });
+                setIsScanning(false);
+            }
+        };
+
+        document.addEventListener('paste', handleGlobalPaste);
+        return () => {
+            document.removeEventListener('paste', handleGlobalPaste);
+        };
+    }, [isScanning]);
+
+    const processImage = async (img: HTMLImageElement) => {
+        const canvas = document.createElement("canvas")
+        const context = canvas.getContext("2d")
+        if (!context) {
+            throw new Error("Could not get canvas context")
+        }
+
+        canvas.width = img.width
+        canvas.height = img.height
+        context.drawImage(img, 0, 0)
+
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height)
+        const code = jsQR(imageData.data, imageData.width, imageData.height)
+
+        if (code) {
+            setScannedResult(code.data)
+            toast.success("QR Code Scanned", {
+                description: "The QR code was successfully scanned."
+            })
+        } else {
+            toast.error("No QR Code Found", {
+                description: "The image doesn't contain a valid QR code"
+            })
+        }
+
+        setIsScanning(false)
+    }
 
     const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
@@ -33,35 +141,7 @@ export default function QRCodeScanner() {
             setUploadedImage(imageUrl)
             const img = document.createElement('img')
             img.crossOrigin = "anonymous"
-
-            img.onload = () => {
-                const canvas = document.createElement("canvas")
-                const context = canvas.getContext("2d")
-                if (!context) {
-                    throw new Error("Could not get canvas context")
-                }
-
-                canvas.width = img.width
-                canvas.height = img.height
-                context.drawImage(img, 0, 0)
-
-                const imageData = context.getImageData(0, 0, canvas.width, canvas.height)
-                const code = jsQR(imageData.data, imageData.width, imageData.height)
-
-                if (code) {
-                    setScannedResult(code.data)
-                    toast.success("QR Code Scanned", {
-                        description: "The QR code was successfully scanned."
-                    })
-                } else {
-                    toast.error("No QR Code Found", {
-                        description: "The image doesn't contain a valid QR code"
-                    })
-                }
-
-                setIsScanning(false)
-            }
-
+            img.onload = () => processImage(img)
             img.onerror = () => {
                 URL.revokeObjectURL(imageUrl)
                 setIsScanning(false)
@@ -69,7 +149,6 @@ export default function QRCodeScanner() {
                     description: "Failed to load the image"
                 })
             }
-
             img.src = imageUrl
         } catch (error) {
             console.error("File handling error:", error)
@@ -107,19 +186,25 @@ export default function QRCodeScanner() {
                                 accept="image/*"
                                 style={{ display: 'none' }}
                             />
-                            <Button
-                                onClick={() => fileInputRef.current?.click()}
-                                className="w-full max-w-[256px] h-12 text-lg font-semibold shadow-lg hover:scale-105 transition-transform"
-                                style={{
-                                    backgroundColor: "var(--ifm-color-primary-lightest)",
-                                    color: "black",
-                                }}
-                                disabled={isScanning}
-                                size="lg"
-                            >
-                                <Image className="w-5 h-5 mr-2" />
-                                {isScanning ? "Scanning..." : "Upload QR Code"}
-                            </Button>
+                            <div className="flex gap-4 w-full justify-center">
+                                <Button
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="max-w-[256px] h-12 text-lg font-semibold shadow-lg hover:scale-105 transition-transform"
+                                    style={{
+                                        backgroundColor: "var(--ifm-color-primary-lightest)",
+                                        color: "black",
+                                    }}
+                                    disabled={isScanning}
+                                    size="lg"
+                                >
+                                    <Image className="w-5 h-5 mr-2" />
+                                    {isScanning ? "Scanning..." : "Upload QR Code"}
+                                </Button>
+                            </div>
+
+                            <div className="text-sm text-gray-500 text-center">
+                                You can also paste an image (Ctrl+V) directly to scan
+                            </div>
 
                             {scannedResult && (
                                 <div className="w-full">

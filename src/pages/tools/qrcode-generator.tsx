@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import { QRCodeSVG } from "qrcode.react"
-import { Copy, Download, QrCode } from "lucide-react"
+import { Copy, Download, QrCode, Image as ImageIcon, Upload, Clipboard } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -12,7 +12,10 @@ import { Label } from "@/components/ui/label"
 export default function QRCodeGenerator() {
     const [text, setText] = useState("")
     const [debouncedText, setDebouncedText] = useState("")
+    const [centerImage, setCenterImage] = useState("")
+    const [showEmoji, setShowEmoji] = useState(false)
     const qrRef = useRef<HTMLDivElement>(null)
+    const fileInputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -104,6 +107,47 @@ export default function QRCodeGenerator() {
         }
     }
 
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        if (!file.type.startsWith('image/')) {
+            toast.error("Please upload an image file")
+            return
+        }
+
+        const reader = new FileReader()
+        reader.onload = (e) => {
+            const result = e.target?.result
+            if (typeof result === 'string') {
+                setCenterImage(result)
+            }
+        }
+        reader.readAsDataURL(file)
+    }
+
+    const handlePaste = async (e: React.ClipboardEvent) => {
+        const items = Array.from(e.clipboardData.items)
+
+        for (const item of items) {
+            if (item.type.startsWith('image/')) {
+                const file = item.getAsFile()
+                if (!file) continue
+
+                const reader = new FileReader()
+                reader.onload = (e) => {
+                    const result = e.target?.result
+                    if (typeof result === 'string') {
+                        setCenterImage(result)
+                        toast.success("Image pasted successfully")
+                    }
+                }
+                reader.readAsDataURL(file)
+                return
+            }
+        }
+    }
+
     return (
         <Layout title="QR Code Generator">
             <Toaster />
@@ -135,6 +179,78 @@ export default function QRCodeGenerator() {
                             />
                         </div>
 
+                        <div className="space-y-2">
+                            <Label htmlFor="center-image">Center Image (Optional)</Label>
+                            <div className="flex gap-2">
+                                <Input
+                                    id="center-image"
+                                    type="text"
+                                    value={centerImage}
+                                    onChange={(e) => setCenterImage(e.target.value)}
+                                    placeholder="Enter emoji or image URL..."
+                                    onPaste={handlePaste}
+                                    className="flex-1"
+                                />
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={handleImageUpload}
+                                    accept="image/*"
+                                    className="hidden"
+                                />
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    onClick={() => fileInputRef.current?.click()}
+                                    title="Upload image"
+                                >
+                                    <Upload className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    onClick={() => {
+                                        navigator.clipboard.read().then(async (items) => {
+                                            for (const item of items) {
+                                                const imageType = item.types.find(type => type.startsWith('image/'))
+                                                if (imageType) {
+                                                    const blob = await item.getType(imageType)
+                                                    const reader = new FileReader()
+                                                    reader.onload = (e) => {
+                                                        const result = e.target?.result
+                                                        if (typeof result === 'string') {
+                                                            setCenterImage(result)
+                                                            toast.success("Image pasted from clipboard")
+                                                        }
+                                                    }
+                                                    reader.readAsDataURL(blob)
+                                                    return
+                                                }
+                                            }
+                                            toast.error("No image found in clipboard")
+                                        }).catch(() => {
+                                            toast.error("Failed to read clipboard")
+                                        })
+                                    }}
+                                    title="Paste from clipboard"
+                                >
+                                    <Clipboard className="h-4 w-4" />
+                                </Button>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Enter emoji, image URL, upload a file, or paste from clipboard (Ctrl/Cmd+V)
+                            </p>
+                            {centerImage && (
+                                <Button
+                                    variant="ghost"
+                                    className="h-6 px-2 text-xs"
+                                    onClick={() => setCenterImage("")}
+                                >
+                                    Clear image
+                                </Button>
+                            )}
+                        </div>
+
                         {debouncedText ? (
                             <div className="flex flex-col items-center pt-4">
                                 <div ref={qrRef} className="w-full flex justify-center border-2 border-primary/10 p-4 bg-white rounded-lg">
@@ -143,6 +259,16 @@ export default function QRCodeGenerator() {
                                         size={Math.min(256, window.innerWidth - 100)}
                                         level="H"
                                         includeMargin={true}
+                                        imageSettings={centerImage ? {
+                                            src: centerImage.length <= 2 ? `data:image/svg+xml,${encodeURIComponent(
+                                                `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50%" x="50%" dominant-baseline="middle" text-anchor="middle" font-size="60">${centerImage}</text></svg>`
+                                            )}` : centerImage,
+                                            x: undefined,
+                                            y: undefined,
+                                            height: 24,
+                                            width: 24,
+                                            excavate: true,
+                                        } : undefined}
                                     />
                                 </div>
                             </div>
