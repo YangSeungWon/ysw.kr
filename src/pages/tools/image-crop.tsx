@@ -22,6 +22,7 @@ export function ImageCropper() {
     const [displaySize, setDisplaySize] = useState<{ width: number; height: number }>({ width: 0, height: 0 })
     const cropTimeoutRef = useRef<NodeJS.Timeout>()
     const [croppedSize, setCroppedSize] = useState({ width: 0, height: 0 })
+    const uploadedFileName = useRef<string>("")
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
@@ -32,6 +33,7 @@ export function ImageCropper() {
             setImageSrc(reader.result as string)
             setCrop(DEFAULT_CROP)
             setCroppedImage(reader.result as string)
+            uploadedFileName.current = file.name
         }
         reader.readAsDataURL(file)
     }
@@ -39,15 +41,16 @@ export function ImageCropper() {
     const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
         const img = e.currentTarget
         const { naturalWidth, naturalHeight, width, height } = img
+        const boxSize = width / 5
 
         setDisplaySize({ width, height })
 
         const initialCrop = {
             unit: 'px',
-            width,
-            height,
-            x: 0,
-            y: 0
+            width: boxSize,
+            height: boxSize,
+            x: width / 2 - boxSize / 2,
+            y: height / 2 - boxSize / 2
         }
         setCrop(initialCrop as Crop)
         handleCropComplete(initialCrop as Crop)
@@ -124,11 +127,11 @@ export function ImageCropper() {
         if (!croppedImage) return
         const link = document.createElement('a')
         link.href = croppedImage
-        link.download = 'cropped-image.png'
+        link.download = `${uploadedFileName.current}-cropped-${Date.now()}.png`
         link.click()
     }
 
-    const handleReset = () => {
+    const handleFullSize = () => {
         if (!imageRef.current) return
         const { width, height } = imageRef.current
         const newCrop = {
@@ -137,6 +140,21 @@ export function ImageCropper() {
             height,
             x: 0,
             y: 0
+        } as Crop
+        setCrop(newCrop)
+        handleCropComplete(newCrop)
+    }
+
+    const handleReset = () => {
+        if (!imageRef.current) return
+        const { width, height } = imageRef.current
+        const boxSize = width / 5
+        const newCrop = {
+            unit: 'px',
+            width: boxSize,
+            height: boxSize,
+            x: width / 2 - boxSize / 2,
+            y: height / 2 - boxSize / 2
         } as Crop
         setCrop(newCrop)
         handleCropComplete(newCrop)
@@ -182,6 +200,7 @@ export function ImageCropper() {
                         </Card>
                         <div className="flex items-center justify-between gap-2">
                             <Button onClick={handleReset} className="button button--outline button--secondary">Reset</Button>
+                            <Button onClick={handleFullSize} className="button button--outline button--secondary">Full Size</Button>
                             <div className="text-sm text-muted-foreground space-y-1">
                                 <div>Display crop: {Math.round(crop.width || 0)} × {Math.round(crop.height || 0)} px</div>
                                 {imageRef.current && (
