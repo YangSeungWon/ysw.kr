@@ -48,6 +48,11 @@ const Tools: React.FC = () => {
       to: "/tools/image-resizer",
       name: "Image Resizer",
       description: "Resize images by scale factor"
+    },
+    {
+      to: "/tools/color-blindness-simulator",
+      name: "Color Blindness Simulator",
+      description: "Simulate how images appear to people with different types of color blindness"
     }
   ];
 
