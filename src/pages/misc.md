@@ -11,3 +11,7 @@
 ### Survival Game
 
 [Description](/misc/survival-game) | [Game Link](https://survival.game.ysw.kr) | [GitHub](https://github.com/YangSeungWon/survival-game)
+
+### Lime Game
+
+[Description](/misc/lime-game) | [Game Link](https://li.me.kr) | [GitHub](https://github.com/YangSeungWon/lime-game)
