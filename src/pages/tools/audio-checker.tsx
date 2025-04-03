@@ -154,21 +154,46 @@ const Waveform = React.memo(({ url, onReady, isRecording, audioStream, setIsPlay
             barGap: 4,
             normalize: true,
             barHeight: 0.8,
+            backend: 'MediaElement',
+            interact: true,
+            cursorWidth: 0,
+            hideScrollbar: true
         })
 
         wavesurfer.on('ready', () => {
-            console.log('WaveSurfer is ready')
+            console.log('WaveSurfer is ready, duration:', wavesurfer.getDuration())
             onReady()
         })
 
         wavesurfer.on('audioprocess', (time) => {
-            if (customCursorRef.current && containerRef.current) {
-                const duration = wavesurfer.getDuration()
-                const containerWidth = containerRef.current.offsetWidth
-                const progress = Math.min(time / duration, 1)
-                const cursorX = containerWidth * progress
-                customCursorRef.current.style.transform = `translateX(${cursorX}px)`
+            console.log('Audioprocess event triggered:', time)
+            const duration = wavesurfer.getDuration()
+            const container = containerRef.current
+            const cursor = customCursorRef.current
+
+            console.log('Time update:', { time, duration, container, cursor })
+
+            if (!container || !cursor || duration === 0) {
+                console.warn('Cursor movement skipped:', { container, cursor, duration })
+                return
             }
+
+            const containerWidth = container.offsetWidth
+            const progress = Math.min(time / duration, 1)
+            const cursorX = containerWidth * progress
+
+            // Use requestAnimationFrame for smoother animation
+            requestAnimationFrame(() => {
+                cursor.style.transform = `translateX(${cursorX}px)`
+            })
+        })
+
+        wavesurfer.on('play', () => {
+            console.log('WaveSurfer: Play started')
+        })
+
+        wavesurfer.on('pause', () => {
+            console.log('WaveSurfer: Play paused')
         })
 
         wavesurfer.on('finish', () => {
@@ -199,11 +224,30 @@ const Waveform = React.memo(({ url, onReady, isRecording, audioStream, setIsPlay
                 console.log('Audio element: Playback finished')
                 setIsPlaying(false)
             }
+
+            audioRef.current.ontimeupdate = () => {
+                if (!audioRef.current || !customCursorRef.current) return
+
+                const { currentTime, duration } = audioRef.current
+                const container = containerRef.current
+                if (!container) return
+
+                const containerWidth = container.offsetWidth
+                const progress = Math.min(currentTime / duration, 1)
+                const cursorX = containerWidth * progress
+
+                requestAnimationFrame(() => {
+                    if (customCursorRef.current) {
+                        customCursorRef.current.style.transform = `translateX(${cursorX}px)`
+                    }
+                })
+            }
         }
 
         return () => {
             if (audioRef.current) {
                 audioRef.current.onended = null
+                audioRef.current.ontimeupdate = null
             }
         }
     }, [])
@@ -217,7 +261,7 @@ const Waveform = React.memo(({ url, onReady, isRecording, audioStream, setIsPlay
     }, [url, isRecording])
 
     return (
-        <div className="w-full rounded-lg overflow-hidden bg-gray-100 p-4" style={{ minHeight: '100px' }}>
+        <div className="w-full rounded-lg overflow-visible bg-gray-100 p-4" style={{ minHeight: '100px' }}>
             {isRecording ? (
                 <div className="flex flex-col gap-4">
                     <div className="flex items-center gap-2 text-indigo-600">
@@ -241,8 +285,12 @@ const Waveform = React.memo(({ url, onReady, isRecording, audioStream, setIsPlay
                 <div className="relative" style={{ minHeight: '100px' }}>
                     <div
                         ref={customCursorRef}
-                        className="absolute top-0 bottom-0 w-[2px] bg-red-500 transition-transform duration-100"
-                        style={{ transform: 'translateX(0)' }}
+                        className="absolute top-0 bottom-0 w-[2px] bg-red-500"
+                        style={{
+                            transform: 'translateX(0)',
+                            zIndex: 10,
+                            transition: 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)'
+                        }}
                     />
                     <div ref={containerRef} />
                 </div>
@@ -441,17 +489,14 @@ export default function AudioChecker() {
     }
 
     const playRecording = () => {
-        if (!audioUrl || !isWaveformReady || isRecording) {
-            console.error('Cannot play: WaveSurfer not ready or recording in progress')
+        if (!audioUrl || isRecording) {
+            console.error('Cannot play: Recording in progress')
             setError('Cannot play recording at this time')
             return
         }
 
         console.log('Playing recording...')
-        if (wavesurferRef.current) {
-            wavesurferRef.current.play()
-            setIsPlaying(true)
-        } else if (audioRef.current) {
+        if (audioRef.current) {
             audioRef.current.src = audioUrl
             audioRef.current.play()
             setIsPlaying(true)
@@ -460,14 +505,11 @@ export default function AudioChecker() {
 
     const stopPlaying = () => {
         console.log('Stopping playback...')
-        if (wavesurferRef.current) {
-            wavesurferRef.current.pause()
-            wavesurferRef.current.seekTo(0)
-        } else if (audioRef.current) {
+        if (audioRef.current) {
             audioRef.current.pause()
             audioRef.current.currentTime = 0
+            setIsPlaying(false)
         }
-        setIsPlaying(false)
     }
 
     const downloadRecording = () => {
