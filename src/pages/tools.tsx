@@ -53,6 +53,11 @@ const Tools: React.FC = () => {
       to: "/tools/color-vision-simulator",
       name: "Color Vision Simulator",
       description: "Simulate how images appear with different color vision deficiencies"
+    },
+    {
+      to: "/tools/audio-checker",
+      name: "Audio Checker",
+      description: "Check and test connected speakers and microphones"
     }
   ];
 
