@@ -45,6 +45,11 @@ const Tools: React.FC = () => {
       description: "Generate QR codes"
     },
     {
+      to: "/tools/qrcode-multi",
+      name: "Multi QR Code Generator",
+      description: "Generate multiple QR codes for different fields"
+    },
+    {
       to: "/tools/image-resizer",
       name: "Image Resizer",
       description: "Resize images by scale factor"
