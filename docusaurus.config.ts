@@ -60,6 +60,7 @@ const config: Config = {
         //   label: 'Tutorial',
         // },
         { to: "/about", label: "About", position: "left" },
+        { to: "/publications", label: "Publications", position: "left" },
         { to: "/misc", label: "Misc", position: "left" },
         { to: "/tools", label: "Tools", position: "left" },
         // {to: '/blog', label: 'Blog', position: 'left'},

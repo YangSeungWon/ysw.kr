@@ -62,6 +62,13 @@ function HomepageHeader() {
                        shadow-lg hover:shadow-xl border-2 border-white/20">
             About Me
           </Link>
+          <Link
+            to="/publications"
+            className="px-8 py-3 bg-white text-xl text-primary-dark font-semibold rounded-full
+                       hover:bg-white/90 hover:scale-105 transform transition-all duration-200
+                       shadow-lg hover:shadow-xl border-2 border-white/20">
+            Publications
+          </Link>
           <a
             className="px-8 py-3 bg-white text-xl text-primary-dark font-semibold rounded-full
                        hover:bg-white/90 hover:scale-105 transform transition-all duration-200
@@ -130,8 +137,8 @@ export default function Home(): JSX.Element {
                 Svg={MountainSvg}
                 description={
                   <>
-                    I am an M.S. student in <Link href='https://his-lab.org'>HISLab</Link>@POSTECH, South Korea.
-                    My research interests are in Accessibility, Gamification, and LLMs.
+                    I am a Ph.D. student in <Link href='https://his-lab.org'>HISLab</Link>@POSTECH, South Korea.
+                    My research interests are in Accessibility, Gamification, Location-based Games, and LLMs.
                   </>
                 }
               />
