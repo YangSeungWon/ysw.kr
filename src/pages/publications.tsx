@@ -19,7 +19,11 @@ const demonstrations = [
     {
         id: 'D.1',
         type: 'Demonstration',
-        citation: 'Hyojin Ju, Jungeun Lee, <strong>Seungwon Yang</strong>, Jungseul Ok, and Inseok Hwang (2025). "Toward Affective Empathy via Personalized Analogy Generation: A Case Study on Microaggression". In: Extended Abstracts of the CHI Conference on Human Factors in Computing Systems (ACM CHI 2025 Interactivity).'
+        citation: 'Hyojin Ju, Jungeun Lee, <strong>Seungwon Yang</strong>, Jungseul Ok, and Inseok Hwang (2025). "Toward Affective Empathy via Personalized Analogy Generation: A Case Study on Microaggression". In: Extended Abstracts of the CHI Conference on Human Factors in Computing Systems (ACM CHI 2025 Interactivity).',
+        links: [
+            { type: 'Link', url: 'https://programs.sigchi.org/chi/2025/program/content/194724' },
+        ],
+        award: 'Popular Choice Honorable Mention Award'
     },
     {
         id: 'W.1',
@@ -34,17 +38,37 @@ const demonstrations = [
 
 function PublicationCard({ pub }) {
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
-            <div className="flex items-center justify-between mb-2">
-                <span className="px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+        <div className="card padding--lg" style={{
+            height: '100%',
+            border: '1px solid var(--ifm-color-emphasis-200)',
+            backgroundColor: 'var(--ifm-card-background-color)',
+            transition: 'all 0.2s ease',
+        }}>
+            <div className="flex items-center justify-between margin-bottom--sm">
+                <span className="px-3 py-1 text-sm font-medium rounded-full" style={{
+                    backgroundColor: 'var(--ifm-color-primary-lightest)',
+                    color: 'var(--ifm-color-primary-darkest)',
+                }}>
                     {pub.type}
                 </span>
-                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                <span className="text-sm font-medium" style={{ color: 'var(--ifm-color-emphasis-600)' }}>
                     {pub.id}
                 </span>
             </div>
 
-            <p className="text-gray-700 dark:text-gray-300 mb-4" dangerouslySetInnerHTML={{ __html: pub.citation }} />
+            <p className="margin-bottom--md" style={{ color: 'var(--ifm-color-emphasis-900)' }} dangerouslySetInnerHTML={{ __html: pub.citation }} />
+
+            {pub.award && (
+                <div className="margin-bottom--md">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium" style={{
+                        backgroundColor: 'var(--ifm-color-warning-lightest)',
+                        color: 'var(--ifm-color-warning-darkest)',
+                        border: '1px solid var(--ifm-color-warning-light)',
+                    }}>
+                        🏆 {pub.award}
+                    </span>
+                </div>
+            )}
 
             {pub.links && (
                 <div className="flex flex-wrap gap-3">
@@ -54,14 +78,18 @@ function PublicationCard({ pub }) {
                             href={link.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium transition-colors duration-200
-                                     bg-gray-100 text-gray-700 hover:bg-gray-200
-                                     dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                            className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium transition-colors duration-200"
+                            style={{
+                                backgroundColor: 'var(--ifm-color-emphasis-100)',
+                                color: 'var(--ifm-color-emphasis-900)',
+                                textDecoration: 'none',
+                            }}
                         >
-                            {link.type === 'YouTube' && <Youtube className="w-4 h-4 mr-1" />}
-                            {link.type === 'PDF' && <FileText className="w-4 h-4 mr-1" />}
-                            {link.type === 'DOI' && <LinkIcon className="w-4 h-4 mr-1" />}
-                            {link.type === 'arXiv' && <LinkIcon className="w-4 h-4 mr-1" />}
+                            {link.type === 'YouTube' && <Youtube className="w-4 h-4 margin-right--xs" />}
+                            {link.type === 'PDF' && <FileText className="w-4 h-4 margin-right--xs" />}
+                            {link.type === 'DOI' && <LinkIcon className="w-4 h-4 margin-right--xs" />}
+                            {link.type === 'arXiv' && <LinkIcon className="w-4 h-4 margin-right--xs" />}
+                            {link.type === 'Link' && <LinkIcon className="w-4 h-4 margin-right--xs" />}
                             {link.type}
                         </a>
                     ))}
@@ -74,37 +102,39 @@ function PublicationCard({ pub }) {
 export default function Publications(): JSX.Element {
     return (
         <Layout title="Publications" description="Research Publications">
-            <main className="min-h-screen py-12 px-4 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
-                <div className="max-w-4xl mx-auto">
-                    <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8 text-center">
-                        Publications
-                    </h1>
+            <div className="container margin-vert--lg">
+                <h1 className="text-4xl font-bold text-center margin-bottom--lg">
+                    Publications
+                </h1>
 
-                    {/* Conference Papers Section */}
-                    <div className="mb-12">
-                        <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6">
-                            Conference Papers
-                        </h2>
-                        <div className="space-y-8">
-                            {publications.map((pub) => (
-                                <PublicationCard key={pub.id} pub={pub} />
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Demonstrations and Extended Abstracts Section */}
-                    <div>
-                        <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6">
-                            Demonstrations and Extended Abstracts
-                        </h2>
-                        <div className="space-y-8">
-                            {demonstrations.map((pub) => (
-                                <PublicationCard key={pub.id} pub={pub} />
-                            ))}
-                        </div>
+                {/* Conference Papers Section */}
+                <div className="margin-bottom--xl">
+                    <h2 className="text-2xl font-semibold margin-bottom--md">
+                        Conference Papers
+                    </h2>
+                    <div className="row">
+                        {publications.map((pub) => (
+                            <div key={pub.id} className="col col--12 margin-bottom--lg">
+                                <PublicationCard pub={pub} />
+                            </div>
+                        ))}
                     </div>
                 </div>
-            </main>
+
+                {/* Demonstrations and Extended Abstracts Section */}
+                <div>
+                    <h2 className="text-2xl font-semibold margin-bottom--md">
+                        Demonstrations and Extended Abstracts
+                    </h2>
+                    <div className="row">
+                        {demonstrations.map((pub) => (
+                            <div key={pub.id} className="col col--12 margin-bottom--lg">
+                                <PublicationCard pub={pub} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
         </Layout>
     );
 } 
