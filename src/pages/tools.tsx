@@ -63,6 +63,11 @@ const Tools: React.FC = () => {
       to: "/tools/audio-checker",
       name: "Audio Checker",
       description: "Check and test connected speakers and microphones"
+    },
+    {
+      to: "/tools/digital-clock",
+      name: "Digital Clock",
+      description: "Display the current time in different timezones"
     }
   ];
 
