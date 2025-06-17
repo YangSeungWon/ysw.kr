@@ -68,6 +68,11 @@ const Tools: React.FC = () => {
       to: "/tools/digital-clock",
       name: "Digital Clock",
       description: "Display the current time in different timezones"
+    },
+    {
+      to: "/tools/timer-stopwatch",
+      name: "Timer/Stopwatch",
+      description: "Timer and stopwatch"
     }
   ];
 
