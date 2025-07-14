@@ -156,11 +156,10 @@ const EmojiGenerator: React.FC = () => {
 
     return (
         <Layout title="Emoji Generator">
-            <div className="container margin-vert--lg">
-                <h1>이모지 생성기</h1>
-                <div className="row">
-                    <div className="col col--6 col--offset-3">
-                        <div className="card padding--lg">
+            <div className="container py-8">
+                <h1 className="text-3xl font-bold mb-6">이모지 생성기</h1>
+                <div className="max-w-2xl mx-auto">
+                    <div className="card p-6">
                             <p>
                                 Slack/Discord 이모지로 사용하기 좋은 이미지 형식으로 변환합니다.
                                 <br />
@@ -171,8 +170,8 @@ const EmojiGenerator: React.FC = () => {
                                 - 투명 배경 유지
                             </p>
 
-                            <div className="margin-bottom--md">
-                                <Label className="block margin-bottom--sm">리사이즈 모드</Label>
+                            <div className="mb-4">
+                                <Label className="block mb-2">리사이즈 모드</Label>
                                 <RadioGroup
                                     value={resizeMode}
                                     onValueChange={handleResizeModeChange}
@@ -194,34 +193,29 @@ const EmojiGenerator: React.FC = () => {
                                 ref={fileInputRef}
                                 onChange={handleFileChange}
                                 accept="image/*"
-                                className="margin-bottom--md button button--outline button--primary"
+                                className="mb-4"
                             />
 
                             {error && (
-                                <div className="alert alert--danger margin-bottom--md">
+                                <div className="alert alert--danger mb-4">
                                     {error}
                                 </div>
                             )}
 
                             {preview && (
-                                <div className="text--center">
+                                <div className="text-center">
                                     <img
                                         src={preview}
                                         alt="Preview"
-                                        style={{
-                                            maxWidth: '128px',
-                                            maxHeight: '128px',
-                                            margin: '1rem 0'
-                                        }}
+                                        className="max-w-[128px] max-h-[128px] mx-auto my-4"
                                     />
                                     {imageInfo && (
-                                        <div className="margin-bottom--sm">
+                                        <div className="mb-2 text-sm text-gray-600 dark:text-gray-400">
                                             {imageInfo}
                                         </div>
                                     )}
                                     <div>
                                         <Button
-                                            className="button button--primary"
                                             onClick={handleDownload}
                                         >
                                             다운로드
@@ -231,7 +225,6 @@ const EmojiGenerator: React.FC = () => {
                             )}
                         </div>
                     </div>
-                </div>
             </div>
         </Layout>
     );

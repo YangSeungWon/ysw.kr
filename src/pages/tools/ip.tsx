@@ -13,7 +13,7 @@ export default function IPPage() {
 
   return (
     <Layout title="IP Address Tool">
-      <div className="container">
+      <div className="container mx-auto px-4 py-8 max-w-5xl">
         <h1>IP Address Tool</h1>
         {ipAddress ? (
           <p>Your public IP address is: <b>{ipAddress}</b></p>

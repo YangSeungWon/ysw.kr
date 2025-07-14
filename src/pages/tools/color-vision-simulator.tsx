@@ -123,7 +123,7 @@ export function ColorVisionSimulator() {
                     type="file"
                     accept="image/*"
                     onChange={handleFileInput}
-                    className="max-w-md button button--outline button--primary"
+                    className="max-w-md"
                 />
                 <p className="text-sm text-muted-foreground">
                     Or copy an image to your clipboard and paste it here (Ctrl+V)

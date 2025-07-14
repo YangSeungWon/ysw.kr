@@ -538,8 +538,8 @@ export default function AudioChecker() {
             const testAudio = new Audio('https://li.me.kr/assets/audio/bgm.ogg')
             testAudioRef.current = testAudio
 
-            if (selectedSpeaker && testAudio.setSinkId) {
-                await testAudio.setSinkId(selectedSpeaker)
+            if (selectedSpeaker && 'setSinkId' in testAudio) {
+                await (testAudio as any).setSinkId(selectedSpeaker)
             }
 
             testAudio.play()

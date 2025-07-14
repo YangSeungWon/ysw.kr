@@ -226,7 +226,7 @@ export default function CoordinatesPage() {
 
     return (
         <Layout title="Coordinate Conversion Tool">
-            <div className="container">
+            <div className="container mx-auto px-4 py-8 max-w-5xl">
                 <h1>Coordinate Conversion Tool</h1>
                 <div style={{ marginBottom: '20px' }}>
                     <Input
@@ -237,12 +237,12 @@ export default function CoordinatesPage() {
                         className="form-input"
                         style={{ marginRight: '10px' }}
                     />
-                    <Button onClick={convertCoordinates} className="button button--primary" style={{ marginRight: '10px' }}>
+                    <Button onClick={convertCoordinates} style={{ marginRight: '10px' }}>
                         Convert
                     </Button>
                     <Button
                         onClick={getCurrentLocation}
-                        className="button button--secondary"
+                        variant="secondary"
                         disabled={isLoading}
                     >
                         {isLoading ? "Getting location..." : "Get Current Location"}
@@ -251,11 +251,11 @@ export default function CoordinatesPage() {
 
                 <div style={{ marginBottom: '20px' }}>
                     <div ref={mapContainerRef} style={{ height: '400px', width: '100%' }} />
-                    <p className="margin-top--sm">Click on the map to select coordinates.</p>
+                    <p className="mt-2">Click on the map to select coordinates.</p>
                 </div>
 
                 {convertedCoordinates && !convertedCoordinates.error && (
-                    <div className="margin-top--md">
+                    <div className="mt-4">
                         <p><strong>Input Coordinates:</strong> {coordinates}</p>
                         <hr style={{ margin: '10px 0' }} />
                         <p><strong>Decimal Degrees (DD):</strong> {convertedCoordinates.DecimalDegrees.CoordinateString}</p>
@@ -264,7 +264,7 @@ export default function CoordinatesPage() {
                     </div>
                 )}
                 {convertedCoordinates?.error && (
-                    <p className="margin-top--md text--danger">{convertedCoordinates.error}</p>
+                    <p className="mt-4 text-red-600">{convertedCoordinates.error}</p>
                 )}
             </div>
         </Layout>

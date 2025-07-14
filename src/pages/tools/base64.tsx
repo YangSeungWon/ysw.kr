@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Layout from '@theme/Layout';
+import { Button } from '@/components/ui/button';
 
 export default function Base64Page() {
     const [inputText, setInputText] = useState('');
@@ -116,32 +117,26 @@ export default function Base64Page() {
 
     return (
         <Layout title="Base64 Encoder/Decoder">
-            <div className="container margin-vert--lg">
+            <div className="container mx-auto px-4 py-8 max-w-5xl">
                 <h1>Base64 Encoder/Decoder</h1>
 
-                <div className="card padding--lg margin-bottom--lg">
-                    <div className="margin-bottom--md">
-                        <div className="button-group margin-right--sm">
-                            <button
-                                className={`button button--secondary ${mode === 'encode' ? 'button--active' : ''}`}
+                <div className="card p-6 mb-6">
+                    <div className="mb-4">
+                        <div className="inline-flex mr-2">
+                            <Button
+                                variant={mode === 'encode' ? 'default' : 'secondary'}
                                 onClick={() => setMode('encode')}
-                                style={{
-                                    borderTopRightRadius: 0,
-                                    borderBottomRightRadius: 0,
-                                }}
+                                className="rounded-r-none"
                             >
                                 Encode
-                            </button>
-                            <button
-                                className={`button button--secondary ${mode === 'decode' ? 'button--active' : ''}`}
+                            </Button>
+                            <Button
+                                variant={mode === 'decode' ? 'default' : 'secondary'}
                                 onClick={() => setMode('decode')}
-                                style={{
-                                    borderTopLeftRadius: 0,
-                                    borderBottomLeftRadius: 0,
-                                }}
+                                className="rounded-l-none"
                             >
                                 Decode
-                            </button>
+                            </Button>
                         </div>
 
                         <input
@@ -153,15 +148,16 @@ export default function Base64Page() {
                                 display: mode === 'encode' ? 'inline' : 'none',
                                 marginRight: 'var(--ifm-spacing-horizontal)',
                             }}
-                            className="button button--outline button--primary"
+                            className="hidden"
                         />
 
-                        <button
+                        <Button
                             onClick={clearAll}
-                            className="button button--danger button--outline"
+                            variant="outline"
+                            className="border-red-500 text-red-500 hover:bg-red-50"
                         >
                             Clear All
-                        </button>
+                        </Button>
                     </div>
 
                     <div className="row">
@@ -171,7 +167,7 @@ export default function Base64Page() {
                                 value={inputText}
                                 onChange={(e) => setInputText(e.target.value)}
                                 rows={10}
-                                className="margin-bottom--sm"
+                                className="mb-2"
                                 style={{
                                     width: '100%',
                                     padding: 'var(--ifm-spacing-vertical) var(--ifm-spacing-horizontal)',
@@ -190,7 +186,7 @@ export default function Base64Page() {
                                 value={outputText}
                                 readOnly
                                 rows={10}
-                                className="margin-bottom--sm"
+                                className="mb-2"
                                 style={{
                                     width: '100%',
                                     padding: 'var(--ifm-spacing-vertical) var(--ifm-spacing-horizontal)',
@@ -200,20 +196,19 @@ export default function Base64Page() {
                                     color: 'var(--ifm-font-color-base)',
                                 }}
                             />
-                            <button
+                            <Button
                                 onClick={handleCopy}
-                                className="button button--primary"
                                 disabled={!outputText}
                             >
                                 Copy to Clipboard
-                            </button>
+                            </Button>
                         </div>
                     </div>
 
                     {imagePreview && (
-                        <div className="margin-top--lg">
+                        <div className="mt-6">
                             <h3>Image Preview</h3>
-                            <div className="card padding--sm" style={{
+                            <div className="card p-2" style={{
                                 backgroundColor: 'var(--ifm-background-surface-color)',
                             }}>
                                 <img

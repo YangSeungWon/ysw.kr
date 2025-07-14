@@ -39,3 +39,19 @@
   --ifm-card-background-color: #4b4b4b;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* Global fix for all external link icons */
+svg.iconExternalLink_nPIU {
+  display: inline-block;
+  vertical-align: text-top;
+  margin-left: 0.25rem;
+  width: 13.5px;
+  height: 13.5px;
+}
+
+/* Ensure links with external icons don't wrap */
+a:has(svg.iconExternalLink_nPIU) {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}

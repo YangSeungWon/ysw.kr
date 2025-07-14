@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '@theme/Layout';
+import { Button } from '@/components/ui/button';
 
 interface TimeZone {
     value: string;
@@ -152,33 +153,37 @@ export default function DigitalClockPage() {
     return (
         <Layout title="Digital Clock">
             {!fullScreen && (
-                <div className="container margin-vert--lg">
+                <div className="container mx-auto px-4 py-8 max-w-5xl">
                     <h1>Digital Clock</h1>
 
-                    <div className="card padding--lg margin-bottom--lg">
+                    <div className="card p-6 mb-6">
                         <h3>Clock Settings</h3>
 
-                        <div className="row margin-bottom--md">
+                        <div className="row mb-4">
                             <div className="col col--3">
-                                <label className="margin-bottom--sm">Time Format:</label>
-                                <div className="button-group">
-                                    <button
-                                        className={`button button--sm ${timeFormat === '12' ? 'button--primary' : 'button--secondary'}`}
+                                <label className="mb-2">Time Format:</label>
+                                <div className="inline-flex">
+                                    <Button
+                                        size="sm"
+                                        variant={timeFormat === '12' ? 'default' : 'secondary'}
                                         onClick={() => setTimeFormat('12')}
+                                        className="rounded-r-none"
                                     >
                                         12H
-                                    </button>
-                                    <button
-                                        className={`button button--sm ${timeFormat === '24' ? 'button--primary' : 'button--secondary'}`}
+                                    </Button>
+                                    <Button
+                                        size="sm"
+                                        variant={timeFormat === '24' ? 'default' : 'secondary'}
                                         onClick={() => setTimeFormat('24')}
+                                        className="rounded-l-none"
                                     >
                                         24H
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
 
                             <div className="col col--3">
-                                <label className="margin-bottom--sm">Timezone:</label>
+                                <label className="mb-2">Timezone:</label>
                                 <select
                                     value={timezone}
                                     onChange={(e) => setTimezone(e.target.value)}
@@ -200,7 +205,7 @@ export default function DigitalClockPage() {
                             </div>
 
                             <div className="col col--3">
-                                <label className="margin-bottom--sm">Font Size:</label>
+                                <label className="mb-2">Font Size:</label>
                                 <input
                                     type="range"
                                     min="24"
@@ -213,7 +218,7 @@ export default function DigitalClockPage() {
                             </div>
 
                             <div className="col col--3">
-                                <label className="margin-bottom--sm">Theme:</label>
+                                <label className="mb-2">Theme:</label>
                                 <select
                                     value={colorTheme}
                                     onChange={(e) => setColorTheme(e.target.value as keyof typeof colorThemes)}
@@ -235,7 +240,7 @@ export default function DigitalClockPage() {
                             </div>
                         </div>
 
-                        <div className="row margin-bottom--md">
+                        <div className="row mb-4">
                             <div className="col">
                                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <input
@@ -281,12 +286,11 @@ export default function DigitalClockPage() {
                             </div>
                         </div>
 
-                        <button
-                            className="button button--primary"
+                        <Button
                             onClick={() => setFullScreen(!fullScreen)}
                         >
                             {fullScreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
-                        </button>
+                        </Button>
                     </div>
                 </div>
             )}

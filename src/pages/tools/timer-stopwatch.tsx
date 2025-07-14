@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Layout from '@theme/Layout';
+import { Button } from '@/components/ui/button';
 
 const colorThemes = {
     default: {
@@ -214,7 +215,7 @@ export default function TimerStopwatchPage() {
 
     return (
         <Layout title="Timer & Stopwatch">
-            <style jsx>{`
+            <style>{`
         @keyframes pulse {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.5; }
@@ -222,33 +223,37 @@ export default function TimerStopwatchPage() {
       `}</style>
 
             {!fullScreen && (
-                <div className="container margin-vert--lg">
+                <div className="container mx-auto px-4 py-8 max-w-5xl">
                     <h1>Timer & Stopwatch</h1>
 
-                    <div className="card padding--lg margin-bottom--lg">
+                    <div className="card p-6 mb-6">
                         <h3>Settings</h3>
 
-                        <div className="row margin-bottom--md">
+                        <div className="row mb-4">
                             <div className="col col--3">
-                                <label className="margin-bottom--sm">Mode:</label>
-                                <div className="button-group">
-                                    <button
-                                        className={`button button--sm ${activeTab === 'stopwatch' ? 'button--primary' : 'button--secondary'}`}
+                                <label className="mb-2">Mode:</label>
+                                <div className="inline-flex">
+                                    <Button
+                                        size="sm"
+                                        variant={activeTab === 'stopwatch' ? 'default' : 'secondary'}
                                         onClick={() => setActiveTab('stopwatch')}
+                                        className="rounded-r-none"
                                     >
                                         Stopwatch
-                                    </button>
-                                    <button
-                                        className={`button button--sm ${activeTab === 'timer' ? 'button--primary' : 'button--secondary'}`}
+                                    </Button>
+                                    <Button
+                                        size="sm"
+                                        variant={activeTab === 'timer' ? 'default' : 'secondary'}
                                         onClick={() => setActiveTab('timer')}
+                                        className="rounded-l-none"
                                     >
                                         Timer
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
 
                             <div className="col col--3">
-                                <label className="margin-bottom--sm">Font Size:</label>
+                                <label className="mb-2">Font Size:</label>
                                 <input
                                     type="range"
                                     min="24"
@@ -261,7 +266,7 @@ export default function TimerStopwatchPage() {
                             </div>
 
                             <div className="col col--3">
-                                <label className="margin-bottom--sm">Theme:</label>
+                                <label className="mb-2">Theme:</label>
                                 <select
                                     value={colorTheme}
                                     onChange={(e) => setColorTheme(e.target.value as keyof typeof colorThemes)}
@@ -283,16 +288,15 @@ export default function TimerStopwatchPage() {
                             </div>
 
                             <div className="col col--3">
-                                <button
-                                    className="button button--primary"
+                                <Button
                                     onClick={() => setFullScreen(!fullScreen)}
                                 >
                                     Fullscreen
-                                </button>
+                                </Button>
                             </div>
                         </div>
 
-                        <div className="row margin-bottom--md">
+                        <div className="row mb-4">
                             <div className="col">
                                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <input
@@ -328,9 +332,9 @@ export default function TimerStopwatchPage() {
                         </div>
 
                         {activeTab === 'timer' && (
-                            <div className="row margin-bottom--md">
+                            <div className="row mb-4">
                                 <div className="col col--6">
-                                    <label className="margin-bottom--sm">Timer Duration:</label>
+                                    <label className="mb-2">Timer Duration:</label>
                                     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                                         <input
                                             type="number"
@@ -463,8 +467,8 @@ export default function TimerStopwatchPage() {
             </div>
 
             {!fullScreen && activeTab === 'stopwatch' && lapTimes.length > 0 && (
-                <div className="container margin-bottom--lg">
-                    <div className="card padding--lg">
+                <div className="container mx-auto px-4 mb-6 max-w-5xl">
+                    <div className="card p-6">
                         <h3>Lap Times</h3>
                         <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
                             {lapTimes.slice().reverse().map((lap, index) => (

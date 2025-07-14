@@ -84,7 +84,7 @@ export default function SignaturePage() {
 
     return (
         <Layout title="Email Signature Generator">
-            <div className="container">
+            <div className="container mx-auto px-4 py-8 max-w-5xl">
                 <h1>Email Signature Generator</h1>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
@@ -233,7 +233,6 @@ export default function SignaturePage() {
                         </div>
                         <Button
                             onClick={copySignature}
-                            className="button button--primary"
                             style={{ marginTop: '15px' }}
                         >
                             Copy Signature

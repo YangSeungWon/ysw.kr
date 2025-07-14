@@ -174,7 +174,7 @@ export function ImageCropper() {
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
-                className="max-w-md button button--outline button--primary"
+                className="max-w-md"
             />
 
             {imageSrc && (
@@ -199,9 +199,9 @@ export function ImageCropper() {
                             </CardContent>
                         </Card>
                         <div className="flex items-center justify-between gap-2">
-                            <Button onClick={handleReset} className="button button--outline button--secondary">Reset</Button>
-                            <Button onClick={handleFullSize} className="button button--outline button--secondary">Full Size</Button>
-                            <div className="text-sm text-muted-foreground space-y-1">
+                            <Button onClick={handleReset} variant="outline" size="sm">Reset</Button>
+                            <Button onClick={handleFullSize} variant="outline" size="sm">Full Size</Button>
+                            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                                 <div>Display crop: {Math.round(crop.width || 0)} × {Math.round(crop.height || 0)} px</div>
                                 {imageRef.current && (
                                     <>
@@ -219,6 +219,7 @@ export function ImageCropper() {
                                 <CardContent className="p-2">
                                     <img
                                         src={croppedImage}
+                                        className="block"
                                         style={{
                                             width: croppedSize.width,
                                             height: croppedSize.height,
@@ -227,7 +228,7 @@ export function ImageCropper() {
                                     />
                                 </CardContent>
                             </Card>
-                            <Button onClick={handleDownload} className="button button--outline button--primary">Download</Button>
+                            <Button onClick={handleDownload} variant="default">Download</Button>
                         </div>
                     )}
                 </div>
