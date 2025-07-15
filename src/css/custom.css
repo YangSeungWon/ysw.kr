@@ -55,3 +55,68 @@ a:has(svg.iconExternalLink_nPIU) {
   align-items: center;
   white-space: nowrap;
 }
+
+/* Terminal-style animations and effects */
+@keyframes terminal-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes terminal-glow {
+  0%, 100% { 
+    text-shadow: 0 0 10px var(--ifm-color-primary), 
+                 0 0 20px var(--ifm-color-primary-light);
+  }
+  50% { 
+    text-shadow: 0 0 20px var(--ifm-color-primary), 
+                 0 0 30px var(--ifm-color-primary-light);
+  }
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.terminal-cursor::after {
+  content: '_';
+  animation: terminal-blink 1s infinite;
+  color: var(--ifm-color-primary);
+  font-weight: bold;
+}
+
+.terminal-text {
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+  letter-spacing: 0.02em;
+}
+
+/* Code-style search input focus effect */
+input[type="search"]:focus {
+  box-shadow: 0 0 0 2px var(--ifm-color-primary-light);
+}
+
+/* Matrix-style hover effect for tool cards */
+.tool-card-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-card-hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(99, 99, 193, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.tool-card-hover:hover::before {
+  left: 100%;
+}
