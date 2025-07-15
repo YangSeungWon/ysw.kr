@@ -110,6 +110,13 @@ const tools = [
     category: 'time',
     tags: ['timer', 'stopwatch', 'countdown'],
   },
+  {
+    to: "/tools/contact-importer",
+    name: "Contact Importer",
+    description: "Import spreadsheet contacts to Android (VCF format)",
+    category: 'utility',
+    tags: ['contact', 'vcf', 'android', 'import'],
+  },
 ];
 
 const Tools: React.FC = () => {
