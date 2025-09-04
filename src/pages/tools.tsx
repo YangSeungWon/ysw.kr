@@ -117,6 +117,13 @@ const tools = [
     category: 'utility',
     tags: ['contact', 'vcf', 'android', 'import'],
   },
+  {
+    to: "/tools/character-counter",
+    name: "Character Counter",
+    description: "Count characters, words, lines, and analyze text composition",
+    category: 'text',
+    tags: ['character', 'word', 'count', 'text', 'analysis'],
+  },
 ];
 
 const Tools: React.FC = () => {
