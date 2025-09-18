@@ -39,6 +39,20 @@ const projects = {
       icon: "💬"
     }
   ],
+  apps: [
+    {
+      name: "Ohnit - AI Photo Matching",
+      description: "Couple messenger that automatically matches similar daily photos using AI",
+      links: [
+        { label: "About", url: "/misc/ohnit" },
+        { label: "Website", url: "https://ohn.it.kr", external: true },
+        { label: "iOS", url: "https://testflight.apple.com/join/AhBvwJXd", external: true },
+        { label: "Android", url: "https://play.google.com/store/apps/details?id=kr.it.ohn", external: true }
+      ],
+      color: "#FF6B6B",
+      icon: "💑"
+    }
+  ],
   games: [
     {
       name: "Survival Game",
@@ -259,6 +273,42 @@ const Misc: React.FC = () => {
             ))}
           </section>
 
+          <section style={{ marginBottom: '2rem' }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              marginBottom: '1rem'
+            }}>
+              <div style={{
+                width: '3px',
+                height: '20px',
+                background: 'var(--ifm-color-primary)',
+                borderRadius: '2px'
+              }} />
+              <h2 style={{
+                margin: 0,
+                fontSize: '1.25rem',
+                color: 'var(--ifm-heading-color)'
+              }}>
+                Mobile Apps
+              </h2>
+              <div style={{
+                fontSize: '0.75rem',
+                padding: '0.15rem 0.5rem',
+                background: 'var(--ifm-color-emphasis-100)',
+                borderRadius: '10px',
+                color: 'var(--ifm-color-emphasis-600)'
+              }}>
+                {projects.apps.length}
+              </div>
+            </div>
+
+            {projects.apps.map((project, index) => (
+              <ProjectCard key={index} project={project} index={index + projects.extensions.length} />
+            ))}
+          </section>
+
           <section>
             <div style={{ 
               display: 'flex', 
@@ -291,7 +341,7 @@ const Misc: React.FC = () => {
             </div>
             
             {projects.games.map((project, index) => (
-              <ProjectCard key={index} project={project} index={index + projects.extensions.length} />
+              <ProjectCard key={index} project={project} index={index + projects.extensions.length + projects.apps.length} />
             ))}
           </section>
 

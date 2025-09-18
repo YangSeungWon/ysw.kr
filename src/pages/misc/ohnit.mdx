@@ -1,0 +1,115 @@
+---
+title: Ohnit
+description: AI-powered couple photo matching messenger
+---
+
+import Link from '@docusaurus/Link';
+
+# Ohnit
+
+<div style={{ marginBottom: '2rem' }}>
+  <Link
+    className="button button--primary"
+    to="https://ohn.it.kr"
+    style={{ marginRight: '1rem' }}
+  >
+    Website
+  </Link>
+  <Link
+    className="button button--secondary"
+    to="https://testflight.apple.com/join/AhBvwJXd"
+    style={{ marginRight: '1rem' }}
+  >
+    iOS TestFlight
+  </Link>
+  <Link
+    className="button button--secondary"
+    to="https://play.google.com/store/apps/details?id=kr.it.ohn"
+  >
+    Android
+  </Link>
+</div>
+
+## Overview
+
+A messenger app for couples that uses AI to automatically match similar photos from their daily lives. When both partners upload photos, the system analyzes visual and semantic similarities to create meaningful connections between their moments.
+
+## Technical Architecture
+
+### AI Matching System
+
+The core innovation lies in the hybrid AI matching pipeline:
+
+- **Visual Analysis**: CLIP model for visual similarity embeddings
+- **Semantic Understanding**: Florence-2 for scene captioning
+- **Localization**: Qwen2.5 for Korean language descriptions
+- **Matching Algorithm**: Geometric mean combining visual and semantic scores
+- **Performance**: GPU-accelerated processing under 0.5 seconds
+
+### Implementation Details
+
+**Mobile Application**
+- React Native 0.79.5 with Expo SDK 53
+- Redux Toolkit for state management
+- NativeWind for styling
+- Firebase Cloud Messaging for real-time notifications
+
+**Backend Services**
+- Node.js with Express 5
+- SQLite with optimized column-based embedding storage
+- Firebase Authentication with Kakao OAuth integration
+- Custom token generation for secure authentication
+
+**Vision Server**
+- Python Flask application
+- PyTorch with CUDA acceleration
+- 512-dimensional embedding vectors
+- 60% storage optimization through columnar storage
+
+## Key Features
+
+### Photo Matching
+Uploads are analyzed in real-time, finding connections based on visual similarity and contextual meaning. The system ensures 1:1 matching with concurrency control to prevent duplicate matches.
+
+### Social Features
+- Real-time push notifications for new matches
+- "Life in Four Cuts" style match sharing
+- EXIF metadata-based chronological ordering
+- Couple-specific data isolation
+
+### Performance Optimizations
+- WAL mode conflict resolution for SQLite
+- 40x performance improvement with GPU acceleration
+- Optimized React Navigation stack management
+- Zero-downtime deployment system
+
+## Infrastructure
+
+The application runs on containerized infrastructure using Docker Compose with automated dependency management. The system includes:
+
+- Automated backup and recovery systems
+- Real-time monitoring dashboards
+- TestFlight and Google Play deployment pipelines
+- Daily processing capacity for thousands of images
+
+## Development Challenges
+
+### Database Performance
+Resolved SQLite WAL mode conflicts and implemented efficient embedding storage, reducing query times and storage requirements significantly.
+
+### Real-time Processing
+Achieved sub-second processing times through GPU acceleration and optimized model inference pipelines.
+
+### Privacy & Security
+Implemented Firebase ID token authentication with couple-specific data access controls, ensuring complete privacy between different couples' data.
+
+---
+
+<div style={{ marginTop: '2rem', textAlign: 'center' }}>
+  <Link
+    className="button button--primary button--lg"
+    to="https://ohn.it.kr"
+  >
+    Visit Ohnit →
+  </Link>
+</div>
