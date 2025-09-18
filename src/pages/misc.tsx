@@ -5,6 +5,18 @@ import Link from '@docusaurus/Link';
 const projects = {
   extensions: [
     {
+      name: "Voca Web - Smart Vocabulary Builder",
+      description: "All-in-one platform for English vocabulary learning with Chrome Extension and web app",
+      links: [
+        { label: "About", url: "/misc/voca-web" },
+        { label: "Web App", url: "https://voca.ysw.kr", external: true },
+        { label: "Chrome Store", url: "https://chromewebstore.google.com/detail/voca-web-vocabulary-build/ajflgkmapedegaokdcmpdepepmchfbeo", external: true },
+        { label: "GitHub", url: "https://github.com/YangSeungWon/voca-web", external: true }
+      ],
+      color: "#4A90E2",
+      icon: "📚"
+    },
+    {
       name: "YOWO: You Only Watch Once",
       description: "Watch YouTube videos without getting stuck in endless loops",
       links: [

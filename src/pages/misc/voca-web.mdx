@@ -1,0 +1,91 @@
+---
+title: Voca Web
+description: Vocabulary learning platform with Chrome Extension
+---
+
+import Link from '@docusaurus/Link';
+
+# Voca Web
+
+<div style={{ marginBottom: '2rem' }}>
+  <Link
+    className="button button--primary"
+    to="https://voca.ysw.kr"
+    style={{ marginRight: '1rem' }}
+  >
+    Web App
+  </Link>
+  <Link
+    className="button button--secondary"
+    to="https://chromewebstore.google.com/detail/voca-web-vocabulary-build/ajflgkmapedegaokdcmpdepepmchfbeo"
+    style={{ marginRight: '1rem' }}
+  >
+    Chrome Store
+  </Link>
+  <Link
+    className="button button--secondary"
+    to="https://github.com/YangSeungWon/voca-web"
+  >
+    GitHub
+  </Link>
+</div>
+
+## Overview
+
+A vocabulary learning platform that combines a Chrome Extension for word collection with a web application for systematic study. Save unfamiliar words while browsing, then review them using spaced repetition algorithms.
+
+## Features
+
+### Word Collection
+Right-click any word on any webpage to save it instantly through the Chrome Extension. Words are saved with their context for better retention.
+
+### Study Mode
+Flashcard-based learning system implementing spaced repetition algorithms. Cards show the word first, then reveal definitions and example sentences.
+
+### Progress Tracking
+Visual dashboards display daily progress, study streaks, and learning statistics to help monitor improvement over time.
+
+### Word Groups
+Organize vocabulary into thematic groups for focused study sessions. Each group can be studied independently.
+
+### IPA Pronunciation
+International Phonetic Alphabet notation provided for accurate pronunciation learning.
+
+## Technical Implementation
+
+### Architecture
+- **Frontend**: Next.js 15 with TypeScript and Tailwind CSS
+- **Database**: PostgreSQL with Prisma ORM
+- **Extension**: Chrome Extension Manifest V3
+- **Deployment**: Docker Compose for containerized deployment
+
+### Key Components
+- Spaced repetition algorithm for optimal review scheduling
+- Real-time synchronization between extension and web app
+- Responsive design supporting desktop and mobile browsers
+- Dark mode support for reduced eye strain
+
+## Usage Flow
+
+1. Install the Chrome Extension from the Chrome Web Store
+2. Create an account on the web application
+3. Save words by right-clicking while browsing
+4. Review saved words in the web app's study mode
+5. Track progress through the dashboard
+
+## Development Notes
+
+The project addresses the gap between word collection tools (which lack study features) and vocabulary apps (which make adding words cumbersome). By integrating both aspects, it creates a seamless learning workflow.
+
+The spaced repetition implementation uses a modified SM-2 algorithm, adjusting review intervals based on user performance. This ensures efficient memorization without overwhelming users with too many reviews.
+
+---
+
+<div style={{ marginTop: '2rem', textAlign: 'center' }}>
+  <Link
+    className="button button--primary button--lg"
+    to="https://voca.ysw.kr"
+  >
+    Visit Voca Web →
+  </Link>
+</div>
