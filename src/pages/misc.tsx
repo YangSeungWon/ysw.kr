@@ -50,7 +50,8 @@ const projects = {
         { label: "Android", url: "https://play.google.com/store/apps/details?id=kr.it.ohn", external: true }
       ],
       color: "#FF6B6B",
-      icon: "💑"
+      icon: "https://ohn.it.kr/favicon.ico",
+      isImage: true
     }
   ],
   games: [
@@ -123,7 +124,19 @@ const ProjectCard: React.FC<{
             transition: 'transform 0.3s ease',
             lineHeight: 1
           }}>
-            {project.icon}
+            {project.isImage ? (
+              <img
+                src={project.icon}
+                alt={project.name}
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '4px'
+                }}
+              />
+            ) : (
+              project.icon
+            )}
           </div>
           <div style={{ flex: 1 }}>
             <h3 style={{ 
