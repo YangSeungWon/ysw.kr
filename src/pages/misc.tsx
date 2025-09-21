@@ -10,7 +10,8 @@ const projects = {
       links: [
         { label: "About", url: "/misc/voca-web" },
         { label: "Web App", url: "https://voca.ysw.kr", external: true },
-        { label: "Chrome Store", url: "https://chromewebstore.google.com/detail/voca-web-vocabulary-build/ajflgkmapedegaokdcmpdepepmchfbeo", external: true },
+        { label: "Chrome", url: "https://chromewebstore.google.com/detail/voca-web-vocabulary-build/ajflgkmapedegaokdcmpdepepmchfbeo", external: true },
+        { label: "Firefox", url: "https://addons.mozilla.org/ko/firefox/addon/voca-web/", external: true },
         { label: "GitHub", url: "https://github.com/YangSeungWon/voca-web", external: true }
       ],
       color: "#4A90E2",
