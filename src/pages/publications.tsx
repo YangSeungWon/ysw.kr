@@ -17,6 +17,17 @@ const publications = [
 
 const demonstrations = [
     {
+        id: 'P.1',
+        type: 'Poster',
+        citation: '<strong>Seungwon Yang</strong>, Suwon Yoon, Jeongwon Choi, and Inseok Hwang (2025). "Chameleon: A Surface-Anchored Smartphone AR Prototype with Visually Blended Mobile Display". In: Adjunct Proceedings of the 37th Annual ACM Symposium on User Interface Software and Technology (ACM UIST 2025 Poster).',
+        links: [
+            { type: 'arXiv', url: 'https://arxiv.org/abs/2509.14643' },
+            { type: 'DOI', url: 'https://doi.org/10.1145/3746058.3758440' },
+            { type: 'Link', url: 'https://programs.sigchi.org/uist/2025/program/content/209506' },
+            { type: 'YouTube', url: 'https://www.youtube.com/watch?v=lcBdWX592iQ' }
+        ]
+    },
+    {
         id: 'D.1',
         type: 'Demonstration',
         citation: 'Hyojin Ju, Jungeun Lee, <strong>Seungwon Yang</strong>, Jungseul Ok, and Inseok Hwang (2025). "Toward Affective Empathy via Personalized Analogy Generation: A Case Study on Microaggression". In: Extended Abstracts of the CHI Conference on Human Factors in Computing Systems (ACM CHI 2025 Interactivity).',
