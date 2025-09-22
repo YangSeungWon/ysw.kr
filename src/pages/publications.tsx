@@ -4,7 +4,7 @@ import { FileText, Youtube, Link as LinkIcon } from 'lucide-react';
 
 const publications = [
     {
-        id: 'P.1',
+        id: 'C.1',
         type: 'Conference Paper',
         citation: 'Hyojin Ju, Jungeun Lee, <strong>Seungwon Yang</strong>, Jungseul Ok, and Inseok Hwang (2025). "Toward Affective Empathy via Personalized Analogy Generation: A Case Study on Microaggression". In: Proceedings of the 2025 CHI Conference on Human Factors in Computing Systems (ACM CHI 2025).',
         links: [
