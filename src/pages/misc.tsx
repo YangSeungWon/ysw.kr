@@ -47,7 +47,7 @@ const projects = {
       links: [
         { label: "About", url: "/misc/ohnit" },
         { label: "Website", url: "https://ohn.it.kr", external: true },
-        { label: "iOS", url: "https://testflight.apple.com/join/AhBvwJXd", external: true },
+        { label: "iOS", url: "https://apps.apple.com/kr/app/%EC%98%A8%EC%9E%87-%EC%9D%BC%EC%83%81%EC%9D%84-%EC%9E%87%EB%8B%A4/id6749170363", external: true },
         { label: "Android", url: "https://play.google.com/store/apps/details?id=kr.it.ohn", external: true }
       ],
       color: "#FF6B6B",
