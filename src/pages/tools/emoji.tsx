@@ -4,6 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Smile, Download, Upload } from 'lucide-react';
+import { toast, Toaster } from 'sonner';
 
 type ResizeMode = 'crop' | 'fit';
 
@@ -36,18 +40,16 @@ const EmojiGenerator: React.FC = () => {
             ctx.clearRect(0, 0, targetSize, targetSize);
 
             if (mode === 'crop') {
-                // 중앙 부분을 잘라서 정사각형으로 만들기
                 const size = Math.min(image.width, image.height);
                 const sourceX = (image.width - size) / 2;
                 const sourceY = (image.height - size) / 2;
 
                 ctx.drawImage(
                     image,
-                    sourceX, sourceY, size, size,  // 소스 영역
-                    0, 0, targetSize, targetSize   // 대상 영역
+                    sourceX, sourceY, size, size,
+                    0, 0, targetSize, targetSize
                 );
             } else {
-                // 비율 유지하며 맞추기
                 const scale = targetSize / Math.max(image.width, image.height);
                 const scaledWidth = image.width * scale;
                 const scaledHeight = image.height * scale;
@@ -73,7 +75,6 @@ const EmojiGenerator: React.FC = () => {
             reader.onload = async (e) => {
                 image.src = e.target?.result as string;
                 image.onload = async () => {
-                    // 더 큰 사이즈부터 점진적으로 시도
                     const sizesToTry = [
                         512, 448, 384, 320,
                         256, 224, 192, 160,
@@ -89,13 +90,12 @@ const EmojiGenerator: React.FC = () => {
                             canvas.toBlob((b) => resolve(b), 'image/png', 1.0);
                         });
 
-                        if (blob && blob.size <= 131072) { // 128KB
+                        if (blob && blob.size <= 131072) {
                             finalCanvas = canvas;
                             finalBlob = blob;
                             break;
                         }
 
-                        // 마지막 시도에서도 파일이 너무 큰 경우, 품질을 낮춰서 시도
                         if (size === sizesToTry[sizesToTry.length - 1] && blob) {
                             let quality = 0.9;
                             while (quality > 0.1) {
@@ -121,8 +121,10 @@ const EmojiGenerator: React.FC = () => {
                         const pixelSize = finalCanvas.width;
                         setImageInfo(`${pixelSize}x${pixelSize}px, ${fileSize}KB`);
                         setError(null);
+                        toast.success('이미지가 성공적으로 변환되었습니다');
                     } else {
                         setError('이미지를 128KB 이하로 변환할 수 없습니다.');
+                        toast.error('이미지를 128KB 이하로 변환할 수 없습니다');
                     }
                 };
             };
@@ -130,6 +132,7 @@ const EmojiGenerator: React.FC = () => {
             reader.readAsDataURL(file);
         } catch (err) {
             setError('이미지 처리 중 오류가 발생했습니다.');
+            toast.error('이미지 처리 중 오류가 발생했습니다');
         }
     };
 
@@ -151,27 +154,41 @@ const EmojiGenerator: React.FC = () => {
             link.download = 'emoji.png';
             link.href = preview;
             link.click();
+            toast.success('이미지 다운로드 완료');
         }
     };
 
     return (
         <Layout title="Emoji Generator">
-            <div className="container py-8">
-                <h1 className="text-3xl font-bold mb-6">이모지 생성기</h1>
-                <div className="max-w-2xl mx-auto">
-                    <div className="card p-6">
-                            <p>
-                                Slack/Discord 이모지로 사용하기 좋은 이미지 형식으로 변환합니다.
-                                <br />
-                                - 512x512px부터 자동 최적화
-                                <br />
-                                - 128KB 이하로 자동 변환
-                                <br />
-                                - 투명 배경 유지
-                            </p>
+            <Toaster />
+            <div className="container mx-auto px-4 py-8 max-w-5xl">
+                <div className="flex flex-col items-center mb-8">
+                    <div className="flex items-center gap-2 mb-2">
+                        <Smile className="h-8 w-8 text-primary" />
+                        <h1 className="text-3xl font-bold text-center">이모지 생성기</h1>
+                    </div>
+                    <p className="text-muted-foreground text-center">
+                        Slack/Discord 이모지로 사용하기 좋은 형식으로 변환
+                    </p>
+                </div>
 
-                            <div className="mb-4">
-                                <Label className="block mb-2">리사이즈 모드</Label>
+                <div className="max-w-2xl mx-auto">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>이미지 업로드</CardTitle>
+                            <CardDescription>
+                                이미지를 업로드하면 자동으로 최적화됩니다
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="bg-muted p-4 rounded-lg space-y-1 text-sm">
+                                <p>✓ 512x512px부터 자동 최적화</p>
+                                <p>✓ 128KB 이하로 자동 변환</p>
+                                <p>✓ 투명 배경 유지</p>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label>리사이즈 모드</Label>
                                 <RadioGroup
                                     value={resizeMode}
                                     onValueChange={handleResizeModeChange}
@@ -179,52 +196,61 @@ const EmojiGenerator: React.FC = () => {
                                 >
                                     <div className="flex items-center space-x-2">
                                         <RadioGroupItem value="crop" id="crop" />
-                                        <Label htmlFor="crop">중앙 부분 자르기</Label>
+                                        <Label htmlFor="crop" className="cursor-pointer">중앙 부분 자르기</Label>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <RadioGroupItem value="fit" id="fit" />
-                                        <Label htmlFor="fit">비율 유지</Label>
+                                        <Label htmlFor="fit" className="cursor-pointer">비율 유지</Label>
                                     </div>
                                 </RadioGroup>
                             </div>
 
-                            <Input
-                                type="file"
-                                ref={fileInputRef}
-                                onChange={handleFileChange}
-                                accept="image/*"
-                                className="mb-4"
-                            />
+                            <div className="space-y-2">
+                                <Label>이미지 선택</Label>
+                                <Input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={handleFileChange}
+                                    accept="image/*"
+                                />
+                            </div>
 
                             {error && (
-                                <div className="alert alert--danger mb-4">
-                                    {error}
-                                </div>
+                                <Alert variant="destructive">
+                                    <AlertDescription>{error}</AlertDescription>
+                                </Alert>
                             )}
 
                             {preview && (
-                                <div className="text-center">
-                                    <img
-                                        src={preview}
-                                        alt="Preview"
-                                        className="max-w-[128px] max-h-[128px] mx-auto my-4"
-                                    />
-                                    {imageInfo && (
-                                        <div className="mb-2 text-sm text-gray-600 dark:text-gray-400">
-                                            {imageInfo}
+                                <div className="space-y-4 pt-4 border-t">
+                                    <div className="text-center space-y-3">
+                                        <div className="flex justify-center">
+                                            <div className="border-2 border-border rounded-lg p-4 bg-white inline-block">
+                                                <img
+                                                    src={preview}
+                                                    alt="Preview"
+                                                    className="max-w-[128px] max-h-[128px]"
+                                                />
+                                            </div>
                                         </div>
-                                    )}
-                                    <div>
+                                        {imageInfo && (
+                                            <p className="text-sm text-muted-foreground">
+                                                {imageInfo}
+                                            </p>
+                                        )}
                                         <Button
                                             onClick={handleDownload}
+                                            className="gap-2"
                                         >
+                                            <Download className="w-4 h-4" />
                                             다운로드
                                         </Button>
                                     </div>
                                 </div>
                             )}
-                        </div>
-                    </div>
+                        </CardContent>
+                    </Card>
+                </div>
             </div>
         </Layout>
     );

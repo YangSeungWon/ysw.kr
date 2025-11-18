@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '@theme/Layout';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Clock, Maximize, Minimize } from 'lucide-react';
 
 interface TimeZone {
     value: string;
@@ -21,9 +26,9 @@ const timeZones: TimeZone[] = [
 
 const colorThemes = {
     default: {
-        background: 'var(--ifm-background-color)',
-        text: 'var(--ifm-font-color-base)',
-        border: 'var(--ifm-color-emphasis-300)',
+        background: 'hsl(var(--background))',
+        text: 'hsl(var(--foreground))',
+        border: 'hsl(var(--border))',
     },
     neon: {
         background: '#000814',
@@ -99,226 +104,166 @@ export default function DigitalClockPage() {
         });
     };
 
-    const getTimeZoneOffset = () => {
-        const date = new Date();
-        const utc = date.getTime() + (date.getTimezoneOffset() * 60000);
-        const targetDate = new Date(utc + (getTimezoneOffsetHours() * 3600000));
-        return targetDate;
-    };
-
-    const getTimezoneOffsetHours = () => {
-        // This is a simplified version. In a real app, you'd use a proper timezone library
-        const offsets: { [key: string]: number } = {
-            'Asia/Seoul': 9,
-            'America/New_York': -5,
-            'America/Los_Angeles': -8,
-            'Europe/London': 0,
-            'Europe/Paris': 1,
-            'Asia/Tokyo': 9,
-            'Asia/Shanghai': 8,
-            'Australia/Sydney': 11,
-            'UTC': 0,
-        };
-        return offsets[timezone] || 0;
-    };
-
     const theme = colorThemes[colorTheme];
-
-    const clockStyle: React.CSSProperties = {
-        fontSize: `${fontSize}px`,
-        fontFamily: 'monospace',
-        fontWeight: 'bold',
-        color: theme.text,
-        textAlign: 'center',
-        padding: '2rem',
-        backgroundColor: theme.background,
-        border: showBorder ? `2px solid ${theme.border}` : 'none',
-        borderRadius: '12px',
-        minHeight: fullScreen ? '100vh' : 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        boxShadow: colorTheme !== 'default' ? '0 0 20px rgba(0,0,0,0.5)' : 'none',
-    };
-
-    const dateStyle: React.CSSProperties = {
-        fontSize: `${fontSize * 0.4}px`,
-        color: theme.text,
-        marginTop: '1rem',
-        fontFamily: 'sans-serif',
-        fontWeight: 'normal',
-    };
 
     return (
         <Layout title="Digital Clock">
             {!fullScreen && (
                 <div className="container mx-auto px-4 py-8 max-w-5xl">
-                    <h1>Digital Clock</h1>
+                    <div className="flex flex-col items-center mb-8">
+                        <div className="flex items-center gap-2 mb-2">
+                            <Clock className="h-8 w-8 text-primary" />
+                            <h1 className="text-3xl font-bold text-center">Digital Clock</h1>
+                        </div>
+                        <p className="text-muted-foreground text-center">
+                            Customizable world clock with multiple themes
+                        </p>
+                    </div>
 
-                    <div className="card p-6 mb-6">
-                        <h3>Clock Settings</h3>
+                    <Card className="mb-6">
+                        <CardHeader>
+                            <CardTitle>Clock Settings</CardTitle>
+                            <CardDescription>Customize your digital clock appearance</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div className="space-y-2">
+                                    <Label>Time Format</Label>
+                                    <div className="flex gap-2">
+                                        <Button
+                                            size="sm"
+                                            variant={timeFormat === '12' ? 'default' : 'outline'}
+                                            onClick={() => setTimeFormat('12')}
+                                            className="flex-1"
+                                        >
+                                            12H
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            variant={timeFormat === '24' ? 'default' : 'outline'}
+                                            onClick={() => setTimeFormat('24')}
+                                            className="flex-1"
+                                        >
+                                            24H
+                                        </Button>
+                                    </div>
+                                </div>
 
-                        <div className="row mb-4">
-                            <div className="col col--3">
-                                <label className="mb-2">Time Format:</label>
-                                <div className="inline-flex">
-                                    <Button
-                                        size="sm"
-                                        variant={timeFormat === '12' ? 'default' : 'secondary'}
-                                        onClick={() => setTimeFormat('12')}
-                                        className="rounded-r-none"
-                                    >
-                                        12H
-                                    </Button>
-                                    <Button
-                                        size="sm"
-                                        variant={timeFormat === '24' ? 'default' : 'secondary'}
-                                        onClick={() => setTimeFormat('24')}
-                                        className="rounded-l-none"
-                                    >
-                                        24H
-                                    </Button>
+                                <div className="space-y-2">
+                                    <Label>Timezone</Label>
+                                    <Select value={timezone} onValueChange={setTimezone}>
+                                        <SelectTrigger>
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {timeZones.map((tz) => (
+                                                <SelectItem key={tz.value} value={tz.value}>
+                                                    {tz.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label>Font Size: {fontSize}px</Label>
+                                    <input
+                                        type="range"
+                                        min="24"
+                                        max="120"
+                                        value={fontSize}
+                                        onChange={(e) => setFontSize(Number(e.target.value))}
+                                        className="w-full"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label>Theme</Label>
+                                    <Select value={colorTheme} onValueChange={(v) => setColorTheme(v as keyof typeof colorThemes)}>
+                                        <SelectTrigger>
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="default">Default</SelectItem>
+                                            <SelectItem value="neon">Neon</SelectItem>
+                                            <SelectItem value="retro">Retro</SelectItem>
+                                            <SelectItem value="matrix">Matrix</SelectItem>
+                                            <SelectItem value="sunset">Sunset</SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                 </div>
                             </div>
 
-                            <div className="col col--3">
-                                <label className="mb-2">Timezone:</label>
-                                <select
-                                    value={timezone}
-                                    onChange={(e) => setTimezone(e.target.value)}
-                                    style={{
-                                        width: '100%',
-                                        padding: '0.5rem',
-                                        borderRadius: '4px',
-                                        border: '1px solid var(--ifm-color-emphasis-300)',
-                                        backgroundColor: 'var(--ifm-background-color)',
-                                        color: 'var(--ifm-font-color-base)',
-                                    }}
-                                >
-                                    {timeZones.map((tz) => (
-                                        <option key={tz.value} value={tz.value}>
-                                            {tz.label}
-                                        </option>
-                                    ))}
-                                </select>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="flex items-center space-x-2">
+                                    <Switch checked={showSeconds} onCheckedChange={setShowSeconds} id="seconds" />
+                                    <Label htmlFor="seconds" className="cursor-pointer">Show Seconds</Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <Switch checked={showMilliseconds} onCheckedChange={setShowMilliseconds} id="ms" />
+                                    <Label htmlFor="ms" className="cursor-pointer">Show Milliseconds</Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <Switch checked={showDate} onCheckedChange={setShowDate} id="date" />
+                                    <Label htmlFor="date" className="cursor-pointer">Show Date</Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <Switch checked={showBorder} onCheckedChange={setShowBorder} id="border" />
+                                    <Label htmlFor="border" className="cursor-pointer">Show Border</Label>
+                                </div>
                             </div>
 
-                            <div className="col col--3">
-                                <label className="mb-2">Font Size:</label>
-                                <input
-                                    type="range"
-                                    min="24"
-                                    max="120"
-                                    value={fontSize}
-                                    onChange={(e) => setFontSize(Number(e.target.value))}
-                                    style={{ width: '100%' }}
-                                />
-                                <small>{fontSize}px</small>
-                            </div>
-
-                            <div className="col col--3">
-                                <label className="mb-2">Theme:</label>
-                                <select
-                                    value={colorTheme}
-                                    onChange={(e) => setColorTheme(e.target.value as keyof typeof colorThemes)}
-                                    style={{
-                                        width: '100%',
-                                        padding: '0.5rem',
-                                        borderRadius: '4px',
-                                        border: '1px solid var(--ifm-color-emphasis-300)',
-                                        backgroundColor: 'var(--ifm-background-color)',
-                                        color: 'var(--ifm-font-color-base)',
-                                    }}
-                                >
-                                    <option value="default">Default</option>
-                                    <option value="neon">Neon</option>
-                                    <option value="retro">Retro</option>
-                                    <option value="matrix">Matrix</option>
-                                    <option value="sunset">Sunset</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="row mb-4">
-                            <div className="col">
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <input
-                                        type="checkbox"
-                                        checked={showSeconds}
-                                        onChange={(e) => setShowSeconds(e.target.checked)}
-                                    />
-                                    Show Seconds
-                                </label>
-                            </div>
-
-                            <div className="col">
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <input
-                                        type="checkbox"
-                                        checked={showMilliseconds}
-                                        onChange={(e) => setShowMilliseconds(e.target.checked)}
-                                    />
-                                    Show Milliseconds
-                                </label>
-                            </div>
-
-                            <div className="col">
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <input
-                                        type="checkbox"
-                                        checked={showDate}
-                                        onChange={(e) => setShowDate(e.target.checked)}
-                                    />
-                                    Show Date
-                                </label>
-                            </div>
-
-                            <div className="col">
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <input
-                                        type="checkbox"
-                                        checked={showBorder}
-                                        onChange={(e) => setShowBorder(e.target.checked)}
-                                    />
-                                    Show Border
-                                </label>
-                            </div>
-                        </div>
-
-                        <Button
-                            onClick={() => setFullScreen(!fullScreen)}
-                        >
-                            {fullScreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
-                        </Button>
-                    </div>
+                            <Button
+                                onClick={() => setFullScreen(true)}
+                                className="w-full md:w-auto gap-2"
+                            >
+                                <Maximize className="w-4 h-4" />
+                                Enter Fullscreen
+                            </Button>
+                        </CardContent>
+                    </Card>
                 </div>
             )}
 
-            <div style={clockStyle}>
+            <div
+                className="flex flex-col items-center justify-center p-8 rounded-xl"
+                style={{
+                    fontSize: `${fontSize}px`,
+                    fontFamily: 'monospace',
+                    fontWeight: 'bold',
+                    color: theme.text,
+                    backgroundColor: theme.background,
+                    border: showBorder ? `2px solid ${theme.border}` : 'none',
+                    minHeight: fullScreen ? '100vh' : 'auto',
+                    boxShadow: colorTheme !== 'default' ? '0 0 20px rgba(0,0,0,0.5)' : 'none',
+                }}
+            >
                 <div>{formatTime(currentTime)}</div>
-                {showDate && <div style={dateStyle}>{formatDate(currentTime)}</div>}
-
-                {fullScreen && (
-                    <button
-                        onClick={() => setFullScreen(false)}
+                {showDate && (
+                    <div
                         style={{
-                            position: 'absolute',
-                            top: '20px',
-                            right: '20px',
-                            padding: '10px 20px',
-                            backgroundColor: 'rgba(0,0,0,0.7)',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px',
-                            cursor: 'pointer',
-                            fontSize: '14px',
+                            fontSize: `${fontSize * 0.4}px`,
+                            color: theme.text,
+                            marginTop: '1rem',
+                            fontFamily: 'sans-serif',
+                            fontWeight: 'normal',
                         }}
                     >
+                        {formatDate(currentTime)}
+                    </div>
+                )}
+
+                {fullScreen && (
+                    <Button
+                        onClick={() => setFullScreen(false)}
+                        variant="secondary"
+                        className="absolute top-5 right-5 gap-2"
+                    >
+                        <Minimize className="w-4 h-4" />
                         Exit Fullscreen
-                    </button>
+                    </Button>
                 )}
             </div>
         </Layout>
     );
-} 
+}

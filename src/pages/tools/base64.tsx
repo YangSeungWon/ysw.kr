@@ -1,6 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Layout from '@theme/Layout';
 import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { FileCode, Upload, Copy, Trash2 } from 'lucide-react';
+import { toast, Toaster } from 'sonner';
 
 export default function Base64Page() {
     const [inputText, setInputText] = useState('');
@@ -72,6 +77,7 @@ export default function Base64Page() {
         } catch (error) {
             setOutputText('Error: Invalid input for conversion');
             setImagePreview(null);
+            toast.error('Invalid input for conversion');
         }
     };
 
@@ -92,6 +98,7 @@ export default function Base64Page() {
             setInputText('');
             setOutputText(pureBase64);
             setImagePreview(base64String); // 미리보기용으로는 전체 data URL 사용
+            toast.success('Image uploaded successfully');
         };
         reader.readAsDataURL(file);
     };
@@ -99,10 +106,11 @@ export default function Base64Page() {
     const handleCopy = () => {
         navigator.clipboard.writeText(outputText)
             .then(() => {
-                alert('Copied to clipboard!');
+                toast.success('Copied to clipboard!');
             })
             .catch(err => {
                 console.error('Failed to copy text: ', err);
+                toast.error('Failed to copy to clipboard');
             });
     };
 
@@ -113,118 +121,124 @@ export default function Base64Page() {
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
         }
+        toast.success('Cleared all fields');
     };
 
     return (
         <Layout title="Base64 Encoder/Decoder">
+            <Toaster />
             <div className="container mx-auto px-4 py-8 max-w-5xl">
-                <h1>Base64 Encoder/Decoder</h1>
-
-                <div className="card p-6 mb-6">
-                    <div className="mb-4">
-                        <div className="inline-flex mr-2">
-                            <Button
-                                variant={mode === 'encode' ? 'default' : 'secondary'}
-                                onClick={() => setMode('encode')}
-                                className="rounded-r-none"
-                            >
-                                Encode
-                            </Button>
-                            <Button
-                                variant={mode === 'decode' ? 'default' : 'secondary'}
-                                onClick={() => setMode('decode')}
-                                className="rounded-l-none"
-                            >
-                                Decode
-                            </Button>
-                        </div>
-
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleFileUpload}
-                            ref={fileInputRef}
-                            style={{
-                                display: mode === 'encode' ? 'inline' : 'none',
-                                marginRight: 'var(--ifm-spacing-horizontal)',
-                            }}
-                            className="hidden"
-                        />
-
-                        <Button
-                            onClick={clearAll}
-                            variant="outline"
-                            className="border-red-500 text-red-500 hover:bg-red-50"
-                        >
-                            Clear All
-                        </Button>
+                <div className="flex flex-col items-center mb-8">
+                    <div className="flex items-center gap-2 mb-2">
+                        <FileCode className="h-8 w-8 text-primary" />
+                        <h1 className="text-3xl font-bold text-center">Base64 Encoder/Decoder</h1>
                     </div>
+                    <p className="text-muted-foreground text-center">Encode and decode Base64 text and images</p>
+                </div>
 
-                    <div className="row">
-                        <div className="col col--6">
-                            <h3>Input</h3>
-                            <textarea
-                                value={inputText}
-                                onChange={(e) => setInputText(e.target.value)}
-                                rows={10}
-                                className="mb-2"
-                                style={{
-                                    width: '100%',
-                                    padding: 'var(--ifm-spacing-vertical) var(--ifm-spacing-horizontal)',
-                                    backgroundColor: 'var(--ifm-background-color)',
-                                    border: '1px solid var(--ifm-color-emphasis-300)',
-                                    borderRadius: 'var(--ifm-card-border-radius)',
-                                    color: 'var(--ifm-font-color-base)',
-                                }}
-                                placeholder={mode === 'encode' ? 'Enter text to encode' : 'Enter base64 to decode'}
-                            />
-                        </div>
+                <Card className="w-full max-w-[900px] mx-auto">
+                    <CardHeader>
+                        <CardTitle>Base64 Conversion</CardTitle>
+                        <CardDescription>
+                            Convert text and images to/from Base64 encoding
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <div className="inline-flex rounded-md shadow-sm">
+                                <Button
+                                    variant={mode === 'encode' ? 'default' : 'outline'}
+                                    onClick={() => setMode('encode')}
+                                    className="rounded-r-none"
+                                >
+                                    Encode
+                                </Button>
+                                <Button
+                                    variant={mode === 'decode' ? 'default' : 'outline'}
+                                    onClick={() => setMode('decode')}
+                                    className="rounded-l-none"
+                                >
+                                    Decode
+                                </Button>
+                            </div>
 
-                        <div className="col col--6">
-                            <h3>Output</h3>
-                            <textarea
-                                value={outputText}
-                                readOnly
-                                rows={10}
-                                className="mb-2"
-                                style={{
-                                    width: '100%',
-                                    padding: 'var(--ifm-spacing-vertical) var(--ifm-spacing-horizontal)',
-                                    backgroundColor: 'var(--ifm-background-surface-color)',
-                                    border: '1px solid var(--ifm-color-emphasis-300)',
-                                    borderRadius: 'var(--ifm-card-border-radius)',
-                                    color: 'var(--ifm-font-color-base)',
-                                }}
-                            />
+                            {mode === 'encode' && (
+                                <>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFileUpload}
+                                        ref={fileInputRef}
+                                        className="hidden"
+                                    />
+                                    <Button
+                                        variant="outline"
+                                        onClick={() => fileInputRef.current?.click()}
+                                        className="gap-2"
+                                    >
+                                        <Upload className="w-4 h-4" />
+                                        Upload Image
+                                    </Button>
+                                </>
+                            )}
+
                             <Button
-                                onClick={handleCopy}
-                                disabled={!outputText}
+                                onClick={clearAll}
+                                variant="outline"
+                                className="gap-2 ml-auto"
                             >
-                                Copy to Clipboard
+                                <Trash2 className="w-4 h-4" />
+                                Clear All
                             </Button>
                         </div>
-                    </div>
 
-                    {imagePreview && (
-                        <div className="mt-6">
-                            <h3>Image Preview</h3>
-                            <div className="card p-2" style={{
-                                backgroundColor: 'var(--ifm-background-surface-color)',
-                            }}>
-                                <img
-                                    src={imagePreview}
-                                    alt="Preview"
-                                    style={{
-                                        maxWidth: '100%',
-                                        maxHeight: '400px',
-                                        borderRadius: 'var(--ifm-card-border-radius)',
-                                    }}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label>Input</Label>
+                                <Textarea
+                                    value={inputText}
+                                    onChange={(e) => setInputText(e.target.value)}
+                                    rows={10}
+                                    className="font-mono text-sm"
+                                    placeholder={mode === 'encode' ? 'Enter text to encode' : 'Enter base64 to decode'}
                                 />
                             </div>
+
+                            <div className="space-y-2">
+                                <Label>Output</Label>
+                                <Textarea
+                                    value={outputText}
+                                    readOnly
+                                    rows={10}
+                                    className="font-mono text-sm bg-muted"
+                                />
+                                <Button
+                                    onClick={handleCopy}
+                                    disabled={!outputText}
+                                    className="w-full gap-2"
+                                    variant="outline"
+                                >
+                                    <Copy className="w-4 h-4" />
+                                    Copy to Clipboard
+                                </Button>
+                            </div>
                         </div>
-                    )}
-                </div>
+
+                        {imagePreview && (
+                            <div className="space-y-2 pt-4 border-t">
+                                <Label>Image Preview</Label>
+                                <div className="border rounded-lg p-4 bg-white flex justify-center">
+                                    <img
+                                        src={imagePreview}
+                                        alt="Preview"
+                                        className="max-w-full max-h-96 rounded"
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
             </div>
         </Layout>
     );
-} 
+}

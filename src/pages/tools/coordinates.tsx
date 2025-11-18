@@ -3,35 +3,9 @@ import Layout from '@theme/Layout';
 import 'leaflet/dist/leaflet.css';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-
-// CSS를 컴포넌트 상단에 추가
-const markerStyle = {
-    circle: {
-        width: '20px',
-        height: '20px',
-        borderRadius: '50% 50% 50% 0',
-        background: '#3388ff',
-        position: 'absolute',
-        transform: 'rotate(-45deg)',
-        left: '50%',
-        top: '50%',
-        margin: '-15px 0 0 -15px',
-        animation: 'bounce 0.5s ease-in-out',
-        border: '2px solid white',
-        boxShadow: '0 0 6px rgba(0,0,0,0.4)'
-    } as const,
-    pulse: {
-        background: 'rgba(51, 136, 255, 0.2)',
-        borderRadius: '50%',
-        height: '14px',
-        width: '14px',
-        position: 'absolute',
-        left: '50%',
-        top: '50%',
-        margin: '-12px 0 0 -12px',
-        transform: 'rotateX(55deg)',
-    } as const,
-};
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { MapPin, Navigation, Copy } from 'lucide-react';
+import { toast, Toaster } from 'sonner';
 
 export default function CoordinatesPage() {
     const [coordinates, setCoordinates] = useState<string>('');
@@ -54,7 +28,7 @@ export default function CoordinatesPage() {
                     attribution: '&copy; OpenStreetMap contributors'
                 }).addTo(mapRef.current);
 
-                // 커스텀 마커 아이콘 정의
+                // Custom marker icon
                 const CustomIcon = L.divIcon({
                     className: 'custom-marker',
                     html: `<div style="
@@ -71,18 +45,18 @@ export default function CoordinatesPage() {
                     iconAnchor: [10, 20],
                 });
 
-                // 지도 클릭 이벤트
+                // Map click event
                 mapRef.current.on('click', (e: any) => {
                     const { lat, lng } = e.latlng;
 
-                    // 마커 업데이트
+                    // Update marker
                     if (markerRef.current) {
                         markerRef.current.setLatLng([lat, lng]);
                     } else {
                         markerRef.current = L.marker([lat, lng], { icon: CustomIcon }).addTo(mapRef.current);
                     }
 
-                    // 좌표 입력값 업데이트
+                    // Update coordinates input
                     setCoordinates(`${lat}, ${lng}`);
                     handleConversion(lat, lng);
                 });
@@ -100,6 +74,7 @@ export default function CoordinatesPage() {
     const handleConversion = (lat: number, lon: number) => {
         if (isNaN(lat) || isNaN(lon)) {
             setConvertedCoordinates({ error: 'Invalid coordinate format' });
+            toast.error('Invalid coordinate format');
             return;
         }
 
@@ -125,7 +100,7 @@ export default function CoordinatesPage() {
         const [lat, lon] = coordinates.split(',').map(coord => parseFloat(coord.trim()));
         handleConversion(lat, lon);
 
-        // 지도 마커 업데이트
+        // Update map marker
         if (mapRef.current) {
             const L = require('leaflet');
             const CustomIcon = L.divIcon({
@@ -162,7 +137,7 @@ export default function CoordinatesPage() {
                     setCoordinates(`${latitude}, ${longitude}`);
                     handleConversion(latitude, longitude);
 
-                    // 지도 업데이트
+                    // Update map
                     if (mapRef.current) {
                         const L = require('leaflet');
                         const CustomIcon = L.divIcon({
@@ -189,17 +164,26 @@ export default function CoordinatesPage() {
                         mapRef.current.setView([latitude, longitude], 13);
                     }
                     setIsLoading(false);
+                    toast.success('Location retrieved successfully');
                 },
                 (error) => {
                     console.error("Error getting location:", error);
-                    alert("Failed to get location. Please check location permissions.");
+                    toast.error('Failed to get location. Please check location permissions.');
                     setIsLoading(false);
                 }
             );
         } else {
-            alert("Geolocation is not supported in this browser.");
+            toast.error('Geolocation is not supported in this browser');
             setIsLoading(false);
         }
+    };
+
+    const copyCoordinate = (text: string) => {
+        navigator.clipboard.writeText(text).then(() => {
+            toast.success('Coordinate copied to clipboard');
+        }).catch(() => {
+            toast.error('Failed to copy coordinate');
+        });
     };
 
     // Utility functions for coordinate conversion
@@ -226,47 +210,135 @@ export default function CoordinatesPage() {
 
     return (
         <Layout title="Coordinate Conversion Tool">
+            <Toaster />
             <div className="container mx-auto px-4 py-8 max-w-5xl">
-                <h1>Coordinate Conversion Tool</h1>
-                <div style={{ marginBottom: '20px' }}>
-                    <Input
-                        type="text"
-                        value={coordinates}
-                        onChange={(e) => setCoordinates(e.target.value)}
-                        placeholder="Enter coordinates (e.g., 36.009400, 129.323933)"
-                        className="form-input"
-                        style={{ marginRight: '10px' }}
-                    />
-                    <Button onClick={convertCoordinates} style={{ marginRight: '10px' }}>
-                        Convert
-                    </Button>
-                    <Button
-                        onClick={getCurrentLocation}
-                        variant="secondary"
-                        disabled={isLoading}
-                    >
-                        {isLoading ? "Getting location..." : "Get Current Location"}
-                    </Button>
+                <div className="flex flex-col items-center mb-8">
+                    <div className="flex items-center gap-2 mb-2">
+                        <MapPin className="h-8 w-8 text-primary" />
+                        <h1 className="text-3xl font-bold text-center">Coordinate Conversion Tool</h1>
+                    </div>
+                    <p className="text-muted-foreground text-center">
+                        Convert GPS coordinates to multiple formats
+                    </p>
                 </div>
 
-                <div style={{ marginBottom: '20px' }}>
-                    <div ref={mapContainerRef} style={{ height: '400px', width: '100%' }} />
-                    <p className="mt-2">Click on the map to select coordinates.</p>
-                </div>
+                <Card className="mb-6">
+                    <CardHeader>
+                        <CardTitle>Enter Coordinates</CardTitle>
+                        <CardDescription>
+                            Enter coordinates or click on the map to select a location
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="flex gap-2 flex-wrap">
+                            <Input
+                                type="text"
+                                value={coordinates}
+                                onChange={(e) => setCoordinates(e.target.value)}
+                                placeholder="Enter coordinates (e.g., 36.009400, 129.323933)"
+                                className="flex-1 min-w-[250px]"
+                            />
+                            <Button onClick={convertCoordinates} className="gap-2">
+                                <MapPin className="w-4 h-4" />
+                                Convert
+                            </Button>
+                            <Button
+                                onClick={getCurrentLocation}
+                                variant="outline"
+                                disabled={isLoading}
+                                className="gap-2"
+                            >
+                                <Navigation className="w-4 h-4" />
+                                {isLoading ? "Getting location..." : "Get Current Location"}
+                            </Button>
+                        </div>
+
+                        <div className="space-y-2">
+                            <div ref={mapContainerRef} className="h-[400px] w-full rounded-lg border" />
+                            <p className="text-sm text-muted-foreground">
+                                💡 Click on the map to select coordinates
+                            </p>
+                        </div>
+                    </CardContent>
+                </Card>
 
                 {convertedCoordinates && !convertedCoordinates.error && (
-                    <div className="mt-4">
-                        <p><strong>Input Coordinates:</strong> {coordinates}</p>
-                        <hr style={{ margin: '10px 0' }} />
-                        <p><strong>Decimal Degrees (DD):</strong> {convertedCoordinates.DecimalDegrees.CoordinateString}</p>
-                        <p><strong>Degrees Minutes Seconds (DMS):</strong> {convertedCoordinates.DegreesMinutesSeconds.CoordinateString}</p>
-                        <p><strong>Degrees Minutes (DM):</strong> {convertedCoordinates.DegreesMinutes.CoordinateString}</p>
-                    </div>
-                )}
-                {convertedCoordinates?.error && (
-                    <p className="mt-4 text-red-600">{convertedCoordinates.error}</p>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Converted Coordinates</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                            <div className="space-y-1">
+                                <div className="text-sm font-medium text-muted-foreground">Input Coordinates</div>
+                                <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                                    <code className="text-sm">{coordinates}</code>
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => copyCoordinate(coordinates)}
+                                        className="gap-2"
+                                    >
+                                        <Copy className="w-3 h-3" />
+                                    </Button>
+                                </div>
+                            </div>
+
+                            <div className="border-t pt-3 space-y-3">
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-muted-foreground">
+                                        Decimal Degrees (DD)
+                                    </div>
+                                    <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                                        <code className="text-sm">{convertedCoordinates.DecimalDegrees.CoordinateString}</code>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => copyCoordinate(convertedCoordinates.DecimalDegrees.CoordinateString)}
+                                            className="gap-2"
+                                        >
+                                            <Copy className="w-3 h-3" />
+                                        </Button>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-muted-foreground">
+                                        Degrees Minutes Seconds (DMS)
+                                    </div>
+                                    <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                                        <code className="text-sm">{convertedCoordinates.DegreesMinutesSeconds.CoordinateString}</code>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => copyCoordinate(convertedCoordinates.DegreesMinutesSeconds.CoordinateString)}
+                                            className="gap-2"
+                                        >
+                                            <Copy className="w-3 h-3" />
+                                        </Button>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <div className="text-sm font-medium text-muted-foreground">
+                                        Degrees Minutes (DM)
+                                    </div>
+                                    <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                                        <code className="text-sm">{convertedCoordinates.DegreesMinutes.CoordinateString}</code>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => copyCoordinate(convertedCoordinates.DegreesMinutes.CoordinateString)}
+                                            className="gap-2"
+                                        >
+                                            <Copy className="w-3 h-3" />
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 )}
             </div>
         </Layout>
     );
-} 
+}

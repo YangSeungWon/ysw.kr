@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Eye } from "lucide-react"
 import Layout from '@theme/Layout'
 
 type ColorVisionType = 'original' | 'red-variation' | 'green-variation' | 'blue-variation' | 'monochrome'
@@ -129,8 +130,9 @@ export function ColorVisionSimulator() {
                     Or copy an image to your clipboard and paste it here (Ctrl+V)
                 </p>
                 <div
-                    className="w-full max-w-md h-32 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-50"
+                    className="w-full max-w-md h-32 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer hover:bg-muted"
                     onPaste={handlePaste}
+                    tabIndex={0}
                 >
                     <p className="text-muted-foreground">Paste your image here</p>
                 </div>
@@ -146,12 +148,14 @@ export function ColorVisionSimulator() {
                         { type: 'monochrome', label: 'Achromatopsia (Complete Color Blindness)' }
                     ].map(({ type, label }) => (
                         <Card key={type} className="overflow-hidden">
-                            <CardContent className="p-2 h-full">
-                                <h3 className="text-center mb-2 text-base font-semibold">
+                            <CardHeader className="pb-2">
+                                <CardTitle className="text-center text-base">
                                     {label}
-                                </h3>
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-2">
                                 <div
-                                    className="flex items-center justify-center bg-gray-50"
+                                    className="flex items-center justify-center bg-muted"
                                     style={{
                                         paddingTop: `${(1 / imageAspectRatio) * 100}%`,
                                         position: 'relative'
@@ -189,10 +193,15 @@ export default function ColorVisionSimulatorPage() {
     return (
         <Layout title="Color Vision Simulator">
             <div className="container mx-auto px-4 py-8 max-w-7xl">
-                <h1 className="text-3xl font-bold text-center mb-8">Color Vision Simulator</h1>
-                <p className="text-center mb-8">
-                    Upload an image or paste from clipboard to see how it appears with different types of color vision deficiencies.
-                </p>
+                <div className="flex flex-col items-center mb-8">
+                    <div className="flex items-center gap-2 mb-2">
+                        <Eye className="h-8 w-8 text-primary" />
+                        <h1 className="text-3xl font-bold text-center">Color Vision Simulator</h1>
+                    </div>
+                    <p className="text-muted-foreground text-center max-w-3xl">
+                        Upload an image or paste from clipboard to see how it appears with different types of color vision deficiencies
+                    </p>
+                </div>
                 <ColorVisionSimulator />
             </div>
         </Layout>

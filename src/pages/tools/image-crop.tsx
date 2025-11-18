@@ -3,7 +3,8 @@ import ReactCrop, { type Crop } from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Crop as CropIcon, Download, RotateCcw, Maximize } from "lucide-react"
 import Layout from '@theme/Layout'
 
 const DEFAULT_CROP: Crop = {
@@ -181,6 +182,10 @@ export function ImageCropper() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                         <Card>
+                            <CardHeader>
+                                <CardTitle>Source Image</CardTitle>
+                                <CardDescription>Drag to select the area you want to crop</CardDescription>
+                            </CardHeader>
                             <CardContent className="p-2">
                                 <ReactCrop
                                     crop={crop}
@@ -198,10 +203,18 @@ export function ImageCropper() {
                                 </ReactCrop>
                             </CardContent>
                         </Card>
-                        <div className="flex items-center justify-between gap-2">
-                            <Button onClick={handleReset} variant="outline" size="sm">Reset</Button>
-                            <Button onClick={handleFullSize} variant="outline" size="sm">Full Size</Button>
-                            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                        <div className="space-y-3">
+                            <div className="flex gap-2">
+                                <Button onClick={handleReset} variant="outline" size="sm" className="gap-2">
+                                    <RotateCcw className="w-4 h-4" />
+                                    Reset
+                                </Button>
+                                <Button onClick={handleFullSize} variant="outline" size="sm" className="gap-2">
+                                    <Maximize className="w-4 h-4" />
+                                    Full Size
+                                </Button>
+                            </div>
+                            <div className="text-sm text-muted-foreground space-y-1">
                                 <div>Display crop: {Math.round(crop.width || 0)} × {Math.round(crop.height || 0)} px</div>
                                 {imageRef.current && (
                                     <>
@@ -216,6 +229,10 @@ export function ImageCropper() {
                     {croppedImage && (
                         <div className="space-y-4">
                             <Card>
+                                <CardHeader>
+                                    <CardTitle>Cropped Result</CardTitle>
+                                    <CardDescription>Preview of your cropped image</CardDescription>
+                                </CardHeader>
                                 <CardContent className="p-2">
                                     <img
                                         src={croppedImage}
@@ -228,7 +245,10 @@ export function ImageCropper() {
                                     />
                                 </CardContent>
                             </Card>
-                            <Button onClick={handleDownload} variant="default">Download</Button>
+                            <Button onClick={handleDownload} variant="default" className="w-full gap-2">
+                                <Download className="w-4 h-4" />
+                                Download
+                            </Button>
                         </div>
                     )}
                 </div>
@@ -241,7 +261,15 @@ export default function ImageCropPage() {
     return (
         <Layout title="Image Crop">
             <div className="container mx-auto px-4 py-8 max-w-5xl">
-                <h1 className="text-3xl font-bold text-center mb-8">Image Crop Tool</h1>
+                <div className="flex flex-col items-center mb-8">
+                    <div className="flex items-center gap-2 mb-2">
+                        <CropIcon className="h-8 w-8 text-primary" />
+                        <h1 className="text-3xl font-bold text-center">Image Crop Tool</h1>
+                    </div>
+                    <p className="text-muted-foreground text-center">
+                        Crop your images with precision
+                    </p>
+                </div>
                 <ImageCropper />
             </div>
         </Layout>

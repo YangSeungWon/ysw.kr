@@ -4,7 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Download, Copy, QrCode as QrCodeIcon, FileText } from 'lucide-react';
 import QRCode from 'qrcode';
+import { toast, Toaster } from 'sonner';
 
 interface Contact {
   name: string;
@@ -129,11 +133,11 @@ const ContactImporter: React.FC = () => {
 
   const copyToClipboard = () => {
     if (!vcfContent) return;
-    
+
     navigator.clipboard.writeText(vcfContent).then(() => {
-      alert('VCF 내용이 클립보드에 복사되었습니다.');
+      toast.success('VCF 내용이 클립보드에 복사되었습니다.');
     }).catch(() => {
-      setError('클립보드 복사에 실패했습니다.');
+      toast.error('클립보드 복사에 실패했습니다.');
     });
   };
 
@@ -143,16 +147,27 @@ const ContactImporter: React.FC = () => {
 
   return (
     <Layout title="Contact Importer">
-      <div className="container py-8">
-        <h1 className="text-3xl font-bold mb-6">연락처 일괄 가져오기</h1>
-        
-        <div className="max-w-4xl mx-auto">
-          <div className="card p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4">스프레드시트 → 안드로이드 연락처</h2>
-            
-            <div className="space-y-4">
-              <div>
-                <Label className="block mb-2">구분자 선택</Label>
+      <Toaster />
+      <div className="container mx-auto px-4 py-8 max-w-5xl">
+        <div className="flex flex-col items-center mb-8">
+          <div className="flex items-center gap-2 mb-2">
+            <FileText className="h-8 w-8 text-primary" />
+            <h1 className="text-3xl font-bold text-center">연락처 일괄 가져오기</h1>
+          </div>
+          <p className="text-muted-foreground text-center">스프레드시트에서 안드로이드 연락처로</p>
+        </div>
+
+        <div className="max-w-4xl mx-auto space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>연락처 데이터 입력</CardTitle>
+              <CardDescription>
+                스프레드시트에서 복사한 연락처를 VCF 파일로 변환
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label>구분자 선택</Label>
                 <Select value={delimiter} onValueChange={setDelimiter}>
                   <SelectTrigger className="w-48">
                     <SelectValue />
@@ -165,13 +180,13 @@ const ContactImporter: React.FC = () => {
                 </Select>
               </div>
 
-              <div>
-                <Label className="block mb-2">
+              <div className="space-y-2">
+                <Label>
                   연락처 데이터 입력 (한 줄에 하나씩)
                 </Label>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                <p className="text-sm text-muted-foreground">
                   형식: 이름{delimiter === 'tab' ? '\t' : delimiter === 'comma' ? ',' : ';'}전화번호{delimiter === 'tab' ? '\t' : delimiter === 'comma' ? ',' : ';'}이메일(선택){delimiter === 'tab' ? '\t' : delimiter === 'comma' ? ',' : ';'}회사(선택)
-                </div>
+                </p>
                 <Textarea
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
@@ -194,95 +209,105 @@ const ContactImporter: React.FC = () => {
               </div>
 
               {error && (
-                <div className="alert alert--danger">
-                  {error}
-                </div>
+                <Alert variant="destructive">
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
               )}
 
               {contacts.length > 0 && (
-                <div className="mt-6">
-                  <h3 className="text-lg font-semibold mb-3">
-                    파싱된 연락처 ({contacts.length}개)
-                  </h3>
-                  
-                  <div className="border rounded-lg overflow-hidden mb-4">
-                    <table className="w-full">
-                      <thead className="bg-gray-100 dark:bg-gray-800">
-                        <tr>
-                          <th className="text-left p-2">이름</th>
-                          <th className="text-left p-2">전화번호</th>
-                          <th className="text-left p-2">이메일</th>
-                          <th className="text-left p-2">회사</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {contacts.slice(0, 10).map((contact, idx) => (
-                          <tr key={idx} className="border-t">
-                            <td className="p-2">{contact.name}</td>
-                            <td className="p-2 font-mono">{contact.phone}</td>
-                            <td className="p-2 text-sm">{contact.email || '-'}</td>
-                            <td className="p-2 text-sm">{contact.organization || '-'}</td>
+                <div className="space-y-4 pt-4 border-t">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3">
+                      파싱된 연락처 ({contacts.length}개)
+                    </h3>
+
+                    <div className="border rounded-lg overflow-hidden mb-4">
+                      <table className="w-full">
+                        <thead className="bg-muted">
+                          <tr>
+                            <th className="text-left p-2 font-medium">이름</th>
+                            <th className="text-left p-2 font-medium">전화번호</th>
+                            <th className="text-left p-2 font-medium">이메일</th>
+                            <th className="text-left p-2 font-medium">회사</th>
                           </tr>
-                        ))}
-                        {contacts.length > 10 && (
-                          <tr className="border-t">
-                            <td colSpan={4} className="p-2 text-center text-gray-500">
-                              ... 그 외 {contacts.length - 10}개
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {contacts.slice(0, 10).map((contact, idx) => (
+                            <tr key={idx} className="border-t">
+                              <td className="p-2">{contact.name}</td>
+                              <td className="p-2 font-mono text-sm">{contact.phone}</td>
+                              <td className="p-2 text-sm">{contact.email || '-'}</td>
+                              <td className="p-2 text-sm">{contact.organization || '-'}</td>
+                            </tr>
+                          ))}
+                          {contacts.length > 10 && (
+                            <tr className="border-t">
+                              <td colSpan={4} className="p-2 text-center text-muted-foreground">
+                                ... 그 외 {contacts.length - 10}개
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
 
                   <div className="flex gap-2 flex-wrap">
-                    <Button onClick={downloadVCF}>
+                    <Button onClick={downloadVCF} className="gap-2">
+                      <Download className="w-4 h-4" />
                       VCF 파일 다운로드
                     </Button>
-                    <Button variant="outline" onClick={copyToClipboard}>
+                    <Button variant="outline" onClick={copyToClipboard} className="gap-2">
+                      <Copy className="w-4 h-4" />
                       VCF 내용 복사
                     </Button>
                     {contacts.length <= 10 && (
-                      <Button variant="outline" onClick={generateQR}>
+                      <Button variant="outline" onClick={generateQR} className="gap-2">
+                        <QrCodeIcon className="w-4 h-4" />
                         QR 코드 생성
                       </Button>
                     )}
                   </div>
 
                   {qrCodeUrl && (
-                    <div className="mt-6">
-                      <h4 className="text-md font-semibold mb-2">QR 코드</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    <div className="space-y-2">
+                      <h4 className="text-md font-semibold">QR 코드</h4>
+                      <p className="text-sm text-muted-foreground">
                         안드로이드 기기에서 QR 코드를 스캔하여 연락처를 가져올 수 있습니다.
                       </p>
-                      <img 
-                        src={qrCodeUrl} 
-                        alt="Contact QR Code"
-                        className="border rounded"
-                        style={{ maxWidth: '300px' }}
-                      />
+                      <div className="border rounded-lg p-4 bg-white inline-block">
+                        <img
+                          src={qrCodeUrl}
+                          alt="Contact QR Code"
+                          className="max-w-[300px]"
+                        />
+                      </div>
                     </div>
                   )}
                 </div>
               )}
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
-          <div className="card p-6">
-            <h3 className="text-lg font-semibold mb-3">사용 방법</h3>
-            <ol className="list-decimal list-inside space-y-2 text-sm">
-              <li>Excel, Google Sheets 등에서 연락처 데이터를 복사합니다.</li>
-              <li>위 입력란에 붙여넣기 합니다.</li>
-              <li>구분자를 선택하고 "연락처 파싱" 버튼을 클릭합니다.</li>
-              <li>VCF 파일을 다운로드하거나 QR 코드를 생성합니다.</li>
-              <li>안드로이드 기기에서:
-                <ul className="list-disc list-inside ml-4 mt-1">
-                  <li>VCF 파일: 연락처 앱 → 설정 → 가져오기</li>
-                  <li>QR 코드: QR 스캐너로 스캔 → 연락처 추가</li>
-                </ul>
-              </li>
-            </ol>
-          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle>사용 방법</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ol className="list-decimal list-inside space-y-2 text-sm">
+                <li>Excel, Google Sheets 등에서 연락처 데이터를 복사합니다.</li>
+                <li>위 입력란에 붙여넣기 합니다.</li>
+                <li>구분자를 선택하고 "연락처 파싱" 버튼을 클릭합니다.</li>
+                <li>VCF 파일을 다운로드하거나 QR 코드를 생성합니다.</li>
+                <li>안드로이드 기기에서:
+                  <ul className="list-disc list-inside ml-4 mt-1">
+                    <li>VCF 파일: 연락처 앱 → 설정 → 가져오기</li>
+                    <li>QR 코드: QR 스캐너로 스캔 → 연락처 추가</li>
+                  </ul>
+                </li>
+              </ol>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </Layout>
