@@ -238,13 +238,13 @@ export default function CoordinatesPage() {
                                 placeholder="Enter coordinates (e.g., 36.009400, 129.323933)"
                                 className="flex-1 min-w-[250px]"
                             />
-                            <Button onClick={convertCoordinates} className="gap-2">
+                            <Button onClick={convertCoordinates} variant="docusaurus" className="gap-2">
                                 <MapPin className="w-4 h-4" />
                                 Convert
                             </Button>
                             <Button
                                 onClick={getCurrentLocation}
-                                variant="outline"
+                                variant="docusaurus"
                                 disabled={isLoading}
                                 className="gap-2"
                             >
@@ -273,7 +273,7 @@ export default function CoordinatesPage() {
                                 <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                                     <code className="text-sm">{coordinates}</code>
                                     <Button
-                                        variant="ghost"
+                                        variant="docusaurus"
                                         size="sm"
                                         onClick={() => copyCoordinate(coordinates)}
                                         className="gap-2"
@@ -291,7 +291,7 @@ export default function CoordinatesPage() {
                                     <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                                         <code className="text-sm">{convertedCoordinates.DecimalDegrees.CoordinateString}</code>
                                         <Button
-                                            variant="ghost"
+                                            variant="docusaurus"
                                             size="sm"
                                             onClick={() => copyCoordinate(convertedCoordinates.DecimalDegrees.CoordinateString)}
                                             className="gap-2"
@@ -308,7 +308,7 @@ export default function CoordinatesPage() {
                                     <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                                         <code className="text-sm">{convertedCoordinates.DegreesMinutesSeconds.CoordinateString}</code>
                                         <Button
-                                            variant="ghost"
+                                            variant="docusaurus"
                                             size="sm"
                                             onClick={() => copyCoordinate(convertedCoordinates.DegreesMinutesSeconds.CoordinateString)}
                                             className="gap-2"
@@ -325,7 +325,7 @@ export default function CoordinatesPage() {
                                     <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                                         <code className="text-sm">{convertedCoordinates.DegreesMinutes.CoordinateString}</code>
                                         <Button
-                                            variant="ghost"
+                                            variant="docusaurus"
                                             size="sm"
                                             onClick={() => copyCoordinate(convertedCoordinates.DegreesMinutes.CoordinateString)}
                                             className="gap-2"

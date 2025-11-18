@@ -211,7 +211,7 @@ export default function TimerStopwatchPage() {
                                 </div>
 
                                 <div className="flex items-end">
-                                    <Button onClick={() => setFullScreen(true)} className="w-full gap-2">
+                                    <Button onClick={() => setFullScreen(true)} variant="docusaurus" className="w-full gap-2">
                                         <Maximize className="w-4 h-4" />
                                         Fullscreen
                                     </Button>
@@ -303,7 +303,7 @@ export default function TimerStopwatchPage() {
                                 <Plus className="w-5 h-5" />
                                 Lap
                             </Button>
-                            <Button onClick={resetStopwatch} size="lg" variant="secondary" className="gap-2">
+                            <Button onClick={resetStopwatch} size="lg" variant="docusaurus" className="gap-2">
                                 <RotateCcw className="w-5 h-5" />
                                 Reset
                             </Button>
@@ -320,7 +320,7 @@ export default function TimerStopwatchPage() {
                                 {timerRunning ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
                                 {timerRunning ? 'Stop' : 'Start'}
                             </Button>
-                            <Button onClick={resetTimer} size="lg" variant="secondary" className="gap-2">
+                            <Button onClick={resetTimer} size="lg" variant="docusaurus" className="gap-2">
                                 <RotateCcw className="w-5 h-5" />
                                 Reset
                             </Button>
@@ -331,7 +331,7 @@ export default function TimerStopwatchPage() {
                 {fullScreen && (
                     <Button
                         onClick={() => setFullScreen(false)}
-                        variant="secondary"
+                        variant="docusaurus"
                         className="absolute top-5 right-5 gap-2"
                     >
                         <Minimize className="w-4 h-4" />

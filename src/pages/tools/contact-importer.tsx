@@ -233,11 +233,11 @@ const ContactImporter: React.FC = () => {
               </div>
 
               <div className="flex gap-2">
-                <Button onClick={parseContacts}>
+                <Button variant="docusaurus" onClick={parseContacts}>
                   연락처 파싱
                 </Button>
                 <Button
-                  variant="outline"
+                  variant="docusaurus"
                   onClick={() => setInputText(exampleText)}
                 >
                   예제 데이터 사용
@@ -289,16 +289,16 @@ const ContactImporter: React.FC = () => {
                   </div>
 
                   <div className="flex gap-2 flex-wrap">
-                    <Button onClick={downloadVCF} className="gap-2">
+                    <Button variant="docusaurus" onClick={downloadVCF} className="gap-2">
                       <Download className="w-4 h-4" />
                       VCF 파일 다운로드
                     </Button>
-                    <Button variant="outline" onClick={copyToClipboard} className="gap-2">
+                    <Button variant="docusaurus" onClick={copyToClipboard} className="gap-2">
                       <Copy className="w-4 h-4" />
                       VCF 내용 복사
                     </Button>
                     {contacts.length <= 10 && (
-                      <Button variant="outline" onClick={generateQR} className="gap-2">
+                      <Button variant="docusaurus" onClick={generateQR} className="gap-2">
                         <QrCodeIcon className="w-4 h-4" />
                         QR 코드 생성
                       </Button>

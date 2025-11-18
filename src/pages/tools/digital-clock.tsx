@@ -132,7 +132,7 @@ export default function DigitalClockPage() {
                                     <div className="flex gap-2">
                                         <Button
                                             size="sm"
-                                            variant={timeFormat === '12' ? 'default' : 'outline'}
+                                            variant={timeFormat === '12' ? 'docusaurus' : 'docusaurus'}
                                             onClick={() => setTimeFormat('12')}
                                             className="flex-1"
                                         >
@@ -140,7 +140,7 @@ export default function DigitalClockPage() {
                                         </Button>
                                         <Button
                                             size="sm"
-                                            variant={timeFormat === '24' ? 'default' : 'outline'}
+                                            variant={timeFormat === '24' ? 'docusaurus' : 'docusaurus'}
                                             onClick={() => setTimeFormat('24')}
                                             className="flex-1"
                                         >
@@ -215,6 +215,7 @@ export default function DigitalClockPage() {
 
                             <Button
                                 onClick={() => setFullScreen(true)}
+                                variant="docusaurus"
                                 className="w-full md:w-auto gap-2"
                             >
                                 <Maximize className="w-4 h-4" />
@@ -256,7 +257,7 @@ export default function DigitalClockPage() {
                 {fullScreen && (
                     <Button
                         onClick={() => setFullScreen(false)}
-                        variant="secondary"
+                        variant="docusaurus"
                         className="absolute top-5 right-5 gap-2"
                     >
                         <Minimize className="w-4 h-4" />

@@ -105,7 +105,7 @@ const CharacterCounter: React.FC = () => {
               </div>
               <div className="flex gap-2">
                 <Button
-                  variant="outline"
+                  variant="docusaurus"
                   size="sm"
                   onClick={handlePaste}
                   className="gap-2"
@@ -114,7 +114,7 @@ const CharacterCounter: React.FC = () => {
                   Paste
                 </Button>
                 <Button
-                  variant="outline"
+                  variant="docusaurus"
                   size="sm"
                   onClick={handleCopy}
                   disabled={!text}
@@ -124,7 +124,7 @@ const CharacterCounter: React.FC = () => {
                   Copy
                 </Button>
                 <Button
-                  variant="outline"
+                  variant="docusaurus"
                   size="sm"
                   onClick={handleClear}
                   disabled={!text}

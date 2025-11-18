@@ -240,6 +240,7 @@ const EmojiGenerator: React.FC = () => {
                                         )}
                                         <Button
                                             onClick={handleDownload}
+                                            variant="docusaurus"
                                             className="gap-2"
                                         >
                                             <Download className="w-4 h-4" />

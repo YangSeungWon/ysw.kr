@@ -168,6 +168,7 @@ export default function QRCodeScanner() {
                         <QrCode className="h-8 w-8 text-primary" />
                         <h1 className="text-3xl font-bold text-center">QR Code Scanner</h1>
                     </div>
+                    <p className="text-muted-foreground text-center">Scan QR codes from images or clipboard</p>
                 </div>
 
                 <Card className="w-full max-w-[600px] mx-auto">
@@ -188,12 +189,9 @@ export default function QRCodeScanner() {
                             />
                             <div className="flex gap-4 w-full justify-center">
                                 <Button
+                                    variant="docusaurus"
                                     onClick={() => fileInputRef.current?.click()}
                                     className="max-w-[256px] h-12 text-lg font-semibold shadow-lg hover:scale-105 transition-transform"
-                                    style={{
-                                        backgroundColor: "var(--ifm-color-primary-lightest)",
-                                        color: "black",
-                                    }}
                                     disabled={isScanning}
                                     size="lg"
                                 >
@@ -202,7 +200,7 @@ export default function QRCodeScanner() {
                                 </Button>
                             </div>
 
-                            <div className="text-sm text-gray-500 text-center">
+                            <div className="text-sm text-muted-foreground text-center">
                                 You can also paste an image (Ctrl+V) directly to scan
                             </div>
 
@@ -214,12 +212,9 @@ export default function QRCodeScanner() {
                                     </AlertDescription>
                                     {scannedResult.startsWith("http") && (
                                         <Button
+                                            variant="docusaurus"
                                             onClick={() => window.open(scannedResult, "_blank")}
                                             className="gap-2 w-full hover:scale-105 transition-transform"
-                                            style={{
-                                                backgroundColor: "var(--ifm-color-primary-lightest)",
-                                                color: "black",
-                                            }}
                                         >
                                             Open Link
                                         </Button>

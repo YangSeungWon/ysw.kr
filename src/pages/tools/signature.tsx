@@ -259,6 +259,7 @@ export default function SignaturePage() {
 
                             <Button
                                 onClick={copySignature}
+                                variant="docusaurus"
                                 className="w-full gap-2"
                             >
                                 <Copy className="w-4 h-4" />

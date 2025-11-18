@@ -277,7 +277,7 @@ const Waveform = React.memo(({ url, onReady, isRecording, audioStream, setIsPlay
                         height={40}
                         className="w-full h-10 rounded-lg shadow-inner"
                     />
-                    <div className="text-xs text-gray-500 text-center">
+                    <div className="text-xs text-muted-foreground text-center">
                         Speak into your microphone to see the volume level
                     </div>
                 </div>
@@ -568,7 +568,13 @@ export default function AudioChecker() {
     if (!permissionGranted) {
         return (
             <div className="container mx-auto max-w-4xl py-12 px-4">
-                <h1 className="text-3xl font-bold mb-8">Audio Device Checker</h1>
+                <div className="flex flex-col items-center mb-8">
+                    <div className="flex items-center gap-2 mb-2">
+                        <Speaker className="h-8 w-8 text-primary" />
+                        <h1 className="text-3xl font-bold text-center">Audio Device Checker</h1>
+                    </div>
+                    <p className="text-muted-foreground text-center">Test your microphone and speakers</p>
+                </div>
                 <Card>
                     <CardHeader>
                         <CardTitle>Permission Required</CardTitle>
@@ -585,7 +591,13 @@ export default function AudioChecker() {
     return (
         <Layout title="Audio Device Checker">
             <div className="container mx-auto max-w-4xl py-12 px-4">
-                <h1 className="text-3xl font-bold mb-8">Audio Device Checker</h1>
+                <div className="flex flex-col items-center mb-8">
+                    <div className="flex items-center gap-2 mb-2">
+                        <Speaker className="h-8 w-8 text-primary" />
+                        <h1 className="text-3xl font-bold text-center">Audio Device Checker</h1>
+                    </div>
+                    <p className="text-muted-foreground text-center">Test your microphone and speakers</p>
+                </div>
 
                 {error && (
                     <Alert className="mb-6 bg-red-50 border-red-200">
@@ -731,7 +743,7 @@ export default function AudioChecker() {
                             </div>
 
                             {!selectedMicrophone && (
-                                <div className="text-sm text-gray-500 mt-2">
+                                <div className="text-sm text-muted-foreground mt-2">
                                     Please select a microphone to start recording
                                 </div>
                             )}

@@ -147,14 +147,14 @@ export default function Base64Page() {
                         <div className="flex items-center gap-2 flex-wrap">
                             <div className="inline-flex rounded-md shadow-sm">
                                 <Button
-                                    variant={mode === 'encode' ? 'default' : 'outline'}
+                                    variant={mode === 'encode' ? 'docusaurus' : 'docusaurus'}
                                     onClick={() => setMode('encode')}
                                     className="rounded-r-none"
                                 >
                                     Encode
                                 </Button>
                                 <Button
-                                    variant={mode === 'decode' ? 'default' : 'outline'}
+                                    variant={mode === 'decode' ? 'docusaurus' : 'docusaurus'}
                                     onClick={() => setMode('decode')}
                                     className="rounded-l-none"
                                 >
@@ -172,7 +172,7 @@ export default function Base64Page() {
                                         className="hidden"
                                     />
                                     <Button
-                                        variant="outline"
+                                        variant="docusaurus"
                                         onClick={() => fileInputRef.current?.click()}
                                         className="gap-2"
                                     >
@@ -184,7 +184,7 @@ export default function Base64Page() {
 
                             <Button
                                 onClick={clearAll}
-                                variant="outline"
+                                variant="docusaurus"
                                 className="gap-2 ml-auto"
                             >
                                 <Trash2 className="w-4 h-4" />
@@ -216,7 +216,7 @@ export default function Base64Page() {
                                     onClick={handleCopy}
                                     disabled={!outputText}
                                     className="w-full gap-2"
-                                    variant="outline"
+                                    variant="docusaurus"
                                 >
                                     <Copy className="w-4 h-4" />
                                     Copy to Clipboard

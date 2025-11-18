@@ -67,7 +67,7 @@ export default function IPPage() {
             ) : error ? (
               <div className="text-center p-8">
                 <p className="text-destructive mb-4">{error}</p>
-                <Button onClick={fetchIP} variant="outline" className="gap-2">
+                <Button onClick={fetchIP} variant="docusaurus" className="gap-2">
                   <RefreshCw className="w-4 h-4" />
                   Retry
                 </Button>
@@ -84,14 +84,14 @@ export default function IPPage() {
                   <Button
                     onClick={copyToClipboard}
                     className="flex-1 gap-2"
-                    variant="outline"
+                    variant="docusaurus"
                   >
                     <Copy className="w-4 h-4" />
                     Copy IP Address
                   </Button>
                   <Button
                     onClick={fetchIP}
-                    variant="outline"
+                    variant="docusaurus"
                     className="gap-2"
                   >
                     <RefreshCw className="w-4 h-4" />
