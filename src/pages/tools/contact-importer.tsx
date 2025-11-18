@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@theme/Layout';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -20,6 +21,8 @@ interface Contact {
 const ContactImporter: React.FC = () => {
   const [inputText, setInputText] = useState('');
   const [delimiter, setDelimiter] = useState('tab');
+  const [prefix, setPrefix] = useState('');
+  const [postfix, setPostfix] = useState('');
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [vcfContent, setVcfContent] = useState('');
   const [qrCodeUrl, setQrCodeUrl] = useState('');
@@ -45,8 +48,12 @@ const ContactImporter: React.FC = () => {
           throw new Error(`${index + 1}번째 줄: 이름과 전화번호가 필요합니다.`);
         }
 
+        // Apply prefix and postfix to name
+        const baseName = parts[0];
+        const fullName = `${prefix}${baseName}${postfix}`.trim();
+
         const contact: Contact = {
-          name: parts[0],
+          name: fullName,
           phone: parts[1].replace(/[^\d+\-\s]/g, ''), // 전화번호에서 특수문자 제거
         };
 
@@ -166,18 +173,42 @@ const ContactImporter: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>구분자 선택</Label>
-                <Select value={delimiter} onValueChange={setDelimiter}>
-                  <SelectTrigger className="w-48">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="tab">탭 (Tab)</SelectItem>
-                    <SelectItem value="comma">쉼표 (,)</SelectItem>
-                    <SelectItem value="semicolon">세미콜론 (;)</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label>구분자 선택</Label>
+                  <Select value={delimiter} onValueChange={setDelimiter}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="tab">탭 (Tab)</SelectItem>
+                      <SelectItem value="comma">쉼표 (,)</SelectItem>
+                      <SelectItem value="semicolon">세미콜론 (;)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="prefix">이름 앞에 붙이기 (Prefix)</Label>
+                  <Input
+                    id="prefix"
+                    type="text"
+                    value={prefix}
+                    onChange={(e) => setPrefix(e.target.value)}
+                    placeholder="예: [회사명] "
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="postfix">이름 뒤에 붙이기 (Postfix)</Label>
+                  <Input
+                    id="postfix"
+                    type="text"
+                    value={postfix}
+                    onChange={(e) => setPostfix(e.target.value)}
+                    placeholder="예:  (팀명)"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -186,6 +217,11 @@ const ContactImporter: React.FC = () => {
                 </Label>
                 <p className="text-sm text-muted-foreground">
                   형식: 이름{delimiter === 'tab' ? '\t' : delimiter === 'comma' ? ',' : ';'}전화번호{delimiter === 'tab' ? '\t' : delimiter === 'comma' ? ',' : ';'}이메일(선택){delimiter === 'tab' ? '\t' : delimiter === 'comma' ? ',' : ';'}회사(선택)
+                  {(prefix || postfix) && (
+                    <span className="block mt-1 text-primary">
+                      → 저장될 이름: {prefix}이름{postfix}
+                    </span>
+                  )}
                 </p>
                 <Textarea
                   value={inputText}

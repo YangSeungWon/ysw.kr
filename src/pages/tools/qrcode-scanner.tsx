@@ -207,11 +207,23 @@ export default function QRCodeScanner() {
                             </div>
 
                             {scannedResult && (
-                                <div className="w-full">
+                                <div className="w-full space-y-3">
                                     <div className="mb-2 font-medium">Scanned Result:</div>
-                                    <AlertDescription className="bg-primary/5 border-primary/20 break-all bg-background p-3 rounded border mt-2 font-mono text-lg">
+                                    <AlertDescription className="bg-primary/5 border-primary/20 break-all bg-background p-3 rounded border font-mono text-lg">
                                         {scannedResult}
                                     </AlertDescription>
+                                    {scannedResult.startsWith("http") && (
+                                        <Button
+                                            onClick={() => window.open(scannedResult, "_blank")}
+                                            className="gap-2 w-full hover:scale-105 transition-transform"
+                                            style={{
+                                                backgroundColor: "var(--ifm-color-primary-lightest)",
+                                                color: "black",
+                                            }}
+                                        >
+                                            Open Link
+                                        </Button>
+                                    )}
                                 </div>
                             )}
 
@@ -226,20 +238,6 @@ export default function QRCodeScanner() {
                             )}
                         </div>
                     </CardContent>
-                    {scannedResult?.startsWith("http") && (
-                        <CardFooter className="flex justify-center">
-                            <Button
-                                onClick={() => window.open(scannedResult, "_blank")}
-                                className="gap-2 min-w-[200px] hover:scale-105 transition-transform"
-                                style={{
-                                    backgroundColor: "var(--ifm-color-primary-lightest)",
-                                    color: "black",
-                                }}
-                            >
-                                Open Link
-                            </Button>
-                        </CardFooter>
-                    )}
                 </Card>
             </div>
         </Layout>
