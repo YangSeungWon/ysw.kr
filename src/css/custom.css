@@ -121,6 +121,19 @@ input[type="search"]:focus {
   left: 100%;
 }
 
+/* Fix button icon alignment - prevent wrapping */
+button, .button {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  flex-wrap: nowrap !important;
+}
+
+button > svg, .button > svg {
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+}
+
 /* Misc page animations */
 @keyframes fadeInUp {
   from {
