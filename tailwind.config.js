@@ -27,7 +27,8 @@ module.exports = {
             },
             colors: {
                 primary: {
-                    DEFAULT: 'var(--ifm-color-primary)',
+                    DEFAULT: 'hsl(var(--primary))',
+                    foreground: 'hsl(var(--primary-foreground))',
                     dark: 'var(--ifm-color-primary-dark)',
                     darker: 'var(--ifm-color-primary-darker)',
                     darkest: 'var(--ifm-color-primary-darkest)',
@@ -35,7 +36,35 @@ module.exports = {
                     lighter: 'var(--ifm-color-primary-lighter)',
                     lightest: 'var(--ifm-color-primary-lightest)',
                 },
-                background: 'var(--ifm-background-color)',
+                background: 'hsl(var(--background))',
+                foreground: 'hsl(var(--foreground))',
+                card: {
+                    DEFAULT: 'hsl(var(--card))',
+                    foreground: 'hsl(var(--card-foreground))',
+                },
+                popover: {
+                    DEFAULT: 'hsl(var(--popover))',
+                    foreground: 'hsl(var(--popover-foreground))',
+                },
+                secondary: {
+                    DEFAULT: 'hsl(var(--secondary))',
+                    foreground: 'hsl(var(--secondary-foreground))',
+                },
+                muted: {
+                    DEFAULT: 'hsl(var(--muted))',
+                    foreground: 'hsl(var(--muted-foreground))',
+                },
+                accent: {
+                    DEFAULT: 'hsl(var(--accent))',
+                    foreground: 'hsl(var(--accent-foreground))',
+                },
+                destructive: {
+                    DEFAULT: 'hsl(var(--destructive))',
+                    foreground: 'hsl(var(--destructive-foreground))',
+                },
+                border: 'hsl(var(--border))',
+                input: 'hsl(var(--input))',
+                ring: 'hsl(var(--ring))',
                 'background-surface': 'var(--ifm-background-surface-color)',
                 'font': 'var(--ifm-font-color-base)',
                 'font-secondary': 'var(--ifm-font-color-secondary)',
