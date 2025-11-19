@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Layout from '@theme/Layout';
+import ToolLayout from '@/components/ToolLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Globe, Copy, RefreshCw } from 'lucide-react';
@@ -41,18 +41,14 @@ export default function IPPage() {
   };
 
   return (
-    <Layout title="IP Address Tool">
+    <ToolLayout
+      title="IP Address Tool"
+      description="Get your public IP address"
+      icon={<Globe className="h-8 w-8 text-primary" />}
+      maxWidth="max-w-5xl"
+    >
       <Toaster />
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
-        <div className="flex flex-col items-center mb-8">
-          <div className="flex items-center gap-2 mb-2">
-            <Globe className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold text-center">IP Address Tool</h1>
-          </div>
-          <p className="text-muted-foreground text-center">Get your public IP address</p>
-        </div>
-
-        <Card className="w-full max-w-[600px] mx-auto">
+      <Card className="w-full max-w-[600px] mx-auto">
           <CardHeader>
             <CardTitle>Your Public IP Address</CardTitle>
             <CardDescription>
@@ -107,7 +103,6 @@ export default function IPPage() {
             )}
           </CardContent>
         </Card>
-      </div>
-    </Layout>
+    </ToolLayout>
   );
 }

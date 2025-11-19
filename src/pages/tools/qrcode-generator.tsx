@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { toast } from 'sonner'
-import Layout from '@theme/Layout';
+import ToolLayout from '@/components/ToolLayout';
 import { Toaster } from 'sonner'
 import { Label } from "@/components/ui/label"
 
@@ -149,18 +149,14 @@ export default function QRCodeGenerator() {
     }
 
     return (
-        <Layout title="QR Code Generator">
+        <ToolLayout
+            title="QR Code Generator"
+            description="Generate QR codes easily"
+            icon={<QrCode className="h-8 w-8 text-primary" />}
+            maxWidth="max-w-5xl"
+        >
             <Toaster />
-            <div className="container mx-auto px-4 py-8 max-w-5xl">
-                <div className="flex flex-col items-center mb-8">
-                    <div className="flex items-center gap-2 mb-2">
-                        <QrCode className="h-8 w-8 text-primary" />
-                        <h1 className="text-3xl font-bold text-center">QR Code Generator</h1>
-                    </div>
-                    <p className="text-muted-foreground text-center">Generate QR codes easily</p>
-                </div>
-
-                <Card className="w-full max-w-[600px] mx-auto">
+            <Card className="w-full max-w-[600px] mx-auto">
                     <CardHeader>
                         <CardTitle>Generate QR Code</CardTitle>
                         <CardDescription>
@@ -292,7 +288,6 @@ export default function QRCodeGenerator() {
                         </CardFooter>
                     )}
                 </Card>
-            </div>
-        </Layout>
+        </ToolLayout>
     )
 } 

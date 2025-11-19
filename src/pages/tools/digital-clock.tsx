@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Layout from '@theme/Layout';
+import ToolLayout from '@/components/ToolLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -107,20 +107,14 @@ export default function DigitalClockPage() {
     const theme = colorThemes[colorTheme];
 
     return (
-        <Layout title="Digital Clock">
+        <ToolLayout
+            title="Digital Clock"
+            description="Customizable world clock with multiple themes"
+            icon={<Clock className="h-8 w-8 text-primary" />}
+            maxWidth="max-w-5xl"
+        >
             {!fullScreen && (
-                <div className="container mx-auto px-4 py-8 max-w-5xl">
-                    <div className="flex flex-col items-center mb-8">
-                        <div className="flex items-center gap-2 mb-2">
-                            <Clock className="h-8 w-8 text-primary" />
-                            <h1 className="text-3xl font-bold text-center">Digital Clock</h1>
-                        </div>
-                        <p className="text-muted-foreground text-center">
-                            Customizable world clock with multiple themes
-                        </p>
-                    </div>
-
-                    <Card className="mb-6">
+                <Card className="mb-6">
                         <CardHeader>
                             <CardTitle>Clock Settings</CardTitle>
                             <CardDescription>Customize your digital clock appearance</CardDescription>
@@ -223,7 +217,6 @@ export default function DigitalClockPage() {
                             </Button>
                         </CardContent>
                     </Card>
-                </div>
             )}
 
             <div
@@ -265,6 +258,6 @@ export default function DigitalClockPage() {
                     </Button>
                 )}
             </div>
-        </Layout>
+        </ToolLayout>
     );
 }

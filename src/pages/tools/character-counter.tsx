@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import Layout from '@theme/Layout';
+import ToolLayout from '@/components/ToolLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -84,20 +84,14 @@ const CharacterCounter: React.FC = () => {
   );
 
   return (
-    <Layout title="Character Counter">
+    <ToolLayout
+      title="Character Counter"
+      description="Count characters, words, lines, and analyze text composition"
+      icon={<FileText className="h-8 w-8 text-primary" />}
+      maxWidth="max-w-5xl"
+    >
       <Toaster />
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
-        <div className="flex flex-col items-center mb-8">
-          <div className="flex items-center gap-2 mb-2">
-            <FileText className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold text-center">Character Counter</h1>
-          </div>
-          <p className="text-muted-foreground text-center">
-            Count characters, words, lines, and analyze text composition
-          </p>
-        </div>
-
-        <Card className="mb-6">
+      <Card className="mb-6">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -169,8 +163,7 @@ const CharacterCounter: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
-    </Layout>
+    </ToolLayout>
   );
 };
 

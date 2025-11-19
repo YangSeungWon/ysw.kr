@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Layout from '@theme/Layout';
+import ToolLayout from '@/components/ToolLayout';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -86,20 +86,14 @@ export default function SignaturePage() {
     };
 
     return (
-        <Layout title="Email Signature Generator">
+        <ToolLayout
+            title="Email Signature Generator"
+            description="Create a professional email signature"
+            icon={<Mail className="h-8 w-8 text-primary" />}
+            maxWidth="max-w-6xl"
+        >
             <Toaster />
-            <div className="container mx-auto px-4 py-8 max-w-6xl">
-                <div className="flex flex-col items-center mb-8">
-                    <div className="flex items-center gap-2 mb-2">
-                        <Mail className="h-8 w-8 text-primary" />
-                        <h1 className="text-3xl font-bold text-center">Email Signature Generator</h1>
-                    </div>
-                    <p className="text-muted-foreground text-center">
-                        Create a professional email signature
-                    </p>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <Card>
                         <CardHeader>
                             <CardTitle>Input Information</CardTitle>
@@ -268,7 +262,6 @@ export default function SignaturePage() {
                         </CardContent>
                     </Card>
                 </div>
-            </div>
-        </Layout>
+        </ToolLayout>
     );
 }

@@ -1,6 +1,13 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
+import PageTitle from '@/components/PageTitle';
+import Badge from '@/components/Badge';
+import Tag from '@/components/Tag';
+import EmptyState from '@/components/EmptyState';
+import { useCardHover } from '@/hooks/useCardHover';
+import { TRANSITIONS, BORDER_RADIUS } from '@/constants/styles';
+import { FONT_SIZES, SPACING } from '@/constants/typography';
 
 const categories = [
   { key: 'all', label: 'All', icon: '⚡' },
@@ -11,7 +18,147 @@ const categories = [
   { key: 'audio', label: 'Audio', icon: '🎵' },
 ];
 
-const tools = [
+interface Tool {
+  to: string;
+  name: string;
+  description: string;
+  category: string;
+  tags?: string[];
+}
+
+const ToolCard: React.FC<{ tool: Tool }> = ({ tool }) => {
+  const { styles, handlers } = useCardHover({ scale: 'SCALE_MEDIUM' });
+  return (
+    <Link
+      to={tool.to}
+      className="card"
+      style={{
+        height: '100%',
+        textDecoration: 'none',
+        border: '2px solid var(--ifm-color-emphasis-200)',
+        backgroundColor: 'var(--ifm-card-background-color)',
+        transition: TRANSITIONS.DEFAULT,
+        display: 'flex',
+        flexDirection: 'column',
+        transform: styles.transform,
+        borderColor: styles.borderColor,
+      }}
+      {...handlers}
+    >
+      <div className="card__header" style={{ paddingBottom: '0.25rem' }}>
+        <h3 style={{
+          margin: 0,
+          fontSize: FONT_SIZES.LG,
+          color: 'var(--ifm-color-primary)'
+        }}>
+          {tool.name}
+        </h3>
+        <div style={{
+          fontSize: FONT_SIZES.XS,
+          opacity: 0.7,
+          marginTop: '0.15rem',
+          color: 'var(--ifm-color-emphasis-700)'
+        }}>
+          {tool.category}
+        </div>
+      </div>
+      <div className="card__body" style={{ flex: 1 }}>
+        <p style={{
+          color: 'var(--ifm-color-emphasis-800)',
+          marginBottom: '0.5rem',
+          lineHeight: 1.4,
+          fontSize: FONT_SIZES.SM
+        }}>
+          {tool.description}
+        </p>
+        {tool.tags && (
+          <div style={{
+            display: 'flex',
+            gap: '0.25rem',
+            flexWrap: 'wrap',
+            marginTop: 'auto'
+          }}>
+            {tool.tags.map((tag, tagIdx) => (
+              <Tag key={tagIdx}>#{tag}</Tag>
+            ))}
+          </div>
+        )}
+      </div>
+    </Link>
+  );
+};
+
+const ListItem: React.FC<{ tool: Tool }> = ({ tool }) => {
+  const { styles, handlers } = useCardHover({ scale: 'SCALE_SMALL' });
+  return (
+    <Link
+      to={tool.to}
+      style={{
+        display: 'block',
+        padding: '1.25rem 1.5rem',
+        marginBottom: '0.75rem',
+        textDecoration: 'none',
+        border: '2px solid var(--ifm-color-emphasis-200)',
+        borderRadius: BORDER_RADIUS.LG,
+        backgroundColor: 'var(--ifm-card-background-color)',
+        transition: TRANSITIONS.DEFAULT,
+        transform: styles.transform,
+        borderColor: styles.borderColor,
+      }}
+      {...handlers}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+        <div style={{ flex: 1 }}>
+          <h3 style={{
+            margin: 0,
+            fontSize: FONT_SIZES.LG,
+            color: 'var(--ifm-color-primary)',
+            marginBottom: '0.15rem'
+          }}>
+            {tool.name}
+            <span style={{
+              fontSize: FONT_SIZES.XS,
+              opacity: 0.6,
+              marginLeft: '0.4rem',
+              fontWeight: 'normal'
+            }}>
+              /{tool.category}
+            </span>
+          </h3>
+          <p style={{
+            color: 'var(--ifm-color-emphasis-700)',
+            margin: '0.3rem 0',
+            lineHeight: 1.4,
+            fontSize: FONT_SIZES.SM
+          }}>
+            {tool.description}
+          </p>
+          {tool.tags && (
+            <div style={{
+              display: 'flex',
+              gap: '0.25rem',
+              flexWrap: 'wrap',
+              marginTop: '0.4rem'
+            }}>
+              {tool.tags.map((tag, tagIdx) => (
+                <Tag key={tagIdx}>#{tag}</Tag>
+              ))}
+            </div>
+          )}
+        </div>
+        <div style={{
+          marginLeft: '1rem',
+          color: 'var(--ifm-color-primary)',
+          fontSize: FONT_SIZES.XL
+        }}>
+          →
+        </div>
+      </div>
+    </Link>
+  );
+};
+
+const tools: Tool[] = [
   {
     to: "/tools/ip",
     name: "IP",
@@ -180,56 +327,13 @@ const Tools: React.FC = () => {
   return (
     <Layout title="Tools">
       <div className="container margin-vert--lg">
-        <div style={{ marginBottom: '2rem' }}>
-          <h1 style={{ 
-            fontSize: '2.5rem', 
-            fontWeight: 700, 
-            marginBottom: '0.5rem',
-            fontFamily: "'Fira Code', 'Consolas', monospace"
-          }}>
-            <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>$ </span>
-            <span className="terminal-text" style={{ 
-              background: 'linear-gradient(to right, var(--ifm-color-primary), var(--ifm-color-primary-light))',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>
-              ./developer-tools
-            </span>
-            <span className="terminal-cursor"></span>
-          </h1>
-          <p className="terminal-text" style={{ 
-            fontSize: '1rem', 
+        <div style={{ marginBottom: SPACING.XL, textAlign: 'center' }}>
+          <PageTitle>Developer Tools</PageTitle>
+          <p style={{
+            fontSize: FONT_SIZES.BASE,
             color: 'var(--ifm-color-emphasis-700)',
-            marginBottom: '0.5rem'
           }}>
-            <span style={{ color: 'var(--ifm-color-success)' }}>→</span> {tools.length} tools loaded • {filteredTools.length} matches
-          </p>
-          <p className="terminal-text" style={{ 
-            fontSize: '0.9rem', 
-            color: 'var(--ifm-color-emphasis-600)' 
-          }}>
-            <span style={{ opacity: 0.7 }}>Shortcuts:</span> <kbd style={{ 
-              padding: '2px 6px', 
-              background: 'var(--ifm-color-emphasis-200)', 
-              borderRadius: '3px',
-              fontFamily: 'monospace',
-              fontSize: '0.9em',
-              border: '1px solid var(--ifm-color-emphasis-300)'
-            }}>⌘K</kbd> search • <kbd style={{ 
-              padding: '2px 6px', 
-              background: 'var(--ifm-color-emphasis-200)', 
-              borderRadius: '3px',
-              fontFamily: 'monospace',
-              fontSize: '0.9em',
-              border: '1px solid var(--ifm-color-emphasis-300)'
-            }}>⌘G</kbd> toggle • <kbd style={{ 
-              padding: '2px 6px', 
-              background: 'var(--ifm-color-emphasis-200)', 
-              borderRadius: '3px',
-              fontFamily: 'monospace',
-              fontSize: '0.9em',
-              border: '1px solid var(--ifm-color-emphasis-300)'
-            }}>1-6</kbd> filter
+            {filteredTools.length} of {tools.length} tools
           </p>
         </div>
 
@@ -251,39 +355,20 @@ const Tools: React.FC = () => {
               <button
                 key={cat.key}
                 className={`button button--sm ${selectedCategory === cat.key ? 'button--primary' : 'button--outline'}`}
-                style={{ 
+                style={{
                   minWidth: 100,
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.3rem',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  transition: 'all 0.2s ease'
+                  transition: TRANSITIONS.DEFAULT
                 }}
                 onClick={() => setSelectedCategory(cat.key)}
-                title={`Press ${index + 1} key`}
               >
                 <span style={{ fontSize: '1.1em' }}>{cat.icon}</span>
                 {cat.label}
-                <span style={{ 
-                  fontSize: '0.75em', 
-                  opacity: 0.7,
-                  marginLeft: '0.2rem'
-                }}>
-                  ({categoryStats[cat.key] || 0})
-                </span>
-                {index < 6 && (
-                  <span style={{
-                    position: 'absolute',
-                    top: '2px',
-                    right: '4px',
-                    fontSize: '0.7em',
-                    opacity: 0.5,
-                    fontFamily: 'monospace'
-                  }}>
-                    {index + 1}
-                  </span>
-                )}
+                <Badge variant="default" className="ml-1">
+                  {categoryStats[cat.key] || 0}
+                </Badge>
               </button>
             ))}
           </div>
@@ -296,19 +381,18 @@ const Tools: React.FC = () => {
             }}>
               <input
                 type="search"
-                placeholder="Search tools, tags..."
+                placeholder="Search tools..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 style={{
                   width: '100%',
                   padding: '0.6rem 2.5rem 0.6rem 1rem',
-                  borderRadius: 8,
+                  borderRadius: BORDER_RADIUS.LG,
                   border: '2px solid var(--ifm-color-emphasis-300)',
                   background: 'var(--ifm-background-surface-color)',
                   color: 'var(--ifm-font-color-base)',
-                  fontFamily: 'monospace',
-                  fontSize: '0.95rem',
-                  transition: 'border-color 0.2s ease',
+                  fontSize: FONT_SIZES.SM,
+                  transition: TRANSITIONS.BORDER,
                   outline: 'none'
                 }}
                 onFocus={(e) => {
@@ -366,114 +450,30 @@ const Tools: React.FC = () => {
           </div>
         </div>
 
-        {search && (
-          <div className="terminal-text" style={{ 
-            marginBottom: '1rem', 
-            padding: '0.5rem 1rem',
-            background: 'var(--ifm-color-emphasis-100)',
-            borderRadius: '4px',
-            fontFamily: 'monospace',
-            fontSize: '0.9rem'
+        {search && filteredTools.length > 0 && (
+          <div style={{
+            marginBottom: SPACING.MD,
+            padding: `${SPACING.SM} ${SPACING.MD}`,
+            background: 'var(--ifm-color-primary-lightest)',
+            borderRadius: BORDER_RADIUS.LG,
+            borderLeft: '3px solid var(--ifm-color-primary)',
+            fontSize: FONT_SIZES.SM,
+            color: 'var(--ifm-color-emphasis-800)'
           }}>
-            <span style={{ color: 'var(--ifm-color-success)' }}>$</span> grep -i "{search}" tools/* 
-            <span style={{ color: 'var(--ifm-color-emphasis-600)', marginLeft: '1rem' }}>
-              # {filteredTools.length} match{filteredTools.length !== 1 ? 'es' : ''} found
-            </span>
+            Found {filteredTools.length} match{filteredTools.length !== 1 ? 'es' : ''} for "{search}"
           </div>
         )}
 
         {viewMode === 'grid' ? (
           <div className="row">
             {filteredTools.length === 0 ? (
-              <div style={{ 
-                padding: '4rem 2rem', 
-                textAlign: 'center',
-                width: '100%',
-                color: 'var(--ifm-color-emphasis-600)'
-              }}>
-                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
-                <p style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>No tools found</p>
-                <p style={{ fontSize: '0.9rem' }}>Try adjusting your search or filter</p>
+              <div className="col col--12">
+                <EmptyState icon={<div style={{ fontSize: '3rem' }}>🔍</div>} message="No tools found. Try adjusting your search or filter." />
               </div>
             ) : (
               filteredTools.map((tool, idx) => (
                 <div key={idx} className="col col--4 margin-bottom--lg">
-                  <Link
-                    to={tool.to}
-                    className="card tool-card-hover"
-                    style={{
-                      height: '100%',
-                      textDecoration: 'none',
-                      border: '2px solid var(--ifm-color-emphasis-200)',
-                      backgroundColor: 'var(--ifm-card-background-color)',
-                      transition: 'all 0.2s ease',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      overflow: 'hidden',
-                      position: 'relative',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = 'var(--ifm-color-primary)';
-                      e.currentTarget.style.transform = 'translateY(-4px)';
-                      e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.1)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = 'var(--ifm-color-emphasis-200)';
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}
-                  >
-                    <div className="card__header" style={{ paddingBottom: '0.5rem' }}>
-                      <h3 className="terminal-text" style={{ 
-                        margin: 0, 
-                        fontSize: '1.3rem',
-                        color: 'var(--ifm-color-primary)'
-                      }}>
-                        {tool.name}
-                      </h3>
-                      <div className="terminal-text" style={{ 
-                        fontSize: '0.8rem', 
-                        opacity: 0.7,
-                        marginTop: '0.25rem',
-                        color: 'var(--ifm-color-success)'
-                      }}>
-                        <span style={{ opacity: 0.5 }}>$</span> {tool.category}
-                      </div>
-                    </div>
-                    <div className="card__body" style={{ flex: 1 }}>
-                      <p style={{ 
-                        color: 'var(--ifm-color-emphasis-800)',
-                        marginBottom: '1rem',
-                        lineHeight: 1.5
-                      }}>
-                        {tool.description}
-                      </p>
-                      {tool.tags && (
-                        <div style={{ 
-                          display: 'flex', 
-                          gap: '0.25rem', 
-                          flexWrap: 'wrap',
-                          marginTop: 'auto'
-                        }}>
-                          {tool.tags.map((tag, tagIdx) => (
-                            <span
-                              key={tagIdx}
-                              style={{
-                                fontSize: '0.75rem',
-                                padding: '2px 8px',
-                                background: 'var(--ifm-color-emphasis-200)',
-                                borderRadius: '12px',
-                                color: 'var(--ifm-color-emphasis-700)',
-                                fontFamily: 'monospace'
-                              }}
-                            >
-                              #{tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </Link>
+                  <ToolCard tool={tool} />
                 </div>
               ))
             )}
@@ -481,160 +481,15 @@ const Tools: React.FC = () => {
         ) : (
           <div style={{ maxWidth: '900px', margin: '0 auto' }}>
             {filteredTools.length === 0 ? (
-              <div style={{ 
-                padding: '4rem 2rem', 
-                textAlign: 'center',
-                color: 'var(--ifm-color-emphasis-600)'
-              }}>
-                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
-                <p style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>No tools found</p>
-                <p style={{ fontSize: '0.9rem' }}>Try adjusting your search or filter</p>
-              </div>
+              <EmptyState icon={<div style={{ fontSize: '3rem' }}>🔍</div>} message="No tools found. Try adjusting your search or filter." />
             ) : (
               filteredTools.map((tool, idx) => (
-                <Link
-                  key={idx}
-                  to={tool.to}
-                  style={{
-                    display: 'block',
-                    padding: '1.25rem 1.5rem',
-                    marginBottom: '0.75rem',
-                    textDecoration: 'none',
-                    border: '2px solid var(--ifm-color-emphasis-200)',
-                    borderRadius: '8px',
-                    backgroundColor: 'var(--ifm-card-background-color)',
-                    transition: 'all 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--ifm-color-primary)';
-                    e.currentTarget.style.transform = 'translateX(4px)';
-                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--ifm-color-emphasis-200)';
-                    e.currentTarget.style.transform = 'translateX(0)';
-                    e.currentTarget.style.boxShadow = 'none';
-                  }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
-                    <div style={{ flex: 1 }}>
-                      <h3 style={{ 
-                        margin: 0, 
-                        fontSize: '1.25rem',
-                        color: 'var(--ifm-color-primary)',
-                        marginBottom: '0.25rem'
-                      }}>
-                        {tool.name}
-                        <span style={{ 
-                          fontSize: '0.8rem', 
-                          opacity: 0.6,
-                          marginLeft: '0.5rem',
-                          fontFamily: 'monospace',
-                          fontWeight: 'normal'
-                        }}>
-                          /{tool.category}
-                        </span>
-                      </h3>
-                      <p style={{ 
-                        color: 'var(--ifm-color-emphasis-700)',
-                        margin: '0.5rem 0',
-                        lineHeight: 1.5
-                      }}>
-                        {tool.description}
-                      </p>
-                      {tool.tags && (
-                        <div style={{ 
-                          display: 'flex', 
-                          gap: '0.25rem', 
-                          flexWrap: 'wrap',
-                          marginTop: '0.5rem'
-                        }}>
-                          {tool.tags.map((tag, tagIdx) => (
-                            <span
-                              key={tagIdx}
-                              style={{
-                                fontSize: '0.75rem',
-                                padding: '2px 8px',
-                                background: 'var(--ifm-color-emphasis-200)',
-                                borderRadius: '12px',
-                                color: 'var(--ifm-color-emphasis-700)',
-                                fontFamily: 'monospace'
-                              }}
-                            >
-                              #{tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    <div style={{
-                      marginLeft: '1rem',
-                      color: 'var(--ifm-color-primary)',
-                      fontSize: '1.5rem'
-                    }}>
-                      →
-                    </div>
-                  </div>
-                </Link>
+                <ListItem key={idx} tool={tool} />
               ))
             )}
           </div>
         )}
 
-        <div style={{ 
-          marginTop: '3rem',
-          padding: '1.5rem',
-          background: 'rgba(0, 0, 0, 0.05)',
-          borderRadius: '8px',
-          border: '1px solid var(--ifm-color-emphasis-200)',
-          fontFamily: 'monospace'
-        }}>
-          <div className="terminal-text" style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>
-            <span style={{ color: 'var(--ifm-color-success)' }}>$</span> man developer-tools
-          </div>
-          <div style={{ 
-            marginLeft: '2rem',
-            fontSize: '0.85rem',
-            lineHeight: 1.6,
-            color: 'var(--ifm-color-emphasis-700)'
-          }}>
-            <div style={{ marginBottom: '0.5rem', fontWeight: 'bold' }}>SYNOPSIS</div>
-            <div style={{ marginLeft: '2rem', marginBottom: '1rem' }}>
-              developer-tools [--search PATTERN] [--view MODE] [--category FILTER]
-            </div>
-            
-            <div style={{ marginBottom: '0.5rem', fontWeight: 'bold' }}>KEYBOARD SHORTCUTS</div>
-            <div style={{ marginLeft: '2rem' }}>
-              <div style={{ marginBottom: '0.25rem' }}>
-                <kbd style={{ 
-                  padding: '2px 6px', 
-                  background: 'var(--ifm-color-emphasis-200)', 
-                  borderRadius: '3px',
-                  fontSize: '0.85em',
-                  border: '1px solid var(--ifm-color-emphasis-300)'
-                }}>Ctrl+K</kbd> <span style={{ marginLeft: '1rem' }}>Focus search input</span>
-              </div>
-              <div style={{ marginBottom: '0.25rem' }}>
-                <kbd style={{ 
-                  padding: '2px 6px', 
-                  background: 'var(--ifm-color-emphasis-200)', 
-                  borderRadius: '3px',
-                  fontSize: '0.85em',
-                  border: '1px solid var(--ifm-color-emphasis-300)'
-                }}>Ctrl+G</kbd> <span style={{ marginLeft: '1rem' }}>Toggle between grid/list view</span>
-              </div>
-              <div>
-                <kbd style={{ 
-                  padding: '2px 6px', 
-                  background: 'var(--ifm-color-emphasis-200)', 
-                  borderRadius: '3px',
-                  fontSize: '0.85em',
-                  border: '1px solid var(--ifm-color-emphasis-300)'
-                }}>1-6</kbd> <span style={{ marginLeft: '1.5rem' }}>Quick category filter</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </Layout>
   );

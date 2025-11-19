@@ -1,6 +1,11 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import { FileText, Youtube, Link as LinkIcon } from 'lucide-react';
+import Badge from '@/components/Badge';
+import PageTitle from '@/components/PageTitle';
+import SectionHeader from '@/components/SectionHeader';
+import { TRANSITIONS, BORDER_RADIUS } from '@/constants/styles';
+import { FONT_SIZES } from '@/constants/typography';
 
 const publications = [
     {
@@ -53,16 +58,14 @@ function PublicationCard({ pub }) {
             height: '100%',
             border: '1px solid var(--ifm-color-emphasis-200)',
             backgroundColor: 'var(--ifm-card-background-color)',
-            transition: 'all 0.2s ease',
+            transition: TRANSITIONS.DEFAULT,
         }}>
             <div className="flex items-center justify-between margin-bottom--sm">
-                <span className="px-3 py-1 text-sm font-medium rounded-full" style={{
-                    backgroundColor: 'var(--ifm-color-primary-lightest)',
-                    color: 'var(--ifm-color-primary-darkest)',
+                <Badge variant="primary">{pub.type}</Badge>
+                <span className="text-sm font-medium" style={{
+                    color: 'var(--ifm-color-emphasis-600)',
+                    fontSize: FONT_SIZES.SM
                 }}>
-                    {pub.type}
-                </span>
-                <span className="text-sm font-medium" style={{ color: 'var(--ifm-color-emphasis-600)' }}>
                     {pub.id}
                 </span>
             </div>
@@ -71,29 +74,35 @@ function PublicationCard({ pub }) {
 
             {pub.award && (
                 <div className="margin-bottom--md">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium" style={{
-                        backgroundColor: 'var(--ifm-color-warning-lightest)',
-                        color: 'var(--ifm-color-warning-darkest)',
-                        border: '1px solid var(--ifm-color-warning-light)',
-                    }}>
-                        🏆 {pub.award}
-                    </span>
+                    <Badge variant="warning">🏆 {pub.award}</Badge>
                 </div>
             )}
 
             {pub.links && (
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2">
                     {pub.links.map((link, linkIndex) => (
                         <a
                             key={linkIndex}
                             href={link.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium transition-colors duration-200"
+                            className="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium"
                             style={{
-                                backgroundColor: 'var(--ifm-color-emphasis-100)',
-                                color: 'var(--ifm-color-emphasis-900)',
+                                backgroundColor: 'var(--ifm-color-primary-lightest)',
+                                color: 'var(--ifm-color-primary-dark)',
+                                border: '1px solid var(--ifm-color-primary-lighter)',
                                 textDecoration: 'none',
+                                transition: TRANSITIONS.DEFAULT,
+                                borderRadius: BORDER_RADIUS.SM,
+                                fontSize: FONT_SIZES.XS,
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = 'var(--ifm-color-primary-lighter)';
+                                e.currentTarget.style.borderColor = 'var(--ifm-color-primary)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = 'var(--ifm-color-primary-lightest)';
+                                e.currentTarget.style.borderColor = 'var(--ifm-color-primary-lighter)';
                             }}
                         >
                             {link.type === 'YouTube' && <Youtube className="w-4 h-4 margin-right--xs" />}
@@ -114,15 +123,11 @@ export default function Publications(): JSX.Element {
     return (
         <Layout title="Publications" description="Research Publications">
             <div className="container margin-vert--lg">
-                <h1 className="text-4xl font-bold text-center margin-bottom--lg">
-                    Publications
-                </h1>
+                <PageTitle>Publications</PageTitle>
 
                 {/* Conference Papers Section */}
                 <div className="margin-bottom--xl">
-                    <h2 className="text-2xl font-semibold margin-bottom--md">
-                        Conference Papers
-                    </h2>
+                    <SectionHeader title="Conference Papers" />
                     <div className="row">
                         {publications.map((pub) => (
                             <div key={pub.id} className="col col--12 margin-bottom--lg">
@@ -134,9 +139,7 @@ export default function Publications(): JSX.Element {
 
                 {/* Demonstrations and Extended Abstracts Section */}
                 <div>
-                    <h2 className="text-2xl font-semibold margin-bottom--md">
-                        Demonstrations and Extended Abstracts
-                    </h2>
+                    <SectionHeader title="Demonstrations and Extended Abstracts" />
                     <div className="row">
                         {demonstrations.map((pub) => (
                             <div key={pub.id} className="col col--12 margin-bottom--lg">

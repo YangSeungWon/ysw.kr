@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Layout from '@theme/Layout';
+import ToolLayout from '@/components/ToolLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -159,20 +159,14 @@ const EmojiGenerator: React.FC = () => {
     };
 
     return (
-        <Layout title="Emoji Generator">
+        <ToolLayout
+            title="이모지 생성기"
+            description="Slack/Discord 이모지로 사용하기 좋은 형식으로 변환"
+            icon={<Smile className="h-8 w-8 text-primary" />}
+            maxWidth="max-w-5xl"
+        >
             <Toaster />
-            <div className="container mx-auto px-4 py-8 max-w-5xl">
-                <div className="flex flex-col items-center mb-8">
-                    <div className="flex items-center gap-2 mb-2">
-                        <Smile className="h-8 w-8 text-primary" />
-                        <h1 className="text-3xl font-bold text-center">이모지 생성기</h1>
-                    </div>
-                    <p className="text-muted-foreground text-center">
-                        Slack/Discord 이모지로 사용하기 좋은 형식으로 변환
-                    </p>
-                </div>
-
-                <div className="max-w-2xl mx-auto">
+            <div className="max-w-2xl mx-auto">
                     <Card>
                         <CardHeader>
                             <CardTitle>이미지 업로드</CardTitle>
@@ -252,8 +246,7 @@ const EmojiGenerator: React.FC = () => {
                         </CardContent>
                     </Card>
                 </div>
-            </div>
-        </Layout>
+        </ToolLayout>
     );
 };
 

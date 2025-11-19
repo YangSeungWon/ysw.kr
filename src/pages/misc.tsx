@@ -1,8 +1,27 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
+import SectionHeader from '@/components/SectionHeader';
+import Badge from '@/components/Badge';
+import PageTitle from '@/components/PageTitle';
+import { useCardHover } from '@/hooks/useCardHover';
+import { TRANSITIONS, BORDER_RADIUS } from '@/constants/styles';
+import { FONT_SIZES, SPACING } from '@/constants/typography';
 
-const projects = {
+interface Project {
+  name: string;
+  description: string;
+  links: Array<{ label: string; url: string; external?: boolean }>;
+  color: string;
+  icon: string;
+  isImage?: boolean;
+}
+
+const projects: {
+  extensions: Project[];
+  apps: Project[];
+  games: Project[];
+} = {
   extensions: [
     {
       name: "Voca Web - Smart Vocabulary Builder",
@@ -81,40 +100,31 @@ const projects = {
 };
 
 const ProjectCard: React.FC<{
-  project: typeof projects.extensions[0];
+  project: Project;
   index: number;
 }> = ({ project, index }) => {
   const aboutLink = project.links.find(link => link.label === "About");
-  
+  const { styles, handlers } = useCardHover({ scale: 'SCALE_SMALL' });
+
   return (
     <Link
       to={aboutLink?.url || '#'}
-      className="misc-project-card"
       style={{
         display: 'block',
         background: 'var(--ifm-card-background-color)',
-        border: '1px solid var(--ifm-color-emphasis-200)',
-        borderRadius: '8px',
+        border: '2px solid var(--ifm-color-emphasis-200)',
+        borderRadius: BORDER_RADIUS.LG,
         padding: '1rem 1.25rem',
-        marginBottom: '1rem',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        marginBottom: SPACING.MD,
+        transition: TRANSITIONS.DEFAULT,
         position: 'relative',
-        overflow: 'hidden',
-        animationDelay: `${index * 0.1}s`,
         textDecoration: 'none',
         color: 'inherit',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        transform: styles.transform,
+        borderColor: styles.borderColor,
       }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.1)';
-        e.currentTarget.style.borderColor = 'var(--ifm-color-emphasis-300)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = 'none';
-        e.currentTarget.style.borderColor = 'var(--ifm-color-emphasis-200)';
-      }}
+      {...handlers}
     >
       <div style={{ position: 'relative', zIndex: 1 }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '0.75rem' }}>
@@ -139,18 +149,18 @@ const ProjectCard: React.FC<{
             )}
           </div>
           <div style={{ flex: 1 }}>
-            <h3 style={{ 
-              margin: 0, 
-              fontSize: '1.1rem',
+            <h3 style={{
+              margin: 0,
+              fontSize: FONT_SIZES.LG,
               color: 'var(--ifm-heading-color)',
               marginBottom: '0.25rem'
             }}>
               {project.name}
             </h3>
-            <p style={{ 
+            <p style={{
               margin: 0,
               color: 'var(--ifm-color-emphasis-700)',
-              fontSize: '0.85rem',
+              fontSize: FONT_SIZES.SM,
               lineHeight: 1.4
             }}>
               {project.description}
@@ -172,12 +182,12 @@ const ProjectCard: React.FC<{
                 alignItems: 'center',
                 gap: '0.2rem',
                 padding: '0.25rem 0.6rem',
-                borderRadius: '4px',
-                fontSize: '0.8rem',
+                borderRadius: BORDER_RADIUS.SM,
+                fontSize: FONT_SIZES.XS,
                 background: 'var(--ifm-color-emphasis-100)',
                 color: 'var(--ifm-color-emphasis-800)',
                 textDecoration: 'none',
-                transition: 'all 0.2s ease',
+                transition: TRANSITIONS.DEFAULT,
                 border: '1px solid transparent',
                 position: 'relative',
                 zIndex: 2
@@ -228,70 +238,24 @@ const Misc: React.FC = () => {
     <Layout title="Misc Projects">
       <div className="container margin-vert--lg">
         <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <h1 style={{ 
-              fontSize: '2rem', 
-              fontWeight: 700,
-              marginBottom: '0.5rem',
-              background: 'linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-light) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              display: 'inline-block'
-            }}>
-              Side Projects
-            </h1>
-            <p style={{ 
-              fontSize: '0.95rem', 
-              color: 'var(--ifm-color-emphasis-600)',
+          <div style={{ textAlign: 'center', marginBottom: SPACING.XL }}>
+            <PageTitle>Side Projects</PageTitle>
+            <p style={{
+              fontSize: FONT_SIZES.BASE,
+              color: 'var(--ifm-color-emphasis-700)',
               maxWidth: '500px',
               margin: '0 auto'
             }}>
-              A collection of interesting projects built out of curiosity and passion
+              A collection of projects built out of curiosity and passion
             </p>
           </div>
 
-          <section style={{ marginBottom: '2rem' }}>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.5rem',
-              marginBottom: '1rem'
-            }}>
-              <div style={{
-                width: '3px',
-                height: '20px',
-                background: 'var(--ifm-color-primary)',
-                borderRadius: '2px'
-              }} />
-              <h2 style={{ 
-                margin: 0,
-                fontSize: '1.25rem',
-                color: 'var(--ifm-heading-color)'
-              }}>
-                Browser Extensions
-              </h2>
-              <div style={{
-                fontSize: '0.75rem',
-                padding: '0.15rem 0.5rem',
-                background: 'var(--ifm-color-emphasis-100)',
-                borderRadius: '10px',
-                color: 'var(--ifm-color-emphasis-600)'
-              }}>
-                {projects.extensions.length}
-              </div>
-            </div>
-            
-            {projects.extensions.map((project, index) => (
-              <ProjectCard key={index} project={project} index={index} />
-            ))}
-          </section>
-
-          <section style={{ marginBottom: '2rem' }}>
+          <section style={{ marginBottom: SPACING.XL }}>
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '0.5rem',
-              marginBottom: '1rem'
+              gap: SPACING.SM,
+              marginBottom: SPACING.MD
             }}>
               <div style={{
                 width: '3px',
@@ -301,20 +265,40 @@ const Misc: React.FC = () => {
               }} />
               <h2 style={{
                 margin: 0,
-                fontSize: '1.25rem',
+                fontSize: FONT_SIZES.XL,
+                color: 'var(--ifm-heading-color)'
+              }}>
+                Browser Extensions
+              </h2>
+              <Badge variant="default">{projects.extensions.length}</Badge>
+            </div>
+            
+            {projects.extensions.map((project, index) => (
+              <ProjectCard key={index} project={project} index={index} />
+            ))}
+          </section>
+
+          <section style={{ marginBottom: SPACING.XL }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: SPACING.SM,
+              marginBottom: SPACING.MD
+            }}>
+              <div style={{
+                width: '3px',
+                height: '20px',
+                background: 'var(--ifm-color-primary)',
+                borderRadius: '2px'
+              }} />
+              <h2 style={{
+                margin: 0,
+                fontSize: FONT_SIZES.XL,
                 color: 'var(--ifm-heading-color)'
               }}>
                 Mobile Apps
               </h2>
-              <div style={{
-                fontSize: '0.75rem',
-                padding: '0.15rem 0.5rem',
-                background: 'var(--ifm-color-emphasis-100)',
-                borderRadius: '10px',
-                color: 'var(--ifm-color-emphasis-600)'
-              }}>
-                {projects.apps.length}
-              </div>
+              <Badge variant="default">{projects.apps.length}</Badge>
             </div>
 
             {projects.apps.map((project, index) => (
@@ -323,11 +307,11 @@ const Misc: React.FC = () => {
           </section>
 
           <section>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.5rem',
-              marginBottom: '1rem'
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: SPACING.SM,
+              marginBottom: SPACING.MD
             }}>
               <div style={{
                 width: '3px',
@@ -335,22 +319,14 @@ const Misc: React.FC = () => {
                 background: 'var(--ifm-color-primary)',
                 borderRadius: '2px'
               }} />
-              <h2 style={{ 
+              <h2 style={{
                 margin: 0,
-                fontSize: '1.25rem',
+                fontSize: FONT_SIZES.XL,
                 color: 'var(--ifm-heading-color)'
               }}>
                 Games
               </h2>
-              <div style={{
-                fontSize: '0.75rem',
-                padding: '0.15rem 0.5rem',
-                background: 'var(--ifm-color-emphasis-100)',
-                borderRadius: '10px',
-                color: 'var(--ifm-color-emphasis-600)'
-              }}>
-                {projects.games.length}
-              </div>
+              <Badge variant="default">{projects.games.length}</Badge>
             </div>
             
             {projects.games.map((project, index) => (
@@ -359,16 +335,16 @@ const Misc: React.FC = () => {
           </section>
 
           <div style={{
-            marginTop: '2.5rem',
+            marginTop: SPACING['2XL'],
             textAlign: 'center',
-            padding: '1.25rem',
+            padding: SPACING.LG,
             background: 'var(--ifm-color-emphasis-100)',
-            borderRadius: '8px'
+            borderRadius: BORDER_RADIUS.LG
           }}>
-            <p style={{ 
+            <p style={{
               margin: 0,
               color: 'var(--ifm-color-emphasis-700)',
-              fontSize: '0.85rem'
+              fontSize: FONT_SIZES.SM
             }}>
               More projects coming soon...
             </p>

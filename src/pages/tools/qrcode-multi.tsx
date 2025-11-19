@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { toast } from 'sonner'
-import Layout from '@theme/Layout'
+import ToolLayout from '@/components/ToolLayout'
 import { Toaster } from 'sonner'
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -314,18 +314,14 @@ export default function QRCodeMulti() {
     }
 
     return (
-        <Layout title="Multi QR Code Generator">
+        <ToolLayout
+            title="Multi QR Code Generator"
+            description="Generate multiple QR codes for different fields"
+            icon={<QrCode className="h-8 w-8 text-primary" />}
+            maxWidth="max-w-5xl"
+        >
             <Toaster />
-            <div className="container mx-auto px-4 py-2 max-w-5xl">
-                <div className="flex flex-col items-center mb-2">
-                    <div className="flex items-center gap-2">
-                        <QrCode className="h-8 w-8 text-primary" />
-                        <h1 className="text-3xl font-bold text-center">Multi QR Code Generator</h1>
-                    </div>
-                    <p className="text-muted-foreground text-center text-sm">Generate multiple QR codes for different fields</p>
-                </div>
-
-                <Card className="w-full max-w-[600px] mx-auto mb-2">
+            <Card className="w-full max-w-[600px] mx-auto mb-8">
                     <CardHeader>
                         <CardTitle>Generate QR Codes</CardTitle>
                         <CardDescription>
@@ -449,7 +445,6 @@ export default function QRCodeMulti() {
                         ))}
                     </div>
                 )}
-            </div>
-        </Layout>
+        </ToolLayout>
     )
 } 

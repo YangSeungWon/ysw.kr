@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { toast } from 'sonner'
-import Layout from '@theme/Layout'
+import ToolLayout from '@/components/ToolLayout'
 import { Toaster } from 'sonner'
 import { Label } from "@/components/ui/label"
 import { Image, Upload, Download } from "lucide-react"
@@ -138,18 +138,14 @@ export default function ImageResizer() {
     }
 
     return (
-        <Layout title="Image Resizer">
+        <ToolLayout
+            title="Image Resizer"
+            description="Resize images by scale factor"
+            icon={<Image className="h-8 w-8 text-primary" />}
+            maxWidth="max-w-5xl"
+        >
             <Toaster />
-            <div className="container mx-auto px-4 py-8 max-w-5xl">
-                <div className="flex flex-col items-center mb-8">
-                    <div className="flex items-center gap-2 mb-2">
-                        <Image className="h-8 w-8 text-primary" />
-                        <h1 className="text-3xl font-bold text-center">Image Resizer</h1>
-                    </div>
-                    <p className="text-muted-foreground text-center">Resize images by scale factor</p>
-                </div>
-
-                <Card className="w-full max-w-[600px] mx-auto">
+            <Card className="w-full max-w-[600px] mx-auto">
                     <CardHeader>
                         <CardTitle>Resize Image</CardTitle>
                         <CardDescription>
@@ -260,7 +256,6 @@ export default function ImageResizer() {
                         </CardFooter>
                     )}
                 </Card>
-            </div>
-        </Layout>
+        </ToolLayout>
     )
 } 

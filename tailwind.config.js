@@ -27,8 +27,8 @@ module.exports = {
             },
             colors: {
                 primary: {
-                    DEFAULT: 'hsl(var(--primary))',
-                    foreground: 'hsl(var(--primary-foreground))',
+                    DEFAULT: 'var(--ifm-color-primary)',
+                    foreground: '#ffffff',
                     dark: 'var(--ifm-color-primary-dark)',
                     darker: 'var(--ifm-color-primary-darker)',
                     darkest: 'var(--ifm-color-primary-darkest)',
@@ -64,7 +64,7 @@ module.exports = {
                 },
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
-                ring: 'hsl(var(--ring))',
+                ring: 'var(--ifm-color-primary)',
                 'background-surface': 'var(--ifm-background-surface-color)',
                 'font': 'var(--ifm-font-color-base)',
                 'font-secondary': 'var(--ifm-font-color-secondary)',

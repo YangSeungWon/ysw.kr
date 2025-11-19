@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Layout from '@theme/Layout';
+import ToolLayout from '@/components/ToolLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -153,18 +153,14 @@ const ContactImporter: React.FC = () => {
 박영희\t010-5555-6666`;
 
   return (
-    <Layout title="Contact Importer">
+    <ToolLayout
+      title="연락처 일괄 가져오기"
+      description="스프레드시트에서 안드로이드 연락처로"
+      icon={<FileText className="h-8 w-8 text-primary" />}
+      maxWidth="max-w-5xl"
+    >
       <Toaster />
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
-        <div className="flex flex-col items-center mb-8">
-          <div className="flex items-center gap-2 mb-2">
-            <FileText className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold text-center">연락처 일괄 가져오기</h1>
-          </div>
-          <p className="text-muted-foreground text-center">스프레드시트에서 안드로이드 연락처로</p>
-        </div>
-
-        <div className="max-w-4xl mx-auto space-y-6">
+      <div className="max-w-4xl mx-auto space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>연락처 데이터 입력</CardTitle>
@@ -345,8 +341,7 @@ const ContactImporter: React.FC = () => {
             </CardContent>
           </Card>
         </div>
-      </div>
-    </Layout>
+    </ToolLayout>
   );
 };
 

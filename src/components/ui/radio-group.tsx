@@ -32,9 +32,9 @@ function RadioGroupItem({
     >
       <RadioGroupPrimitive.Indicator
         data-slot="radio-group-indicator"
-        className="relative flex items-center justify-center"
+        className="flex items-center justify-center w-full h-full"
       >
-        <CircleIcon className="fill-primary absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2" />
+        <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: 'var(--ifm-color-primary)' }} />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   )

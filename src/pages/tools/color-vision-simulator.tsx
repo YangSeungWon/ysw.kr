@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Eye } from "lucide-react"
-import Layout from '@theme/Layout'
+import ToolLayout from '@/components/ToolLayout'
 
 type ColorVisionType = 'original' | 'red-variation' | 'green-variation' | 'blue-variation' | 'monochrome'
 
@@ -191,19 +191,13 @@ export function ColorVisionSimulator() {
 
 export default function ColorVisionSimulatorPage() {
     return (
-        <Layout title="Color Vision Simulator">
-            <div className="container mx-auto px-4 py-8 max-w-7xl">
-                <div className="flex flex-col items-center mb-8">
-                    <div className="flex items-center gap-2 mb-2">
-                        <Eye className="h-8 w-8 text-primary" />
-                        <h1 className="text-3xl font-bold text-center">Color Vision Simulator</h1>
-                    </div>
-                    <p className="text-muted-foreground text-center max-w-3xl">
-                        Upload an image or paste from clipboard to see how it appears with different types of color vision deficiencies
-                    </p>
-                </div>
-                <ColorVisionSimulator />
-            </div>
-        </Layout>
+        <ToolLayout
+            title="Color Vision Simulator"
+            description="Upload an image or paste from clipboard to see how it appears with different types of color vision deficiencies"
+            icon={<Eye className="h-8 w-8 text-primary" />}
+            maxWidth="max-w-7xl"
+        >
+            <ColorVisionSimulator />
+        </ToolLayout>
     )
 } 

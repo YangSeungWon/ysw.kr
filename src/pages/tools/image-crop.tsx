@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Crop as CropIcon, Download, RotateCcw, Maximize } from "lucide-react"
-import Layout from '@theme/Layout'
+import ToolLayout from '@/components/ToolLayout'
 
 const DEFAULT_CROP: Crop = {
     unit: 'px',
@@ -259,20 +259,14 @@ export function ImageCropper() {
 
 export default function ImageCropPage() {
     return (
-        <Layout title="Image Crop">
-            <div className="container mx-auto px-4 py-8 max-w-5xl">
-                <div className="flex flex-col items-center mb-8">
-                    <div className="flex items-center gap-2 mb-2">
-                        <CropIcon className="h-8 w-8 text-primary" />
-                        <h1 className="text-3xl font-bold text-center">Image Crop Tool</h1>
-                    </div>
-                    <p className="text-muted-foreground text-center">
-                        Crop your images with precision
-                    </p>
-                </div>
-                <ImageCropper />
-            </div>
-        </Layout>
+        <ToolLayout
+            title="Image Crop Tool"
+            description="Crop your images with precision"
+            icon={<CropIcon className="h-8 w-8 text-primary" />}
+            maxWidth="max-w-5xl"
+        >
+            <ImageCropper />
+        </ToolLayout>
     )
 }
 

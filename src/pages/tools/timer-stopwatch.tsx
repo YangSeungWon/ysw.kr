@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Layout from '@theme/Layout';
+import ToolLayout from '@/components/ToolLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -152,20 +152,16 @@ export default function TimerStopwatchPage() {
     const theme = colorThemes[colorTheme];
 
     return (
-        <Layout title="Timer & Stopwatch">
+        <ToolLayout
+            title="Timer & Stopwatch"
+            description="Precision timing tool with customizable themes"
+            icon={<Timer className="h-8 w-8 text-primary" />}
+            maxWidth="max-w-5xl"
+        >
             <style>{`@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }`}</style>
 
             {!fullScreen && (
-                <div className="container mx-auto px-4 py-8 max-w-5xl">
-                    <div className="flex flex-col items-center mb-8">
-                        <div className="flex items-center gap-2 mb-2">
-                            <Timer className="h-8 w-8 text-primary" />
-                            <h1 className="text-3xl font-bold text-center">Timer & Stopwatch</h1>
-                        </div>
-                        <p className="text-muted-foreground text-center">Precision timing tool with customizable themes</p>
-                    </div>
-
-                    <Card className="mb-6">
+                <Card className="mb-6">
                         <CardHeader>
                             <CardTitle>Settings</CardTitle>
                             <CardDescription>Customize your timer or stopwatch</CardDescription>
@@ -262,7 +258,6 @@ export default function TimerStopwatchPage() {
                             )}
                         </CardContent>
                     </Card>
-                </div>
             )}
 
             <div
@@ -341,7 +336,7 @@ export default function TimerStopwatchPage() {
             </div>
 
             {!fullScreen && activeTab === 'stopwatch' && lapTimes.length > 0 && (
-                <div className="container mx-auto px-4 mb-6 max-w-5xl">
+                <div className="container mx-auto px-4 mb-8 max-w-5xl">
                     <Card>
                         <CardHeader>
                             <CardTitle>Lap Times</CardTitle>
@@ -363,6 +358,6 @@ export default function TimerStopwatchPage() {
                     </Card>
                 </div>
             )}
-        </Layout>
+        </ToolLayout>
     );
 }

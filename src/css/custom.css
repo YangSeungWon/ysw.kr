@@ -9,78 +9,92 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * ✅ UNIFIED COLOR SYSTEM
+ *
+ * This site uses a SINGLE unified color system:
+ * - Primary colors defined in Docusaurus CSS Variables (HSL format)
+ * - All components (Docusaurus + shadcn/ui) reference these variables
+ * - Change theme color in ONE place: --ifm-color-primary and its variants
+ *
+ * To change theme color:
+ * 1. Update --ifm-color-primary and variants below (light mode, around line 28)
+ * 2. Update dark mode variants (around line 67)
+ * 3. Done! Both Docusaurus and shadcn/ui will use the new color.
+ *
+ * Current theme: Bright Blue (HSL 217 91% 60%)
+ */
+
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #6363c1;
-  --ifm-color-primary-dark: #4e4eb9;
-  --ifm-color-primary-darker: #4747b2;
-  --ifm-color-primary-darkest: #3a3a92;
-  --ifm-color-primary-light: #7878c9;
-  --ifm-color-primary-lighter: #8282cd;
-  --ifm-color-primary-lightest: #a2a2da;
+  /* === PRIMARY THEME COLORS (HSL format) === */
+  /* Used by both Docusaurus and shadcn/ui components via Tailwind */
+  --ifm-color-primary: hsl(217, 91%, 60%);           /* Base color */
+  --ifm-color-primary-dark: hsl(217, 91%, 55%);      /* 5% darker */
+  --ifm-color-primary-darker: hsl(217, 91%, 48%);    /* 12% darker */
+  --ifm-color-primary-darkest: hsl(217, 76%, 40%);   /* 20% darker */
+  --ifm-color-primary-light: hsl(217, 91%, 68%);     /* 8% lighter */
+  --ifm-color-primary-lighter: hsl(217, 91%, 78%);   /* 18% lighter */
+  --ifm-color-primary-lightest: hsl(217, 91%, 87%);  /* 27% lighter */
   --ifm-code-font-size: 95%;
-  --ifm-background-color: #fefefc;
-  --ifm-card-background-color: #f9f9f6;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-background-color: #ffffff;
+  --ifm-card-background-color: #f8fafc;
+  --docusaurus-highlighted-code-line-bg: rgba(59, 130, 246, 0.1);
 
-  /* shadcn/ui CSS variables */
+  /* === SHADCN/UI COLOR VARIABLES (HSL) === */
   --background: 0 0% 100%;
   --foreground: 0 0% 3.9%;
   --card: 0 0% 100%;
   --card-foreground: 0 0% 3.9%;
   --popover: 0 0% 100%;
   --popover-foreground: 0 0% 3.9%;
-  --primary: 239 55% 58%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 0 0% 96.1%;
+  --secondary: 214 32% 91%;
   --secondary-foreground: 0 0% 9%;
-  --muted: 0 0% 96.1%;
-  --muted-foreground: 0 0% 45.1%;
-  --accent: 0 0% 96.1%;
-  --accent-foreground: 0 0% 9%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222 47% 11%;
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 89.8%;
-  --input: 0 0% 89.8%;
-  --ring: 239 55% 58%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
   --radius: 0.5rem;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme="dark"] {
-  --ifm-color-primary: #b4b4e1;
-  --ifm-color-primary-dark: #9797d5;
-  --ifm-color-primary-darker: #8989d0;
-  --ifm-color-primary-darkest: #7a7aca;
-  --ifm-color-primary-light: #c5c5e8;
-  --ifm-color-primary-lighter: #d1d1ed;
-  --ifm-color-primary-lightest: #dfdff2;
+  /* === PRIMARY THEME COLORS (HSL format) - DARK MODE === */
+  /* Lighter variants for better contrast on dark backgrounds */
+  --ifm-color-primary: hsl(217, 91%, 68%);           /* Lighter base for dark mode */
+  --ifm-color-primary-dark: hsl(217, 91%, 60%);      /* 8% darker */
+  --ifm-color-primary-darker: hsl(217, 91%, 55%);    /* 13% darker */
+  --ifm-color-primary-darkest: hsl(217, 91%, 48%);   /* 20% darker */
+  --ifm-color-primary-light: hsl(217, 91%, 78%);     /* 10% lighter */
+  --ifm-color-primary-lighter: hsl(217, 91%, 87%);   /* 19% lighter */
+  --ifm-color-primary-lightest: hsl(217, 91%, 93%);  /* 25% lighter */
   --ifm-code-font-size: 95%;
-  --ifm-page-background-color: #3e3e3e;
-  --ifm-background-color: #3e3e3e;
-  --ifm-card-background-color: #4b4b4b;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-page-background-color: #0f172a;
+  --ifm-background-color: #0f172a;
+  --ifm-card-background-color: #1e293b;
+  --docusaurus-highlighted-code-line-bg: rgba(96, 165, 250, 0.1);
 
-  /* shadcn/ui CSS variables */
-  --background: 0 0% 3.9%;
-  --foreground: 0 0% 98%;
-  --card: 0 0% 3.9%;
-  --card-foreground: 0 0% 98%;
-  --popover: 0 0% 3.9%;
-  --popover-foreground: 0 0% 98%;
-  --primary: 239 57% 75%;
-  --primary-foreground: 0 0% 9%;
-  --secondary: 0 0% 14.9%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 14.9%;
-  --muted-foreground: 0 0% 63.9%;
-  --accent: 0 0% 14.9%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 14.9%;
-  --input: 0 0% 14.9%;
-  --ring: 239 57% 75%;
+  /* === SHADCN/UI COLOR VARIABLES (HSL) - DARK MODE === */
+  --background: 222 47% 11%;
+  --foreground: 210 40% 98%;
+  --card: 222 47% 11%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222 47% 11%;
+  --popover-foreground: 210 40% 98%;
+  --secondary: 217 33% 17%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 217 33% 17%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217 33% 17%;
+  --input: 217 33% 17%;
 }
 
 /* Global fix for all external link icons */
@@ -97,6 +111,55 @@ a:has(svg.iconExternalLink_nPIU) {
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
+}
+
+/* Footer-specific fix for external link icons */
+.footer__link-item {
+  display: inline-flex !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+}
+
+/* Navbar-specific fix for external link icons */
+.navbar__link,
+.navbar__item {
+  display: inline-flex !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+}
+
+/* About page profile image */
+.about-profile-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 1rem 0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Fix dark mode toggle button display */
+button[class*="toggleButton"] {
+  padding: 0.5rem;
+}
+
+/* Hide moon icon in light mode */
+html[data-theme='light'] button[class*="toggleButton"] > svg[class*="darkToggleIcon"] {
+  display: none !important;
+}
+
+/* Hide sun icon in dark mode */
+html[data-theme='dark'] button[class*="toggleButton"] > svg[class*="lightToggleIcon"] {
+  display: none !important;
+}
+
+/* Hero header gradient backgrounds */
+.hero-header {
+  background: linear-gradient(135deg, var(--ifm-color-primary-lighter), var(--ifm-color-primary-darker));
+}
+
+[data-theme='dark'] .hero-header {
+  background: linear-gradient(135deg, hsl(217, 50%, 20%), hsl(217, 50%, 10%));
 }
 
 /* Terminal-style animations and effects */

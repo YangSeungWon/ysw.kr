@@ -86,6 +86,79 @@ The site uses **file-based routing** with three distinct page types:
 
 **Usage Pattern**: Use Tailwind utilities for component styling, but reference Docusaurus CSS variables via `var(--ifm-*)` in inline styles for theme consistency.
 
+### Color System (IMPORTANT: Read Before Changing Colors)
+
+**Great News**: This site now uses a UNIFIED color system! Both Docusaurus and shadcn/ui components reference the same color variables.
+
+**The Unified System**:
+
+- **Primary colors** are defined in `src/css/custom.css` as Docusaurus variables in HSL format
+- **All components** (Docusaurus UI, shadcn/ui, and custom components) reference these via Tailwind config
+- **Single source of truth**: `--ifm-color-primary` and its variants
+
+**How to Change the Theme Color**:
+
+Changing colors is now simple - just update ONE place:
+
+1. **Choose your base color** (e.g., #10b981 for green)
+
+2. **Convert to HSL** using browser dev tools or online converter:
+   - Example: #10b981 → HSL(160, 84%, 39%)
+
+3. **Update `src/css/custom.css`** (around line 32 for light mode, line 68 for dark mode):
+   ```css
+   /* Light theme */
+   :root {
+     --ifm-color-primary: hsl(160, 84%, 39%);       /* base color */
+     --ifm-color-primary-dark: hsl(160, 84%, 34%);  /* 5% darker */
+     --ifm-color-primary-darker: hsl(160, 84%, 27%); /* 12% darker */
+     --ifm-color-primary-darkest: hsl(160, 84%, 19%); /* 20% darker */
+     --ifm-color-primary-light: hsl(160, 84%, 47%); /* 8% lighter */
+     --ifm-color-primary-lighter: hsl(160, 84%, 57%); /* 18% lighter */
+     --ifm-color-primary-lightest: hsl(160, 84%, 66%); /* 27% lighter */
+   }
+
+   /* Dark theme - use lighter variant for better contrast */
+   [data-theme="dark"] {
+     --ifm-color-primary: hsl(160, 84%, 47%);       /* lighter base */
+     /* ... adjust other variants accordingly */
+   }
+   ```
+
+4. **Done!** All components will automatically use the new color.
+
+5. **Optional files to review** (if you want to change accent colors):
+   - `src/pages/tools.tsx`: Category pill colors (optional, independent from theme)
+   - `src/pages/misc.tsx`: Project accent colors (optional, each project has unique color)
+   - `src/pages/publications.tsx`: Award badge colors (optional)
+
+**How It Works**:
+
+- `tailwind.config.js` (lines 29-37) maps Tailwind classes to Docusaurus variables:
+  ```javascript
+  primary: {
+    DEFAULT: 'var(--ifm-color-primary)',     // bg-primary, text-primary
+    dark: 'var(--ifm-color-primary-dark)',   // bg-primary-dark
+    lighter: 'var(--ifm-color-primary-lighter)', // etc.
+  }
+  ```
+- All shadcn/ui components use Tailwind classes like `bg-primary`, which resolve to Docusaurus variables
+- No need to maintain separate color systems!
+
+**Test Your Changes**:
+
+```bash
+npm start
+# Toggle dark mode with navbar button
+# Check: navbar, footer, buttons, cards, hover effects, radio buttons, focus rings
+```
+
+**Quick Reference**:
+
+Current theme (Bright Blue):
+- HSL: `217 91% 60%`
+- Location: `src/css/custom.css` line 32 (light mode) and line 68 (dark mode)
+
 ### Path Alias Configuration
 
 The `@/` alias is configured to point to `src/`:

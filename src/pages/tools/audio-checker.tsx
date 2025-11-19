@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Mic, Speaker, Play, Square, RefreshCw, Download } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import WaveSurfer from "wavesurfer.js"
-import Layout from "@theme/Layout"
+import ToolLayout from "@/components/ToolLayout"
 
 // Custom Waveform component
 const Waveform = React.memo(({ url, onReady, isRecording, audioStream, setIsPlaying, audioRef }: {
@@ -556,25 +556,28 @@ export default function AudioChecker() {
 
     if (loading) {
         return (
-            <div className="container mx-auto max-w-4xl py-12 px-4">
+            <ToolLayout
+                title="Audio Device Checker"
+                description="Test your microphone and speakers"
+                icon={<Speaker className="h-8 w-8 text-primary" />}
+                maxWidth="max-w-4xl"
+            >
                 <div className="flex items-center justify-center h-[60vh]">
                     Please grant permission to access your microphone and speakers.
                     <RefreshCw className="h-8 w-8 animate-spin text-primary" />
                 </div>
-            </div>
+            </ToolLayout>
         )
     }
 
     if (!permissionGranted) {
         return (
-            <div className="container mx-auto max-w-4xl py-12 px-4">
-                <div className="flex flex-col items-center mb-8">
-                    <div className="flex items-center gap-2 mb-2">
-                        <Speaker className="h-8 w-8 text-primary" />
-                        <h1 className="text-3xl font-bold text-center">Audio Device Checker</h1>
-                    </div>
-                    <p className="text-muted-foreground text-center">Test your microphone and speakers</p>
-                </div>
+            <ToolLayout
+                title="Audio Device Checker"
+                description="Test your microphone and speakers"
+                icon={<Speaker className="h-8 w-8 text-primary" />}
+                maxWidth="max-w-4xl"
+            >
                 <Card>
                     <CardHeader>
                         <CardTitle>Permission Required</CardTitle>
@@ -584,22 +587,18 @@ export default function AudioChecker() {
                         <Button onClick={requestPermissions}>Grant Permission</Button>
                     </CardFooter>
                 </Card>
-            </div>
+            </ToolLayout>
         )
     }
 
     return (
-        <Layout title="Audio Device Checker">
-            <div className="container mx-auto max-w-4xl py-12 px-4">
-                <div className="flex flex-col items-center mb-8">
-                    <div className="flex items-center gap-2 mb-2">
-                        <Speaker className="h-8 w-8 text-primary" />
-                        <h1 className="text-3xl font-bold text-center">Audio Device Checker</h1>
-                    </div>
-                    <p className="text-muted-foreground text-center">Test your microphone and speakers</p>
-                </div>
-
-                {error && (
+        <ToolLayout
+            title="Audio Device Checker"
+            description="Test your microphone and speakers"
+            icon={<Speaker className="h-8 w-8 text-primary" />}
+            maxWidth="max-w-4xl"
+        >
+            {error && (
                     <Alert className="mb-6 bg-red-50 border-red-200">
                         <AlertDescription className="text-red-800">{error}</AlertDescription>
                     </Alert>
@@ -773,9 +772,8 @@ export default function AudioChecker() {
                     </CardContent>
                 </Card>
 
-                {/* Hidden audio element for fallback playback */}
-                <audio ref={audioRef} style={{ display: 'none' }} />
-            </div>
-        </Layout>
+            {/* Hidden audio element for fallback playback */}
+            <audio ref={audioRef} style={{ display: 'none' }} />
+        </ToolLayout>
     )
 }

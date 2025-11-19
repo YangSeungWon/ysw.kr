@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Layout from '@theme/Layout';
+import ToolLayout from '@/components/ToolLayout';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -125,18 +125,13 @@ export default function Base64Page() {
     };
 
     return (
-        <Layout title="Base64 Encoder/Decoder">
+        <ToolLayout
+            title="Base64 Encoder/Decoder"
+            description="Encode and decode Base64 text and images"
+            icon={<FileCode className="h-8 w-8 text-primary" />}
+        >
             <Toaster />
-            <div className="container mx-auto px-4 py-8 max-w-5xl">
-                <div className="flex flex-col items-center mb-8">
-                    <div className="flex items-center gap-2 mb-2">
-                        <FileCode className="h-8 w-8 text-primary" />
-                        <h1 className="text-3xl font-bold text-center">Base64 Encoder/Decoder</h1>
-                    </div>
-                    <p className="text-muted-foreground text-center">Encode and decode Base64 text and images</p>
-                </div>
-
-                <Card className="w-full max-w-[900px] mx-auto">
+            <Card className="w-full max-w-[900px] mx-auto">
                     <CardHeader>
                         <CardTitle>Base64 Conversion</CardTitle>
                         <CardDescription>
@@ -238,7 +233,6 @@ export default function Base64Page() {
                         )}
                     </CardContent>
                 </Card>
-            </div>
-        </Layout>
+        </ToolLayout>
     );
 }

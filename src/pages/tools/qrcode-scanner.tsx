@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { toast } from 'sonner'
-import Layout from '@theme/Layout';
+import ToolLayout from '@/components/ToolLayout';
 import { Toaster } from 'sonner'
 import jsQR from 'jsqr'
 
@@ -160,18 +160,14 @@ export default function QRCodeScanner() {
     }
 
     return (
-        <Layout title="QR Code Scanner">
+        <ToolLayout
+            title="QR Code Scanner"
+            description="Scan QR codes from images or clipboard"
+            icon={<QrCode className="h-8 w-8 text-primary" />}
+            maxWidth="max-w-5xl"
+        >
             <Toaster />
-            <div className="container mx-auto px-4 py-8 max-w-5xl">
-                <div className="flex flex-col items-center mb-8">
-                    <div className="flex items-center gap-2 mb-2">
-                        <QrCode className="h-8 w-8 text-primary" />
-                        <h1 className="text-3xl font-bold text-center">QR Code Scanner</h1>
-                    </div>
-                    <p className="text-muted-foreground text-center">Scan QR codes from images or clipboard</p>
-                </div>
-
-                <Card className="w-full max-w-[600px] mx-auto">
+            <Card className="w-full max-w-[600px] mx-auto">
                     <CardHeader>
                         <CardTitle>Scan QR Code</CardTitle>
                         <CardDescription>
@@ -234,7 +230,6 @@ export default function QRCodeScanner() {
                         </div>
                     </CardContent>
                 </Card>
-            </div>
-        </Layout>
+        </ToolLayout>
     )
 } 

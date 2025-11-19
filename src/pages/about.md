@@ -2,7 +2,7 @@
 
 양승원 [jaŋ sɯŋwʌn]
 
-![Seungwon Yang](/img/seungwon.jpg)
+<img src="/img/seungwon.jpg" alt="Seungwon Yang" class="about-profile-image" />
 
 I am a Ph.D. student of [HISLab](https://his-lab.org)@[POSTECH](https://postech.ac.kr).
 My research interests include accessibility, gamification, location-based games, and LLMs.

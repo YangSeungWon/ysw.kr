@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Layout from '@theme/Layout';
+import ToolLayout from '@/components/ToolLayout';
 import 'leaflet/dist/leaflet.css';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -209,20 +209,14 @@ export default function CoordinatesPage() {
     };
 
     return (
-        <Layout title="Coordinate Conversion Tool">
+        <ToolLayout
+            title="Coordinate Conversion Tool"
+            description="Convert GPS coordinates to multiple formats"
+            icon={<MapPin className="h-8 w-8 text-primary" />}
+            maxWidth="max-w-5xl"
+        >
             <Toaster />
-            <div className="container mx-auto px-4 py-8 max-w-5xl">
-                <div className="flex flex-col items-center mb-8">
-                    <div className="flex items-center gap-2 mb-2">
-                        <MapPin className="h-8 w-8 text-primary" />
-                        <h1 className="text-3xl font-bold text-center">Coordinate Conversion Tool</h1>
-                    </div>
-                    <p className="text-muted-foreground text-center">
-                        Convert GPS coordinates to multiple formats
-                    </p>
-                </div>
-
-                <Card className="mb-6">
+            <Card className="mb-6">
                     <CardHeader>
                         <CardTitle>Enter Coordinates</CardTitle>
                         <CardDescription>
@@ -338,7 +332,6 @@ export default function CoordinatesPage() {
                         </CardContent>
                     </Card>
                 )}
-            </div>
-        </Layout>
+        </ToolLayout>
     );
 }

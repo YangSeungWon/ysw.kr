@@ -53,22 +53,10 @@ const config: Config = {
         src: "img/seungwon.jpg",
       },
       items: [
-        // {
-        //   type: 'docSidebar',
-        //   sidebarId: 'tutorialSidebar',
-        //   position: 'left',
-        //   label: 'Tutorial',
-        // },
         { to: "/about", label: "About", position: "left" },
         { to: "/publications", label: "Publications", position: "left" },
         { to: "/misc", label: "Misc", position: "left" },
         { to: "/tools", label: "Tools", position: "left" },
-        // {to: '/blog', label: 'Blog', position: 'left'},
-        {
-          href: "https://github.com/YangSeungWon/ysw.kr",
-          label: "GitHub",
-          position: "right",
-        },
       ],
     },
     footer: {
@@ -131,6 +119,11 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+    },
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
     },
   } satisfies Preset.ThemeConfig,
 
