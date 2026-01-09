@@ -6,53 +6,9 @@ import PageTitle from '@/components/PageTitle';
 import SectionHeader from '@/components/SectionHeader';
 import { TRANSITIONS, BORDER_RADIUS } from '@/constants/styles';
 import { FONT_SIZES } from '@/constants/typography';
+import { publications, demonstrations, type Publication } from '@/data/publications';
 
-const publications = [
-    {
-        id: 'C.1',
-        type: 'Conference Paper',
-        citation: 'Hyojin Ju, Jungeun Lee, <strong>Seungwon Yang</strong>, Jungseul Ok, and Inseok Hwang (2025). "Toward Affective Empathy via Personalized Analogy Generation: A Case Study on Microaggression". In: Proceedings of the 2025 CHI Conference on Human Factors in Computing Systems (ACM CHI 2025).',
-        links: [
-            { type: 'YouTube', url: 'https://www.youtube.com/watch?v=sT1gxhITWyU' },
-            { type: 'DOI', url: 'https://doi.org/10.1145/3706598.3714122' },
-            { type: 'PDF', url: 'https://hyojinju.com/files/papers/chi25b-sub9551-cam-i16.pdf' }
-        ]
-    }
-];
-
-const demonstrations = [
-    {
-        id: 'P.1',
-        type: 'Poster',
-        citation: '<strong>Seungwon Yang</strong>, Suwon Yoon, Jeongwon Choi, and Inseok Hwang (2025). "Chameleon: A Surface-Anchored Smartphone AR Prototype with Visually Blended Mobile Display". In: Adjunct Proceedings of the 37th Annual ACM Symposium on User Interface Software and Technology (ACM UIST 2025 Poster).',
-        links: [
-            { type: 'arXiv', url: 'https://arxiv.org/abs/2509.14643' },
-            { type: 'DOI', url: 'https://doi.org/10.1145/3746058.3758440' },
-            { type: 'Link', url: 'https://programs.sigchi.org/uist/2025/program/content/209506' },
-            { type: 'YouTube', url: 'https://www.youtube.com/watch?v=lcBdWX592iQ' }
-        ]
-    },
-    {
-        id: 'D.1',
-        type: 'Demonstration',
-        citation: 'Hyojin Ju, Jungeun Lee, <strong>Seungwon Yang</strong>, Jungseul Ok, and Inseok Hwang (2025). "Toward Affective Empathy via Personalized Analogy Generation: A Case Study on Microaggression". In: Extended Abstracts of the CHI Conference on Human Factors in Computing Systems (ACM CHI 2025 Interactivity).',
-        links: [
-            { type: 'Link', url: 'https://programs.sigchi.org/chi/2025/program/content/194724' },
-        ],
-        award: 'Popular Choice Honorable Mention Award'
-    },
-    {
-        id: 'W.1',
-        type: 'Workshop Paper',
-        citation: 'Suwon Yoon, <strong>Seungwon Yang</strong>, Jeongwon Choi, Wonjeong Park, and Inseok Hwang (2025). "Chatperone: An LLM-Based Negotiable Scaffolding System for Mediating Adolescent Mobile Interactions". In: ACM CHI 2025 Workshop.',
-        links: [
-            { type: 'arXiv', url: 'https://arxiv.org/abs/2504.17997' },
-            { type: 'DOI', url: 'https://doi.org/10.48550/arXiv.2504.17997' }
-        ]
-    }
-];
-
-function PublicationCard({ pub }) {
+function PublicationCard({ pub }: { pub: Publication }) {
     return (
         <div className="card padding--lg" style={{
             height: '100%',
