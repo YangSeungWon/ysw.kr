@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from '@docusaurus/Head';
+import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 interface HomepageLayoutProps {
@@ -14,21 +15,17 @@ export default function HomepageLayout({
   description,
 }: HomepageLayoutProps) {
   const { siteConfig } = useDocusaurusContext();
-  const pageTitle = title ? `${title} | ${siteConfig.title}` : siteConfig.title;
+  const pageTitle = title || siteConfig.title;
   const pageDescription = description || siteConfig.tagline;
 
   return (
-    <>
+    <Layout title={pageTitle} description={pageDescription} noFooter>
       <Head>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
         <html className="homepage-active" />
       </Head>
       <div className="homepage-layout">
         {children}
       </div>
-    </>
+    </Layout>
   );
 }

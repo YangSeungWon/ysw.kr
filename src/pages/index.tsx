@@ -1,9 +1,10 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import { useColorMode } from '@docusaurus/theme-common';
 import { FaGithub, FaLinkedin, FaOrcid } from 'react-icons/fa';
 import { SiGooglescholar } from 'react-icons/si';
-import { ChevronDown, FileText, Wrench, Folder, User } from 'lucide-react';
+import { ChevronDown, FileText, Wrench, Folder, User, Sun, Moon } from 'lucide-react';
 import HomepageLayout from '@/components/HomepageLayout';
 import HomepagePublicationCard from '@/components/HomepagePublicationCard';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
@@ -32,6 +33,7 @@ function AnimatedSection({
 // Hero Section
 function HeroSection() {
   const { siteConfig } = useDocusaurusContext();
+  const { colorMode, setColorMode } = useColorMode();
 
   const scrollToContent = () => {
     window.scrollTo({
@@ -40,8 +42,21 @@ function HeroSection() {
     });
   };
 
+  const toggleColorMode = () => {
+    setColorMode(colorMode === 'dark' ? 'light' : 'dark');
+  };
+
   return (
     <section className="homepage-hero">
+      {/* Dark Mode Toggle */}
+      <button
+        className="homepage-theme-toggle"
+        onClick={toggleColorMode}
+        aria-label="Toggle dark mode"
+      >
+        {colorMode === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+      </button>
+
       <img
         src="/img/seungwon.jpg"
         alt="Seungwon Yang"
@@ -57,7 +72,6 @@ function HeroSection() {
           <a href="https://his-lab.org" target="_blank" rel="noopener noreferrer">
             HISLab
           </a>
-          , POSTECH
         </p>
         <p className="homepage-hero-interests">
           Accessibility · Gamification · AR/VR

@@ -7,11 +7,12 @@ interface HomepagePublicationCardProps {
 }
 
 export default function HomepagePublicationCard({ publication }: HomepagePublicationCardProps) {
-  // Find specific link types
+  // Find specific link types (DOI prioritized over PDF/arXiv)
   const youtubeLink = publication.links.find(l => l.type === 'YouTube');
-  const paperLink = publication.links.find(l =>
-    l.type === 'PDF' || l.type === 'DOI' || l.type === 'arXiv'
-  );
+  const paperLink =
+    publication.links.find(l => l.type === 'DOI') ||
+    publication.links.find(l => l.type === 'PDF') ||
+    publication.links.find(l => l.type === 'arXiv');
   const anyLink = publication.links[0];
 
   return (
