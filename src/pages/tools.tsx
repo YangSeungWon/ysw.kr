@@ -27,7 +27,7 @@ interface Tool {
 }
 
 const ToolCard: React.FC<{ tool: Tool }> = ({ tool }) => {
-  const { styles, handlers } = useCardHover({ scale: 'SCALE_MEDIUM' });
+  const { styles, handlers } = useCardHover({ scale: 'SCALE_MEDIUM', shadow: 'LG', lift: true });
   return (
     <Link
       to={tool.to}
@@ -37,36 +37,39 @@ const ToolCard: React.FC<{ tool: Tool }> = ({ tool }) => {
         textDecoration: 'none',
         border: '2px solid var(--ifm-color-emphasis-200)',
         backgroundColor: 'var(--ifm-card-background-color)',
-        transition: TRANSITIONS.DEFAULT,
+        transition: TRANSITIONS.SLOW,
         display: 'flex',
         flexDirection: 'column',
         transform: styles.transform,
         borderColor: styles.borderColor,
+        boxShadow: styles.boxShadow,
       }}
       {...handlers}
     >
-      <div className="card__header" style={{ paddingBottom: '0.25rem' }}>
-        <h3 style={{
-          margin: 0,
-          fontSize: FONT_SIZES.LG,
-          color: 'var(--ifm-color-primary)'
-        }}>
-          {tool.name}
-        </h3>
-        <div style={{
-          fontSize: FONT_SIZES.XS,
-          opacity: 0.7,
-          marginTop: '0.15rem',
-          color: 'var(--ifm-color-emphasis-700)'
-        }}>
-          {tool.category}
+      <div className="card__header" style={{ padding: '0.75rem 0.75rem 0.25rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <h3 style={{
+            margin: 0,
+            fontSize: FONT_SIZES.BASE,
+            color: 'var(--ifm-color-primary)',
+            fontWeight: 600
+          }}>
+            {tool.name}
+          </h3>
+          <span style={{
+            fontSize: FONT_SIZES.XS,
+            opacity: 0.6,
+            color: 'var(--ifm-color-emphasis-600)'
+          }}>
+            {tool.category}
+          </span>
         </div>
       </div>
-      <div className="card__body" style={{ flex: 1 }}>
+      <div className="card__body" style={{ flex: 1, padding: '0.25rem 0.75rem 0.75rem' }}>
         <p style={{
-          color: 'var(--ifm-color-emphasis-800)',
-          marginBottom: '0.5rem',
-          lineHeight: 1.4,
+          color: 'var(--ifm-color-emphasis-700)',
+          marginBottom: '0.4rem',
+          lineHeight: 1.35,
           fontSize: FONT_SIZES.SM
         }}>
           {tool.description}
@@ -74,9 +77,8 @@ const ToolCard: React.FC<{ tool: Tool }> = ({ tool }) => {
         {tool.tags && (
           <div style={{
             display: 'flex',
-            gap: '0.25rem',
-            flexWrap: 'wrap',
-            marginTop: 'auto'
+            gap: '0.2rem',
+            flexWrap: 'wrap'
           }}>
             {tool.tags.map((tag, tagIdx) => (
               <Tag key={tagIdx}>#{tag}</Tag>
@@ -89,67 +91,56 @@ const ToolCard: React.FC<{ tool: Tool }> = ({ tool }) => {
 };
 
 const ListItem: React.FC<{ tool: Tool }> = ({ tool }) => {
-  const { styles, handlers } = useCardHover({ scale: 'SCALE_SMALL' });
+  const { styles, handlers } = useCardHover({ scale: 'SCALE_SMALL', shadow: 'SM', lift: true });
   return (
     <Link
       to={tool.to}
       style={{
         display: 'block',
-        padding: '1.25rem 1.5rem',
-        marginBottom: '0.75rem',
+        padding: '0.75rem 1rem',
+        marginBottom: '0.5rem',
         textDecoration: 'none',
-        border: '2px solid var(--ifm-color-emphasis-200)',
-        borderRadius: BORDER_RADIUS.LG,
+        border: '1px solid var(--ifm-color-emphasis-200)',
+        borderRadius: BORDER_RADIUS.MD,
         backgroundColor: 'var(--ifm-card-background-color)',
-        transition: TRANSITIONS.DEFAULT,
+        transition: TRANSITIONS.SLOW,
         transform: styles.transform,
         borderColor: styles.borderColor,
+        boxShadow: styles.boxShadow,
       }}
       {...handlers}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
-        <div style={{ flex: 1 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
           <h3 style={{
             margin: 0,
-            fontSize: FONT_SIZES.LG,
+            fontSize: FONT_SIZES.BASE,
             color: 'var(--ifm-color-primary)',
-            marginBottom: '0.15rem'
+            fontWeight: 600
           }}>
             {tool.name}
-            <span style={{
-              fontSize: FONT_SIZES.XS,
-              opacity: 0.6,
-              marginLeft: '0.4rem',
-              fontWeight: 'normal'
-            }}>
-              /{tool.category}
-            </span>
           </h3>
+          <span style={{
+            fontSize: FONT_SIZES.XS,
+            opacity: 0.5,
+            color: 'var(--ifm-color-emphasis-600)'
+          }}>
+            {tool.category}
+          </span>
           <p style={{
-            color: 'var(--ifm-color-emphasis-700)',
-            margin: '0.3rem 0',
-            lineHeight: 1.4,
-            fontSize: FONT_SIZES.SM
+            color: 'var(--ifm-color-emphasis-600)',
+            margin: 0,
+            fontSize: FONT_SIZES.SM,
+            flex: 1
           }}>
             {tool.description}
           </p>
-          {tool.tags && (
-            <div style={{
-              display: 'flex',
-              gap: '0.25rem',
-              flexWrap: 'wrap',
-              marginTop: '0.4rem'
-            }}>
-              {tool.tags.map((tag, tagIdx) => (
-                <Tag key={tagIdx}>#{tag}</Tag>
-              ))}
-            </div>
-          )}
         </div>
         <div style={{
-          marginLeft: '1rem',
+          marginLeft: '0.75rem',
           color: 'var(--ifm-color-primary)',
-          fontSize: FONT_SIZES.XL
+          fontSize: FONT_SIZES.BASE,
+          opacity: 0.6
         }}>
           →
         </div>
@@ -472,7 +463,7 @@ const Tools: React.FC = () => {
               </div>
             ) : (
               filteredTools.map((tool, idx) => (
-                <div key={idx} className="col col--4 margin-bottom--lg">
+                <div key={idx} className="col col--3 margin-bottom--md">
                   <ToolCard tool={tool} />
                 </div>
               ))

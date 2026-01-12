@@ -240,6 +240,13 @@ button > svg, .button > svg {
   display: inline-block !important;
 }
 
+/* Fix outline button hover - ensure background changes with text color */
+.button--outline:hover {
+  background-color: var(--ifm-color-primary) !important;
+  border-color: var(--ifm-color-primary) !important;
+  color: white !important;
+}
+
 /* Misc page animations */
 @keyframes fadeInUp {
   from {
