@@ -262,6 +262,13 @@ const tools: Tool[] = [
     category: 'text',
     tags: ['character', 'word', 'count', 'text', 'analysis'],
   },
+  {
+    to: "/tools/text-splitter",
+    name: "Text Splitter",
+    description: "Split text by delimiter and click to copy each part",
+    category: 'text',
+    tags: ['split', 'delimiter', 'copy', 'parse'],
+  },
 ];
 
 const Tools: React.FC = () => {
