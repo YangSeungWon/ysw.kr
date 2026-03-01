@@ -74,7 +74,7 @@ function HeroSection() {
           </a>
         </p>
         <p className="homepage-hero-interests">
-          Accessibility · Gamification · AR/VR
+          Accessibility · Gamification · AR/VR · Location-based Games
         </p>
       </div>
 
