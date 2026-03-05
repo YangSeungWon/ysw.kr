@@ -19,6 +19,7 @@ interface Project {
 
 const projects: {
   extensions: Project[];
+  webApps: Project[];
   apps: Project[];
   games: Project[];
 } = {
@@ -57,6 +58,26 @@ const projects: {
       ],
       color: "#00C73C",
       icon: "💬"
+    }
+  ],
+  webApps: [
+    {
+      name: "MMM - 잡학 큐레이션",
+      description: "Curated trivia and fun content from around the internet",
+      links: [
+        { label: "Visit", url: "https://mmm.ysw.kr", external: true }
+      ],
+      color: "#6C5CE7",
+      icon: "🧠"
+    },
+    {
+      name: "Quiz Korea",
+      description: "Interactive map quiz to learn South Korean provinces and districts",
+      links: [
+        { label: "Play", url: "https://quiz-korea.ysw.kr", external: true }
+      ],
+      color: "#0077B6",
+      icon: "🗺️"
     }
   ],
   apps: [
@@ -296,13 +317,41 @@ const Misc: React.FC = () => {
                 fontSize: FONT_SIZES.XL,
                 color: 'var(--ifm-heading-color)'
               }}>
+                Web Apps
+              </h2>
+              <Badge variant="default">{projects.webApps.length}</Badge>
+            </div>
+
+            {projects.webApps.map((project, index) => (
+              <ProjectCard key={index} project={project} index={index + projects.extensions.length} />
+            ))}
+          </section>
+
+          <section style={{ marginBottom: SPACING.XL }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: SPACING.SM,
+              marginBottom: SPACING.MD
+            }}>
+              <div style={{
+                width: '3px',
+                height: '20px',
+                background: 'var(--ifm-color-primary)',
+                borderRadius: '2px'
+              }} />
+              <h2 style={{
+                margin: 0,
+                fontSize: FONT_SIZES.XL,
+                color: 'var(--ifm-heading-color)'
+              }}>
                 Mobile Apps
               </h2>
               <Badge variant="default">{projects.apps.length}</Badge>
             </div>
 
             {projects.apps.map((project, index) => (
-              <ProjectCard key={index} project={project} index={index + projects.extensions.length} />
+              <ProjectCard key={index} project={project} index={index + projects.extensions.length + projects.webApps.length} />
             ))}
           </section>
 
@@ -330,7 +379,7 @@ const Misc: React.FC = () => {
             </div>
             
             {projects.games.map((project, index) => (
-              <ProjectCard key={index} project={project} index={index + projects.extensions.length + projects.apps.length} />
+              <ProjectCard key={index} project={project} index={index + projects.extensions.length + projects.webApps.length + projects.apps.length} />
             ))}
           </section>
 
