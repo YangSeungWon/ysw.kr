@@ -53,8 +53,7 @@ const config: Config = {
         src: "img/seungwon.jpg",
       },
       items: [
-        { to: "/about", label: "About", position: "left" },
-        { to: "/publications", label: "Publications", position: "left" },
+{ to: "/publications", label: "Publications", position: "left" },
         { to: "/misc", label: "Misc", position: "left" },
         { to: "/tools", label: "Tools", position: "left" },
       ],

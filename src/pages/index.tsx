@@ -72,9 +72,13 @@ function HeroSection() {
           <a href="https://his-lab.org" target="_blank" rel="noopener noreferrer">
             HISLab
           </a>
+          ,{' '}
+          <a href="https://postech.ac.kr" target="_blank" rel="noopener noreferrer">
+            POSTECH
+          </a>
         </p>
-        <p className="homepage-hero-interests">
-          Accessibility · Gamification · AR/VR · Location-based Games
+        <p className="homepage-hero-bio">
+          Seungwon Yang is a third-year Ph.D. student in Computer Science and Engineering at POSTECH. His research focuses on building human-centered systems that support social interaction and human agency, primarily through AR/VR applications. He has attended CHI 2024, CHI 2025, and UIST 2025. He envisions a future where technology empowers people in their everyday lives by supporting their agency, confidence, and meaningful social connections. He received his bachelor's degree in Computer Science and Engineering from POSTECH in 2023.
         </p>
       </div>
 
@@ -165,8 +169,7 @@ function PublicationsSection() {
 // Quick Links Section
 function QuickLinksSection() {
   const quickLinks = [
-    { to: '/about', icon: <User size={24} />, label: 'About' },
-    { to: '/publications', icon: <FileText size={24} />, label: 'Publications' },
+{ to: '/publications', icon: <FileText size={24} />, label: 'Publications' },
     { to: '/tools', icon: <Wrench size={24} />, label: 'Tools' },
     { to: '/misc', icon: <Folder size={24} />, label: 'Misc' },
   ];
