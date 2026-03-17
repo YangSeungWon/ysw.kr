@@ -63,24 +63,18 @@ function HeroSection() {
         className="homepage-hero-image"
       />
       <h1 className="homepage-hero-title">{siteConfig.title}</h1>
-      <p className="homepage-hero-subtitle">{siteConfig.tagline}</p>
 
-      {/* Brief About */}
-      <div className="homepage-hero-about">
-        <p className="homepage-hero-affiliation">
-          Ph.D. Student @{' '}
-          <a href="https://his-lab.org" target="_blank" rel="noopener noreferrer">
-            HISLab
-          </a>
-          ,{' '}
-          <a href="https://postech.ac.kr" target="_blank" rel="noopener noreferrer">
-            POSTECH
-          </a>
-        </p>
-        <p className="homepage-hero-bio">
-          Seungwon Yang is a third-year Ph.D. student in Computer Science and Engineering at POSTECH. His research focuses on building human-centered systems that support social interaction and human agency, primarily through AR/VR applications. He has attended CHI 2024, CHI 2025, and UIST 2025. He envisions a future where technology empowers people in their everyday lives by supporting their agency, confidence, and meaningful social connections. He received his bachelor's degree in Computer Science and Engineering from POSTECH in 2023.
-        </p>
-      </div>
+      {/* Affiliation */}
+      <p className="homepage-hero-affiliation">
+        Ph.D. Student @{' '}
+        <a href="https://his-lab.org" target="_blank" rel="noopener noreferrer">
+          HISLab
+        </a>
+        ,{' '}
+        <a href="https://postech.ac.kr" target="_blank" rel="noopener noreferrer">
+          POSTECH
+        </a>
+      </p>
 
       {/* CTA Buttons */}
       <div className="homepage-hero-buttons">
@@ -142,6 +136,18 @@ function HeroSection() {
         <ChevronDown size={24} className="scroll-indicator-arrow" />
       </button>
     </section>
+  );
+}
+
+// About Section (below the fold)
+function AboutSection() {
+  return (
+    <AnimatedSection className="homepage-about-section">
+      <h2 className="homepage-section-title">About</h2>
+      <p className="homepage-about-text">
+        Seungwon Yang is a third-year Ph.D. student in Computer Science and Engineering at POSTECH. His research focuses on building human-centered systems that support social interaction and human agency, primarily through AR/VR applications. He has attended CHI 2024, CHI 2025, and UIST 2025. He envisions a future where technology empowers people in their everyday lives by supporting their agency, confidence, and meaningful social connections. He received his bachelor's degree in Computer Science and Engineering from POSTECH in 2023.
+      </p>
+    </AnimatedSection>
   );
 }
 
@@ -217,6 +223,7 @@ export default function Home(): JSX.Element {
       description={siteConfig.tagline}
     >
       <HeroSection />
+      <AboutSection />
       <PublicationsSection />
       <QuickLinksSection />
       <FooterSection />

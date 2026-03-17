@@ -322,9 +322,10 @@ html.homepage-active .footer {
   transform: translateY(0);
 }
 
-/* Hero section - full viewport */
+/* Hero section - phone-sized on desktop, full viewport on mobile */
 .homepage-hero {
   min-height: 100vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -333,6 +334,18 @@ html.homepage-active .footer {
   padding: 2rem;
   background: linear-gradient(135deg, var(--ifm-color-primary-lighter), var(--ifm-color-primary-darker));
   position: relative;
+}
+
+@media (min-width: 768px) {
+  .homepage-hero {
+    min-height: 0;
+    max-height: none;
+    height: 720px;
+    max-width: 480px;
+    margin: 2rem auto;
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
 }
 
 [data-theme='dark'] .homepage-hero {
@@ -413,14 +426,28 @@ html.homepage-active .footer {
   text-align: center;
 }
 
-.homepage-hero-about a {
+.homepage-hero-about a,
+.homepage-hero-affiliation a {
   color: white;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
-.homepage-hero-about a:hover {
+.homepage-hero-about a:hover,
+.homepage-hero-affiliation a:hover {
   color: rgba(255, 255, 255, 0.9);
+}
+
+.homepage-hero-bio {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 540px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
 }
 
 .homepage-hero-affiliation {
@@ -443,6 +470,19 @@ html.homepage-active .footer {
   .homepage-hero-interests {
     font-size: 1.125rem;
   }
+}
+
+/* About section (below hero) */
+.homepage-about-section {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.homepage-about-text {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--ifm-font-color-base);
+  margin: 0;
 }
 
 /* Hero CTA buttons */
