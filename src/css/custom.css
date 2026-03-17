@@ -349,7 +349,7 @@ html.homepage-active .footer {
 }
 
 [data-theme='dark'] .homepage-hero {
-  background: linear-gradient(135deg, hsl(217, 50%, 15%), hsl(217, 50%, 8%));
+  background: linear-gradient(135deg, hsl(217, 60%, 25%), hsl(217, 50%, 15%));
 }
 
 /* Theme toggle button */
@@ -504,14 +504,14 @@ html.homepage-active .footer {
   text-decoration: none;
   transition: all 0.2s ease;
   background: white;
-  color: var(--ifm-color-primary);
+  color: hsl(217, 91%, 60%);
 }
 
 .homepage-hero-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   text-decoration: none;
-  color: var(--ifm-color-primary-dark);
+  color: hsl(217, 91%, 55%);
 }
 
 .homepage-hero-btn-outline {
