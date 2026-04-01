@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Upload } from 'lucide-react';
 import { useImageInput } from '@/hooks/useImageInput';
 
@@ -10,6 +10,7 @@ interface ImageDropZoneProps {
 }
 
 export default function ImageDropZone({ onImageLoad, disabled, children, className = '' }: ImageDropZoneProps) {
+    const [isHovered, setIsHovered] = useState(false);
     const { dropZoneProps, isDragging, fileInputRef, openFilePicker, handleFileInputChange } =
         useImageInput({ onImageLoad, disabled });
 
@@ -32,14 +33,16 @@ export default function ImageDropZone({ onImageLoad, disabled, children, classNa
         <div
             {...dropZoneProps}
             onClick={openFilePicker}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
             className={className}
             style={{
-                border: `2px dashed ${isDragging ? 'var(--ifm-color-primary)' : 'var(--ifm-color-emphasis-300)'}`,
+                border: `2px dashed ${isDragging ? 'var(--ifm-color-primary)' : isHovered ? 'var(--ifm-color-emphasis-400)' : 'var(--ifm-color-emphasis-300)'}`,
                 borderRadius: '0.5rem',
                 padding: '2rem 1rem',
                 textAlign: 'center',
                 cursor: disabled ? 'default' : 'pointer',
-                background: isDragging ? 'var(--ifm-color-primary-lightest)' : 'transparent',
+                background: isDragging ? 'var(--ifm-color-primary-lightest)' : isHovered ? 'var(--ifm-color-emphasis-100)' : 'transparent',
                 transition: 'all 0.2s ease',
                 opacity: disabled ? 0.5 : 1,
             }}
