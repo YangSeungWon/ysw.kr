@@ -14,16 +14,66 @@ export default function DoiBibtexPage() {
 
     const extractDoi = (input: string): string => {
         const trimmed = input.trim();
-        // Handle full URLs like https://doi.org/10.1145/...
         const urlMatch = trimmed.match(/doi\.org\/(.+)/);
         if (urlMatch) return urlMatch[1];
-        // Handle doi: prefix
         if (trimmed.toLowerCase().startsWith('doi:')) return trimmed.slice(4).trim();
         return trimmed;
     };
 
+    const SKIP_WORDS = new Set([
+        'a', 'an', 'the', 'of', 'for', 'to', 'in', 'on', 'with', 'from',
+        'by', 'at', 'as', 'and', 'or', 'is', 'are', 'was', 'were', 'how',
+        'what', 'when', 'where', 'why', 'who', 'which', 'can', 'do', 'does',
+        'toward', 'towards', 'into', 'through', 'during', 'between', 'using',
+    ]);
+
+    const removeDiacritics = (s: string) =>
+        s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+    const generateCitationKey = (raw: string): string => {
+        // Extract author and title from raw bibtex
+        const authorMatch = raw.match(/author\s*=\s*\{([^}]+)\}/i);
+        const yearMatch = raw.match(/year\s*=\s*\{?(\d{4})\}?/i);
+        const titleMatch = raw.match(/title\s*=\s*\{([^}]+)\}/i);
+
+        if (!authorMatch || !yearMatch || !titleMatch) return '';
+
+        const firstAuthor = removeDiacritics(
+            authorMatch[1].split(/\s+and\s+/i)[0].split(',')[0].trim().toLowerCase()
+        ).replace(/[^a-z]/g, '');
+
+        const year = yearMatch[1];
+
+        const words = removeDiacritics(titleMatch[1].toLowerCase()).match(/[a-z]+/g) || [];
+        const meaningful = words.filter(w => !SKIP_WORDS.has(w)).slice(0, 3);
+
+        return `${firstAuthor}${year}${meaningful.join('')}`;
+    };
+
+    const formatBibtex = (raw: string): string => {
+        // Fix HTML entities
+        let text = raw.replace(/&amp;/g, '\\&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+
+        // Generate better citation key
+        const newKey = generateCitationKey(text);
+        if (newKey) {
+            text = text.replace(/@(\w+)\{[^,]+,/, `@$1{${newKey},`);
+        }
+
+        // Format with proper indentation
+        const match = text.match(/^(@\w+\{[^,]+,)\s*(.*)\s*\}$/s);
+        if (!match) return text;
+
+        const header = match[1];
+        const body = match[2];
+
+        const fields = body.split(/,\s*(?=\w+\s*=)/).map(f => f.trim()).filter(Boolean);
+        const formatted = fields.map(f => `  ${f}`).join(',\n');
+
+        return `${header}\n${formatted}\n}`;
+    };
+
     const fetchBibtex = async () => {
-        // Use ref value as fallback for browser autofill
         const currentDoi = doi || inputRef.current?.value || '';
         if (currentDoi && !doi) setDoi(currentDoi);
         const resolvedDoi = extractDoi(currentDoi);
@@ -37,9 +87,7 @@ export default function DoiBibtexPage() {
 
         try {
             const response = await fetch(`https://doi.org/${resolvedDoi}`, {
-                headers: {
-                    'Accept': 'application/x-bibtex',
-                },
+                headers: { 'Accept': 'application/x-bibtex' },
             });
 
             if (!response.ok) {
@@ -47,7 +95,7 @@ export default function DoiBibtexPage() {
             }
 
             const text = await response.text();
-            setBibtex(text);
+            setBibtex(formatBibtex(text));
             toast.success('BibTeX fetched successfully');
         } catch (err) {
             toast.error(err instanceof Error ? err.message : 'Failed to fetch BibTeX');
