@@ -117,7 +117,12 @@ export default function DoiBibtexPage() {
                                         </button>
                                     </div>
                                 </div>
-                                <pre className="p-4 rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm overflow-x-auto whitespace-pre-wrap font-mono text-gray-900 dark:text-gray-100">
+                                <pre
+                                    onClick={copyToClipboard}
+                                    className="p-4 rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm overflow-x-auto whitespace-pre-wrap font-mono text-gray-900 dark:text-gray-100"
+                                    style={{ cursor: 'pointer' }}
+                                    title="Click to copy"
+                                >
                                     {bibtex}
                                 </pre>
                             </div>

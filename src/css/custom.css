@@ -243,7 +243,7 @@ button > svg, .button > svg {
 /* Fix outline button text color and hover */
 .button--outline {
   color: var(--ifm-font-color-base) !important;
-  border-color: var(--ifm-color-emphasis-400) !important;
+  border: 1px solid var(--ifm-color-emphasis-400) !important;
 }
 
 .button--outline:hover {
