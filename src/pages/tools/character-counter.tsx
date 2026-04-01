@@ -140,7 +140,7 @@ const CharacterCounter: React.FC = () => {
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
           <StatCard title="Characters" value={stats.chars} primary />
           <StatCard title="No Spaces" value={stats.charsNoSpaces} />
           <StatCard title="Words" value={stats.words} />
@@ -154,7 +154,7 @@ const CharacterCounter: React.FC = () => {
             <CardTitle>Detailed Analysis</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-6">
               <DetailStat label="Korean" value={stats.koreanChars} />
               <DetailStat label="English" value={stats.englishChars} />
               <DetailStat label="Numbers" value={stats.numbers} />

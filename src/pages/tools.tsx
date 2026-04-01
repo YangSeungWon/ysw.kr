@@ -110,37 +110,38 @@ const ListItem: React.FC<{ tool: Tool }> = ({ tool }) => {
       }}
       {...handlers}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <h3 style={{
-            margin: 0,
-            fontSize: FONT_SIZES.BASE,
-            color: 'var(--ifm-color-primary)',
-            fontWeight: 600
-          }}>
-            {tool.name}
-          </h3>
-          <span style={{
-            fontSize: FONT_SIZES.XS,
-            opacity: 0.5,
-            color: 'var(--ifm-color-emphasis-600)'
-          }}>
-            {tool.category}
-          </span>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <h3 style={{
+              margin: 0,
+              fontSize: FONT_SIZES.BASE,
+              color: 'var(--ifm-color-primary)',
+              fontWeight: 600
+            }}>
+              {tool.name}
+            </h3>
+            <span style={{
+              fontSize: FONT_SIZES.XS,
+              opacity: 0.5,
+              color: 'var(--ifm-color-emphasis-600)'
+            }}>
+              {tool.category}
+            </span>
+          </div>
           <p style={{
             color: 'var(--ifm-color-emphasis-600)',
-            margin: 0,
+            margin: '0.25rem 0 0',
             fontSize: FONT_SIZES.SM,
-            flex: 1
           }}>
             {tool.description}
           </p>
         </div>
         <div style={{
-          marginLeft: '0.75rem',
           color: 'var(--ifm-color-primary)',
           fontSize: FONT_SIZES.BASE,
-          opacity: 0.6
+          opacity: 0.6,
+          flexShrink: 0,
         }}>
           →
         </div>
@@ -342,47 +343,20 @@ const Tools: React.FC = () => {
           </p>
         </div>
 
-        <div style={{ 
-          display: 'flex', 
-          gap: '1rem', 
-          marginBottom: '2rem', 
-          flexWrap: 'wrap', 
-          alignItems: 'center',
+        <div style={{
+          marginBottom: '2rem',
           position: 'sticky',
           top: '60px',
           zIndex: 10,
           background: 'var(--ifm-background-color)',
-          padding: '1rem 0',
+          padding: '0.75rem 0',
           borderBottom: '1px solid var(--ifm-color-emphasis-200)'
         }}>
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
-            {categories.map((cat, index) => (
-              <button
-                key={cat.key}
-                className={`button button--sm ${selectedCategory === cat.key ? 'button--primary' : 'button--outline'}`}
-                style={{
-                  minWidth: 100,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.3rem',
-                  transition: TRANSITIONS.DEFAULT
-                }}
-                onClick={() => setSelectedCategory(cat.key)}
-              >
-                <span style={{ fontSize: '1.1em' }}>{cat.icon}</span>
-                {cat.label}
-                <Badge variant="default" className="ml-1">
-                  {categoryStats[cat.key] || 0}
-                </Badge>
-              </button>
-            ))}
-          </div>
-          
-          <div style={{ flex: 1, display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-            <div style={{ 
-              position: 'relative', 
+          {/* Search + view toggle */}
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <div style={{
+              position: 'relative',
               flex: 1,
-              maxWidth: 400
             }}>
               <input
                 type="search"
@@ -430,7 +404,7 @@ const Tools: React.FC = () => {
               )}
             </div>
 
-            <div style={{ display: 'flex', gap: '0.25rem' }}>
+            <div style={{ display: 'flex', gap: '0.25rem', flexShrink: 0 }}>
               <button
                 className={`button button--sm ${viewMode === 'grid' ? 'button--primary' : 'button--outline'}`}
                 onClick={() => setViewMode('grid')}
@@ -453,6 +427,30 @@ const Tools: React.FC = () => {
               </button>
             </div>
           </div>
+
+          {/* Category filters */}
+          <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', alignItems: 'center' }}>
+            {categories.map((cat, index) => (
+              <button
+                key={cat.key}
+                className={`button button--sm ${selectedCategory === cat.key ? 'button--primary' : 'button--outline'}`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.3rem',
+                  transition: TRANSITIONS.DEFAULT,
+                  fontSize: '0.75rem',
+                }}
+                onClick={() => setSelectedCategory(cat.key)}
+              >
+                <span>{cat.icon}</span>
+                {cat.label}
+                <Badge variant="default" className="ml-1">
+                  {categoryStats[cat.key] || 0}
+                </Badge>
+              </button>
+            ))}
+          </div>
         </div>
 
         {search && filteredTools.length > 0 && (
@@ -470,17 +468,19 @@ const Tools: React.FC = () => {
         )}
 
         {viewMode === 'grid' ? (
-          <div className="row">
+          <div>
             {filteredTools.length === 0 ? (
-              <div className="col col--12">
-                <EmptyState icon={<div style={{ fontSize: '3rem' }}>🔍</div>} message="No tools found. Try adjusting your search or filter." />
-              </div>
+              <EmptyState icon={<div style={{ fontSize: '3rem' }}>🔍</div>} message="No tools found. Try adjusting your search or filter." />
             ) : (
-              filteredTools.map((tool, idx) => (
-                <div key={idx} className="col col--3 margin-bottom--md">
-                  <ToolCard tool={tool} />
-                </div>
-              ))
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+                gap: '1rem',
+              }}>
+                {filteredTools.map((tool, idx) => (
+                  <ToolCard key={idx} tool={tool} />
+                ))}
+              </div>
             )}
           </div>
         ) : (

@@ -413,7 +413,7 @@ export default function QRCodeMulti() {
                                             size={200}
                                             level="H"
                                             includeMargin={true}
-                                            style={{ width: '200px', height: '200px' }}
+                                            style={{ width: '100%', height: 'auto', maxWidth: '200px' }}
                                         />
                                     </div>
                                     <div className="w-full text-center mt-1 mb-2">

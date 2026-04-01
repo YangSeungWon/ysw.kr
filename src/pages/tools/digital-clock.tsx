@@ -188,7 +188,7 @@ export default function DigitalClockPage() {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                                 <div className="flex items-center space-x-2">
                                     <Switch checked={showSeconds} onCheckedChange={setShowSeconds} id="seconds" />
                                     <Label htmlFor="seconds" className="cursor-pointer">Show Seconds</Label>
