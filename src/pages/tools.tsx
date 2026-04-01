@@ -331,7 +331,7 @@ const Tools: React.FC = () => {
   }, []);
 
   return (
-    <Layout title="Tools">
+    <Layout title="Tools" description="Free online developer tools - image editing, QR codes, text utilities, and more">
       <div className="container margin-vert--lg">
         <div style={{ marginBottom: SPACING.XL, textAlign: 'center' }}>
           <PageTitle>Developer Tools</PageTitle>

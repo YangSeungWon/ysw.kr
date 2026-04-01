@@ -19,7 +19,7 @@ export default function ToolLayout({
     maxWidth = 'max-w-5xl'
 }: ToolLayoutProps) {
     return (
-        <Layout title={title}>
+        <Layout title={title} description={description}>
             <div className={`container mx-auto px-4 py-4 ${maxWidth}`}>
                 <Link
                     to="/tools"
