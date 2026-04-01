@@ -269,6 +269,13 @@ const tools: Tool[] = [
     category: 'text',
     tags: ['split', 'delimiter', 'copy', 'parse'],
   },
+  {
+    to: "/tools/doi-bibtex",
+    name: "DOI to BibTeX",
+    description: "Fetch BibTeX citation from a DOI",
+    category: 'text',
+    tags: ['doi', 'bibtex', 'citation', 'paper', 'reference'],
+  },
 ];
 
 const Tools: React.FC = () => {

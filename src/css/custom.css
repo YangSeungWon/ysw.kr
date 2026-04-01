@@ -240,7 +240,12 @@ button > svg, .button > svg {
   display: inline-block !important;
 }
 
-/* Fix outline button hover - ensure background changes with text color */
+/* Fix outline button text color and hover */
+.button--outline {
+  color: var(--ifm-font-color-base) !important;
+  border-color: var(--ifm-color-emphasis-400) !important;
+}
+
 .button--outline:hover {
   background-color: var(--ifm-color-primary) !important;
   border-color: var(--ifm-color-primary) !important;
