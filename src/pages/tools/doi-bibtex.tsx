@@ -47,7 +47,7 @@ export default function DoiBibtexPage() {
         const words = removeDiacritics(titleMatch[1].toLowerCase()).match(/[a-z]+/g) || [];
         const meaningful = words.filter(w => !SKIP_WORDS.has(w)).slice(0, 3);
 
-        return `${firstAuthor}${year}${meaningful.join('')}`;
+        return `${firstAuthor}${year}_${meaningful.join('_')}`;
     };
 
     const formatBibtex = (raw: string): string => {
