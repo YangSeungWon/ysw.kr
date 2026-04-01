@@ -90,7 +90,7 @@ export default function DoiBibtexPage() {
                                     placeholder="10.1145/3746058.3758440 or https://doi.org/..."
                                     className="flex-1 px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-transparent text-gray-900 dark:text-gray-100 text-sm outline-none focus:ring-2 focus:ring-primary"
                                 />
-                                <Button onClick={fetchBibtex} disabled={loading || !doi.trim()}>
+                                <Button variant="docusaurus" onClick={fetchBibtex} disabled={loading || !doi.trim()}>
                                     <Search className="w-4 h-4" />
                                     {loading ? 'Fetching...' : 'Fetch'}
                                 </Button>
@@ -102,13 +102,19 @@ export default function DoiBibtexPage() {
                                 <div className="flex items-center justify-between mb-1">
                                     <Label>BibTeX</Label>
                                     <div className="flex gap-1">
-                                        <Button variant="outline" size="sm" onClick={copyToClipboard}>
+                                        <button
+                                            className="button button--sm button--outline"
+                                            onClick={copyToClipboard}
+                                        >
                                             <Copy className="w-3 h-3" />
                                             Copy
-                                        </Button>
-                                        <Button variant="outline" size="sm" onClick={() => setBibtex('')}>
+                                        </button>
+                                        <button
+                                            className="button button--sm button--outline"
+                                            onClick={() => setBibtex('')}
+                                        >
                                             <Trash2 className="w-3 h-3" />
-                                        </Button>
+                                        </button>
                                     </div>
                                 </div>
                                 <pre className="p-4 rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm overflow-x-auto whitespace-pre-wrap font-mono text-gray-900 dark:text-gray-100">
