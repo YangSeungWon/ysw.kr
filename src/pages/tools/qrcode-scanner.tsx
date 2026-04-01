@@ -1,98 +1,25 @@
-import React, { useState, useRef, type ChangeEvent, useEffect } from "react"
-import { Image, QrCode, Clipboard } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
+import React, { useState, useRef } from "react"
+import { QrCode, Clipboard } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { AlertDescription } from "@/components/ui/alert"
 import { toast } from 'sonner'
 import ToolLayout from '@/components/ToolLayout';
 import { Toaster } from 'sonner'
 import jsQR from 'jsqr'
+import { useImageInput } from '@/hooks/useImageInput'
 
 export default function QRCodeScanner() {
     const [scannedResult, setScannedResult] = useState("")
     const [isScanning, setIsScanning] = useState(false)
     const [uploadedImage, setUploadedImage] = useState<string>("")
-    const fileInputRef = useRef<HTMLInputElement>(null)
+    const handleImageFile = (file: File) => {
+        if (isScanning) return;
+        scanImageFile(file);
+    };
 
-    useEffect(() => {
-        const handleGlobalPaste = async (e: ClipboardEvent) => {
-            if (isScanning) return;
-
-            try {
-                // Try to get image from clipboard items API first
-                if (e.clipboardData?.items) {
-                    const items = Array.from(e.clipboardData.items);
-                    const imageItem = items.find(item => item.type.startsWith('image/'));
-
-                    if (imageItem) {
-                        e.preventDefault();
-                        const blob = await imageItem.getAsFile()?.slice();
-                        if (!blob) return;
-
-                        setIsScanning(true);
-                        setScannedResult("");
-
-                        const imageUrl = URL.createObjectURL(blob);
-                        setUploadedImage(imageUrl);
-
-                        const img = document.createElement('img');
-                        img.crossOrigin = "anonymous";
-                        img.onload = () => processImage(img);
-                        img.onerror = () => {
-                            URL.revokeObjectURL(imageUrl);
-                            setIsScanning(false);
-                            toast.error("Image Error", {
-                                description: "Failed to load the image from clipboard"
-                            });
-                        };
-                        img.src = imageUrl;
-                        return;
-                    }
-                }
-
-                // Fallback to clipboard read API
-                const clipboardItems = await navigator.clipboard.read();
-                const imageType = clipboardItems.find(item =>
-                    item.types.some(type => type.startsWith('image/'))
-                );
-
-                if (!imageType) {
-                    return;
-                }
-
-                e.preventDefault();
-                setIsScanning(true);
-                setScannedResult("");
-
-                const blob = await imageType.getType('image/png');
-                const imageUrl = URL.createObjectURL(blob);
-                setUploadedImage(imageUrl);
-
-                const img = document.createElement('img');
-                img.crossOrigin = "anonymous";
-                img.onload = () => processImage(img);
-                img.onerror = () => {
-                    URL.revokeObjectURL(imageUrl);
-                    setIsScanning(false);
-                    toast.error("Image Error", {
-                        description: "Failed to load the image from clipboard"
-                    });
-                };
-                img.src = imageUrl;
-            } catch (error) {
-                console.error("Clipboard error:", error);
-                toast.error("Clipboard Error", {
-                    description: "Failed to read image from clipboard. Make sure you have an image copied."
-                });
-                setIsScanning(false);
-            }
-        };
-
-        document.addEventListener('paste', handleGlobalPaste);
-        return () => {
-            document.removeEventListener('paste', handleGlobalPaste);
-        };
-    }, [isScanning]);
+    const { dropZoneProps, isDragging, fileInputRef, openFilePicker, handleFileInputChange } =
+        useImageInput({ onImageLoad: handleImageFile, disabled: isScanning });
 
     const processImage = async (img: HTMLImageElement) => {
         const canvas = document.createElement("canvas")
@@ -122,41 +49,23 @@ export default function QRCodeScanner() {
         setIsScanning(false)
     }
 
-    const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (!file) return
-
-        if (!file.type.startsWith('image/')) {
-            toast.error("Invalid File Type", {
-                description: "Please upload an image file"
-            })
-            return
-        }
-
+    const scanImageFile = (file: File) => {
         setIsScanning(true)
         setScannedResult("")
 
-        try {
-            const imageUrl = URL.createObjectURL(file)
-            setUploadedImage(imageUrl)
-            const img = document.createElement('img')
-            img.crossOrigin = "anonymous"
-            img.onload = () => processImage(img)
-            img.onerror = () => {
-                URL.revokeObjectURL(imageUrl)
-                setIsScanning(false)
-                toast.error("Image Error", {
-                    description: "Failed to load the image"
-                })
-            }
-            img.src = imageUrl
-        } catch (error) {
-            console.error("File handling error:", error)
-            toast.error("Scan Failed", {
-                description: "Failed to process the image file. Please try again with a different image."
-            })
+        const imageUrl = URL.createObjectURL(file)
+        setUploadedImage(imageUrl)
+        const img = document.createElement('img')
+        img.crossOrigin = "anonymous"
+        img.onload = () => processImage(img)
+        img.onerror = () => {
+            URL.revokeObjectURL(imageUrl)
             setIsScanning(false)
+            toast.error("Image Error", {
+                description: "Failed to load the image"
+            })
         }
+        img.src = imageUrl
     }
 
     return (
@@ -175,29 +84,32 @@ export default function QRCodeScanner() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div className="flex flex-col items-center gap-6">
+                        <div className="flex flex-col items-center gap-6" {...dropZoneProps}>
                             <input
                                 type="file"
                                 ref={fileInputRef}
-                                onChange={handleFileUpload}
+                                onChange={handleFileInputChange}
                                 accept="image/*"
                                 style={{ display: 'none' }}
                             />
-                            <div className="flex gap-4 w-full justify-center">
-                                <Button
-                                    variant="docusaurus"
-                                    onClick={() => fileInputRef.current?.click()}
-                                    className="max-w-[256px] h-12 text-lg font-semibold shadow-lg hover:scale-105 transition-transform"
-                                    disabled={isScanning}
-                                    size="lg"
-                                >
-                                    <Image className="w-5 h-5 mr-2" />
-                                    {isScanning ? "Scanning..." : "Upload QR Code"}
-                                </Button>
-                            </div>
-
-                            <div className="text-sm text-muted-foreground text-center">
-                                You can also paste an image (Ctrl+V) directly to scan
+                            <div
+                                onClick={openFilePicker}
+                                style={{
+                                    width: '100%',
+                                    border: `2px dashed ${isDragging ? 'var(--ifm-color-primary)' : 'var(--ifm-color-emphasis-300)'}`,
+                                    borderRadius: '0.5rem',
+                                    padding: '2rem 1rem',
+                                    textAlign: 'center',
+                                    cursor: isScanning ? 'default' : 'pointer',
+                                    background: isDragging ? 'var(--ifm-color-primary-lightest)' : 'transparent',
+                                    transition: 'all 0.2s ease',
+                                    opacity: isScanning ? 0.5 : 1,
+                                }}
+                            >
+                                <QrCode style={{ width: '2rem', height: '2rem', margin: '0 auto 0.5rem', color: 'var(--ifm-color-emphasis-500)' }} />
+                                <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-600)' }}>
+                                    {isScanning ? 'Scanning...' : isDragging ? 'Drop image here' : 'Drag & drop, click to upload, or paste (Ctrl+V)'}
+                                </p>
                             </div>
 
                             {scannedResult && (

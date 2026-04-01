@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ToolLayout from '@/components/ToolLayout';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Smile, Download, Upload } from 'lucide-react';
+import { Smile, Download } from 'lucide-react';
 import { toast, Toaster } from 'sonner';
+import ImageDropZone from '@/components/ImageDropZone';
 
 type ResizeMode = 'crop' | 'fit';
 
@@ -136,12 +136,9 @@ const EmojiGenerator: React.FC = () => {
         }
     };
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            setCurrentFile(file);
-            processImage(file);
-        }
+    const handleImageFile = (file: File) => {
+        setCurrentFile(file);
+        processImage(file);
     };
 
     const handleResizeModeChange = (value: string) => {
@@ -201,12 +198,7 @@ const EmojiGenerator: React.FC = () => {
 
                             <div className="space-y-2">
                                 <Label>이미지 선택</Label>
-                                <Input
-                                    type="file"
-                                    ref={fileInputRef}
-                                    onChange={handleFileChange}
-                                    accept="image/*"
-                                />
+                                <ImageDropZone onImageLoad={handleImageFile} />
                             </div>
 
                             {error && (

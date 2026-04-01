@@ -1,13 +1,13 @@
-import React, { useState, useRef } from "react"
+import React, { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { toast } from 'sonner'
 import ToolLayout from '@/components/ToolLayout'
 import { Toaster } from 'sonner'
 import { Label } from "@/components/ui/label"
-import { Image, Upload, Download } from "lucide-react"
+import { Image, Download } from "lucide-react"
 import { formatFileSize } from "@/lib/utils"
+import ImageDropZone from '@/components/ImageDropZone'
 
 export default function ImageResizer() {
     const [originalImage, setOriginalImage] = useState<string | null>(null)
@@ -15,26 +15,13 @@ export default function ImageResizer() {
     const [scale, setScale] = useState<number>(1)
     const [originalSize, setOriginalSize] = useState<{ width: number; height: number; fileSize: number } | null>(null)
     const [resizedSize, setResizedSize] = useState<{ width: number; height: number; fileSize: number } | null>(null)
-    const fileInputRef = useRef<HTMLInputElement>(null)
-
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (!file) return
-
-        if (!file.type.startsWith('image/')) {
-            toast.error("Please upload an image file")
-            return
-        }
-
-        // Get file size
+    const handleImageFile = (file: File) => {
         const fileSize = file.size
-
         const reader = new FileReader()
         reader.onload = (e) => {
             const result = e.target?.result
             if (typeof result === 'string') {
-                // Get image dimensions
-                const img = new window.Image() // Use window.Image to avoid the error
+                const img = new window.Image()
                 img.onload = () => {
                     setOriginalSize({
                         width: img.width,
@@ -44,7 +31,7 @@ export default function ImageResizer() {
                     setOriginalImage(result)
                     handleResize(result, scale, img.width, img.height)
                 }
-                img.src = result as string // Ensure result is treated as a string
+                img.src = result
             }
         }
         reader.readAsDataURL(file)
@@ -105,37 +92,6 @@ export default function ImageResizer() {
         toast.success("Image downloaded")
     }
 
-    const handlePaste = async (e: React.ClipboardEvent) => {
-        const items = Array.from(e.clipboardData.items)
-
-        for (const item of items) {
-            if (item.type.startsWith('image/')) {
-                const file = item.getAsFile()
-                if (!file) continue
-
-                const reader = new FileReader()
-                reader.onload = (e) => {
-                    const result = e.target?.result
-                    if (typeof result === 'string') {
-                        const img = new window.Image()
-                        img.onload = () => {
-                            setOriginalSize({
-                                width: img.width,
-                                height: img.height,
-                                fileSize: file.size
-                            })
-                            setOriginalImage(result)
-                            handleResize(result, scale, img.width, img.height)
-                        }
-                        img.src = result
-                        toast.success("Image pasted successfully")
-                    }
-                }
-                reader.readAsDataURL(file)
-                return
-            }
-        }
-    }
 
     return (
         <ToolLayout
@@ -154,34 +110,7 @@ export default function ImageResizer() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
-                            <div className="flex gap-2">
-                                <Input
-                                    type="text"
-                                    readOnly
-                                    placeholder="Upload or paste an image..."
-                                    onPaste={handlePaste}
-                                    className="flex-1"
-                                    value={originalImage ? "Image loaded" : ""}
-                                />
-                                <input
-                                    type="file"
-                                    ref={fileInputRef}
-                                    onChange={handleImageUpload}
-                                    accept="image/*"
-                                    className="hidden"
-                                />
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    onClick={() => fileInputRef.current?.click()}
-                                    title="Upload image"
-                                >
-                                    <Upload className="h-4 w-4" />
-                                </Button>
-                            </div>
-                            <p className="text-sm text-muted-foreground">
-                                Upload a file or paste from clipboard (Ctrl/Cmd+V)
-                            </p>
+                            <ImageDropZone onImageLoad={handleImageFile} />
                         </div>
 
                         {originalImage && (

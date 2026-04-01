@@ -4,8 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { FileCode, Upload, Copy, Trash2 } from 'lucide-react';
+import { FileCode, Copy, Trash2 } from 'lucide-react';
 import { toast, Toaster } from 'sonner';
+import ImageDropZone from '@/components/ImageDropZone';
 
 export default function Base64Page() {
     const [inputText, setInputText] = useState('');
@@ -158,23 +159,20 @@ export default function Base64Page() {
                             </div>
 
                             {mode === 'encode' && (
-                                <>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleFileUpload}
-                                        ref={fileInputRef}
-                                        className="hidden"
-                                    />
-                                    <Button
-                                        variant="docusaurus"
-                                        onClick={() => fileInputRef.current?.click()}
-                                        className="gap-2"
-                                    >
-                                        <Upload className="w-4 h-4" />
-                                        Upload Image
-                                    </Button>
-                                </>
+                                <ImageDropZone
+                                    onImageLoad={(file) => {
+                                        const reader = new FileReader();
+                                        reader.onload = () => {
+                                            const base64String = reader.result as string;
+                                            const pureBase64 = base64String.split('base64,')[1];
+                                            setInputText('');
+                                            setOutputText(pureBase64);
+                                            setImagePreview(base64String);
+                                            toast.success('Image uploaded successfully');
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }}
+                                />
                             )}
 
                             <Button

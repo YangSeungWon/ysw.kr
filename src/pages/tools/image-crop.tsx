@@ -2,10 +2,10 @@ import React, { useState, useCallback, useRef, useEffect } from "react"
 import ReactCrop, { type Crop } from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Crop as CropIcon, Download, RotateCcw, Maximize } from "lucide-react"
 import ToolLayout from '@/components/ToolLayout'
+import ImageDropZone from '@/components/ImageDropZone'
 
 const DEFAULT_CROP: Crop = {
     unit: 'px',
@@ -25,10 +25,7 @@ export function ImageCropper() {
     const [croppedSize, setCroppedSize] = useState({ width: 0, height: 0 })
     const uploadedFileName = useRef<string>("")
 
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (!file) return
-
+    const handleImageFile = (file: File) => {
         const reader = new FileReader()
         reader.onloadend = () => {
             setImageSrc(reader.result as string)
@@ -171,14 +168,12 @@ export function ImageCropper() {
 
     return (
         <div className="space-y-6">
-            <Input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="max-w-md"
-            />
+            {!imageSrc && (
+                <ImageDropZone onImageLoad={handleImageFile} />
+            )}
 
             {imageSrc && (
+                <ImageDropZone onImageLoad={handleImageFile}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                         <Card>
@@ -252,6 +247,7 @@ export function ImageCropper() {
                         </div>
                     )}
                 </div>
+                </ImageDropZone>
             )}
         </div>
     )

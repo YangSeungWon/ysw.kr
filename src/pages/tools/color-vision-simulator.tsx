@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react"
-import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Eye } from "lucide-react"
 import ToolLayout from '@/components/ToolLayout'
+import ImageDropZone from '@/components/ImageDropZone'
 
 type ColorVisionType = 'original' | 'red-variation' | 'green-variation' | 'blue-variation' | 'monochrome'
 
@@ -22,24 +22,6 @@ export function ColorVisionSimulator() {
         reader.readAsDataURL(file)
     }
 
-    const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (!file) return
-        handleImageUpload(file)
-    }
-
-    const handlePaste = (e: React.ClipboardEvent) => {
-        const items = e.clipboardData.items
-        for (let i = 0; i < items.length; i++) {
-            if (items[i].type.indexOf('image') !== -1) {
-                const file = items[i].getAsFile()
-                if (file) {
-                    handleImageUpload(file)
-                    break
-                }
-            }
-        }
-    }
 
     const handleImageLoad = () => {
         if (imageRef.current) {
@@ -119,24 +101,7 @@ export function ColorVisionSimulator() {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col items-center gap-4">
-                <Input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileInput}
-                    className="max-w-md"
-                />
-                <p className="text-sm text-muted-foreground">
-                    Or copy an image to your clipboard and paste it here (Ctrl+V)
-                </p>
-                <div
-                    className="w-full max-w-md h-32 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer hover:bg-muted"
-                    onPaste={handlePaste}
-                    tabIndex={0}
-                >
-                    <p className="text-muted-foreground">Paste your image here</p>
-                </div>
-            </div>
+            <ImageDropZone onImageLoad={handleImageUpload} />
 
             {imageSrc && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
