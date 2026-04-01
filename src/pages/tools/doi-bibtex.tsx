@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ToolLayout from '@/components/ToolLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -10,6 +10,7 @@ export default function DoiBibtexPage() {
     const [doi, setDoi] = useState('');
     const [bibtex, setBibtex] = useState('');
     const [loading, setLoading] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const extractDoi = (input: string): string => {
         const trimmed = input.trim();
@@ -22,7 +23,10 @@ export default function DoiBibtexPage() {
     };
 
     const fetchBibtex = async () => {
-        const resolvedDoi = extractDoi(doi);
+        // Use ref value as fallback for browser autofill
+        const currentDoi = doi || inputRef.current?.value || '';
+        if (currentDoi && !doi) setDoi(currentDoi);
+        const resolvedDoi = extractDoi(currentDoi);
         if (!resolvedDoi) {
             toast.error('Please enter a DOI');
             return;
@@ -82,6 +86,7 @@ export default function DoiBibtexPage() {
                             <Label htmlFor="doi-input">DOI</Label>
                             <div className="flex gap-2 mt-1">
                                 <input
+                                    ref={inputRef}
                                     id="doi-input"
                                     type="text"
                                     value={doi}
@@ -90,7 +95,7 @@ export default function DoiBibtexPage() {
                                     placeholder="10.1145/3746058.3758440 or https://doi.org/..."
                                     className="flex-1 px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-transparent text-gray-900 dark:text-gray-100 text-sm outline-none focus:ring-2 focus:ring-primary"
                                 />
-                                <Button variant="docusaurus" onClick={fetchBibtex} disabled={loading || !doi.trim()}>
+                                <Button variant="docusaurus" onClick={fetchBibtex} disabled={loading}>
                                     <Search className="w-4 h-4" />
                                     {loading ? 'Fetching...' : 'Fetch'}
                                 </Button>
