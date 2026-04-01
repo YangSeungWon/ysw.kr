@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { Timer, Clock, Play, Pause, RotateCcw, Plus, Maximize, Minimize } from 'lucide-react';
+import { useFullScreen } from '@/hooks/useFullScreen';
 
 const colorThemes = {
     default: {
@@ -54,7 +55,7 @@ export default function TimerStopwatchPage() {
     const [colorTheme, setColorTheme] = useState<keyof typeof colorThemes>('default');
     const [showMilliseconds, setShowMilliseconds] = useState(true);
     const [showBorder, setShowBorder] = useState(true);
-    const [fullScreen, setFullScreen] = useState(false);
+    const { isFullScreen: fullScreen, enterFullScreen, exitFullScreen, fullScreenRef } = useFullScreen();
     const [soundEnabled, setSoundEnabled] = useState(true);
 
     const [stopwatchTime, setStopwatchTime] = useState(0);
@@ -207,7 +208,7 @@ export default function TimerStopwatchPage() {
                                 </div>
 
                                 <div className="flex items-end">
-                                    <Button onClick={() => setFullScreen(true)} variant="docusaurus" className="w-full gap-2">
+                                    <Button onClick={enterFullScreen} variant="docusaurus" className="w-full gap-2">
                                         <Maximize className="w-4 h-4" />
                                         Fullscreen
                                     </Button>
@@ -261,6 +262,7 @@ export default function TimerStopwatchPage() {
             )}
 
             <div
+                ref={fullScreenRef as React.RefObject<HTMLDivElement>}
                 className="flex flex-col items-center justify-center p-8 rounded-xl"
                 style={{
                     fontSize: `${fontSize}px`,
@@ -269,8 +271,13 @@ export default function TimerStopwatchPage() {
                     color: timerFinished ? '#ff4444' : theme.text,
                     backgroundColor: theme.background,
                     border: showBorder ? `2px solid ${theme.border}` : 'none',
-                    minHeight: fullScreen ? '100vh' : 'auto',
                     boxShadow: colorTheme !== 'default' ? '0 0 20px rgba(0,0,0,0.5)' : 'none',
+                    ...(fullScreen && !document.fullscreenElement ? {
+                        position: 'fixed' as const,
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        zIndex: 9999,
+                        borderRadius: 0,
+                    } : {}),
                     animation: timerFinished ? 'pulse 1s infinite' : 'none',
                 }}
             >
@@ -325,7 +332,7 @@ export default function TimerStopwatchPage() {
 
                 {fullScreen && (
                     <Button
-                        onClick={() => setFullScreen(false)}
+                        onClick={exitFullScreen}
                         variant="docusaurus"
                         className="absolute top-5 right-5 gap-2"
                     >

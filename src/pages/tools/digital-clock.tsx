@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Clock, Maximize, Minimize } from 'lucide-react';
+import { useFullScreen } from '@/hooks/useFullScreen';
 
 interface TimeZone {
     value: string;
@@ -62,7 +63,7 @@ export default function DigitalClockPage() {
     const [fontSize, setFontSize] = useState(48);
     const [colorTheme, setColorTheme] = useState<keyof typeof colorThemes>('default');
     const [showBorder, setShowBorder] = useState(true);
-    const [fullScreen, setFullScreen] = useState(false);
+    const { isFullScreen: fullScreen, enterFullScreen, exitFullScreen, fullScreenRef } = useFullScreen();
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -208,7 +209,7 @@ export default function DigitalClockPage() {
                             </div>
 
                             <Button
-                                onClick={() => setFullScreen(true)}
+                                onClick={enterFullScreen}
                                 variant="docusaurus"
                                 className="w-full md:w-auto gap-2"
                             >
@@ -220,6 +221,7 @@ export default function DigitalClockPage() {
             )}
 
             <div
+                ref={fullScreenRef as React.RefObject<HTMLDivElement>}
                 className="flex flex-col items-center justify-center p-8 rounded-xl"
                 style={{
                     fontSize: `${fontSize}px`,
@@ -228,8 +230,13 @@ export default function DigitalClockPage() {
                     color: theme.text,
                     backgroundColor: theme.background,
                     border: showBorder ? `2px solid ${theme.border}` : 'none',
-                    minHeight: fullScreen ? '100vh' : 'auto',
                     boxShadow: colorTheme !== 'default' ? '0 0 20px rgba(0,0,0,0.5)' : 'none',
+                    ...(fullScreen && !document.fullscreenElement ? {
+                        position: 'fixed' as const,
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        zIndex: 9999,
+                        borderRadius: 0,
+                    } : {}),
                 }}
             >
                 <div>{formatTime(currentTime)}</div>
@@ -249,7 +256,7 @@ export default function DigitalClockPage() {
 
                 {fullScreen && (
                     <Button
-                        onClick={() => setFullScreen(false)}
+                        onClick={exitFullScreen}
                         variant="docusaurus"
                         className="absolute top-5 right-5 gap-2"
                     >
