@@ -39,7 +39,7 @@ export const demonstrations: Publication[] = [
     title: 'Chameleon: A Surface-Anchored Smartphone AR Prototype with Visually Blended Mobile Display',
     venue: 'UIST 2025 Poster',
     year: 2025,
-    citation: '<strong>Seungwon Yang</strong>, Suwon Yoon, Jeongwon Choi, and Inseok Hwang (2025). "Chameleon: A Surface-Anchored Smartphone AR Prototype with Visually Blended Mobile Display". In: Adjunct Proceedings of the 37th Annual ACM Symposium on User Interface Software and Technology (ACM UIST 2025 Poster).',
+    citation: '<strong>Seungwon Yang</strong>, Suwon Yoon, Jeongwon Choi, and Inseok Hwang (2025). "Chameleon: A Surface-Anchored Smartphone AR Prototype with Visually Blended Mobile Display". In: Adjunct Proceedings of the 38th Annual ACM Symposium on User Interface Software and Technology (ACM UIST 2025 Poster).',
     thumbnail: '/img/pub/chameleon-uist2025-poster.jpeg',
     links: [
       { type: 'arXiv', url: 'https://arxiv.org/abs/2509.14643' },
