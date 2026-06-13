@@ -62,13 +62,14 @@ const projects: {
   ],
   webApps: [
     {
-      name: "MMM - 잡학 큐레이션",
-      description: "Curated trivia and fun content from around the internet",
+      name: "Polis Korea - 한국 선거 데이터 시각화",
+      description: "Visualization of Korean presidential, general, and local elections with hex cartograms and Leaflet geo maps, aligned to each era's administrative boundaries",
       links: [
-        { label: "Visit", url: "https://mmm.ysw.kr", external: true }
+        { label: "Visit", url: "https://polis.ysw.kr", external: true },
+        { label: "GitHub", url: "https://github.com/YangSeungWon/polis-korea", external: true }
       ],
-      color: "#6C5CE7",
-      icon: "🧠"
+      color: "#0a0e1a",
+      icon: "🗳️"
     },
     {
       name: "Quiz Korea",
@@ -78,6 +79,15 @@ const projects: {
       ],
       color: "#0077B6",
       icon: "🗺️"
+    },
+    {
+      name: "MMM",
+      description: "Quirky facts and trivia",
+      links: [
+        { label: "Visit", url: "https://mmm.ysw.kr", external: true }
+      ],
+      color: "#6C5CE7",
+      icon: "🧠"
     }
   ],
   apps: [
