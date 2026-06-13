@@ -75,7 +75,8 @@ const projects: {
       name: "Quiz Korea",
       description: "Interactive map quiz to learn South Korean provinces and districts",
       links: [
-        { label: "Play", url: "https://quiz-korea.ysw.kr", external: true }
+        { label: "Play", url: "https://quiz-korea.ysw.kr", external: true },
+        { label: "GitHub", url: "https://github.com/YangSeungWon/quiz-korea", external: true }
       ],
       color: "#0077B6",
       icon: "🗺️"
