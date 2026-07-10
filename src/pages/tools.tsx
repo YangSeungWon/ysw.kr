@@ -236,6 +236,13 @@ const tools: Tool[] = [
     tags: ['audio', 'test', 'microphone', 'speaker'],
   },
   {
+    to: "/tools/tts-reader",
+    name: "TTS Reader",
+    description: "Read text aloud with per-sentence Korean/English voice detection",
+    category: 'audio',
+    tags: ['tts', 'speech', 'voice', 'read', 'accessibility'],
+  },
+  {
     to: "/tools/digital-clock",
     name: "Digital Clock",
     description: "Display the current time in different timezones",
