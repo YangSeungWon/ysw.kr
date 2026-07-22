@@ -1,11 +1,12 @@
 "use client"
 
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 import { Volume2, Play, Pause, Square } from "lucide-react"
 import ToolLayout from "@/components/ToolLayout"
 
@@ -20,6 +21,13 @@ interface VoiceEntry {
     voice: SpeechSynthesisVoice
     idx: number
 }
+
+// LaTeX 인용/참조 명령 프리셋 (\cite, \citep, \ref, \eqref, \label 등, 앞의 ~ 포함)
+const LATEX_PRESET =
+    /~?\\(?:no)?cite[a-zA-Z]*\*?(?:\[[^\]]*\])*\{[^{}]*\}|~?\\(?:ref|eqref|autoref|cref|Cref|pageref|label|nameref)\*?\{[^{}]*\}/
+
+// 글자(한글/영문)가 하나라도 있는지
+const HAS_LETTER = /[가-힣ᄀ-ᇿ㄰-㆏a-zA-Z]/
 
 // 프리미엄(자연스러운) 목소리일수록 높은 점수. 네트워크/Neural/Premium 계열 우대.
 function premiumScore(v: SpeechSynthesisVoice): number {
@@ -53,10 +61,30 @@ function buildSentences(text: string): Sentence[] {
     let m: RegExpExecArray | null
     while ((m = re.exec(text)) !== null) {
         if (m[0].trim().length === 0) continue
-        res.push({ start: m.index, end: m.index + m[0].length, text: m[0], lang: detectLang(m[0]) })
+        const seg: Sentence = { start: m.index, end: m.index + m[0].length, text: m[0], lang: detectLang(m[0]) }
+        // 글자 없는 조각(마침표 뒤 닫는 따옴표·기호만)은 앞 문장에 붙인다.
+        // 예: "She said 'hi.'" 의 끝 따옴표가 별도 문장으로 잡혀 한국어로 읽히는 문제 방지.
+        if (!HAS_LETTER.test(seg.text) && res.length) {
+            const prev = res[res.length - 1]
+            prev.end = seg.end
+            prev.text = text.slice(prev.start, prev.end)
+            continue
+        }
+        res.push(seg)
     }
     if (!res.length && text.length) res.push({ start: 0, end: text.length, text, lang: detectLang(text) })
     return res
+}
+
+// 제외 패턴을 제거해 실제로 읽을 텍스트를 만든다.
+function stripForSpeech(str: string, regexes: RegExp[]): string {
+    if (!regexes.length) return str
+    let out = str
+    for (const re of regexes) {
+        re.lastIndex = 0
+        out = out.replace(re, " ")
+    }
+    return out.replace(/\s+/g, " ").trim()
 }
 
 export default function TtsReader() {
@@ -74,13 +102,32 @@ export default function TtsReader() {
     const [isPlaying, setIsPlaying] = useState(false)
     const [isPaused, setIsPaused] = useState(false)
     const [status, setStatus] = useState("")
+    const [excludeLatex, setExcludeLatex] = useState(true)
+    const [customExclude, setCustomExclude] = useState("")
 
     const genRef = useRef(0) // 재생 세션 토큰 (정지/재시작 시 콜백 무효화)
     const activeSpanRef = useRef<HTMLSpanElement | null>(null)
 
+    // 제외할 정규식 목록 (프리셋 + 사용자 입력). 잘못된 패턴은 무시하고 에러 표시.
+    const { excludeRegexes, regexError } = useMemo(() => {
+        const regexes: RegExp[] = []
+        let error = ""
+        if (excludeLatex) regexes.push(new RegExp(LATEX_PRESET.source, "g"))
+        for (const line of customExclude.split("\n")) {
+            const p = line.trim()
+            if (!p) continue
+            try {
+                regexes.push(new RegExp(p, "g"))
+            } catch {
+                error = p
+            }
+        }
+        return { excludeRegexes: regexes, regexError: error }
+    }, [excludeLatex, customExclude])
+
     // 콜백에서 최신 값을 읽기 위한 ref
-    const stateRef = useRef({ rate, pitch, selectedKo, selectedEn, voices, sentences })
-    stateRef.current = { rate, pitch, selectedKo, selectedEn, voices, sentences }
+    const stateRef = useRef({ rate, pitch, selectedKo, selectedEn, voices, sentences, excludeRegexes })
+    stateRef.current = { rate, pitch, selectedKo, selectedEn, voices, sentences, excludeRegexes }
 
     // 목소리 로드
     useEffect(() => {
@@ -130,6 +177,31 @@ export default function TtsReader() {
         activeSpanRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" })
     }, [activeIdx])
 
+    // 제외 구간(원본 텍스트 기준). 리더에서 취소선 표시에 사용.
+    const excludedRanges = useMemo<[number, number][]>(() => {
+        if (!excludeRegexes.length || !fullText) return []
+        const ranges: [number, number][] = []
+        for (const re of excludeRegexes) {
+            re.lastIndex = 0
+            let m: RegExpExecArray | null
+            while ((m = re.exec(fullText)) !== null) {
+                if (m[0].length === 0) {
+                    re.lastIndex++
+                    continue
+                }
+                ranges.push([m.index, m.index + m[0].length])
+            }
+        }
+        ranges.sort((a, b) => a[0] - b[0])
+        const merged: [number, number][] = []
+        for (const r of ranges) {
+            const last = merged[merged.length - 1]
+            if (last && r[0] <= last[1]) last[1] = Math.max(last[1], r[1])
+            else merged.push([r[0], r[1]])
+        }
+        return merged
+    }, [excludeRegexes, fullText])
+
     // 감지된 언어에 맞는 선택된 목소리를 반환 (없으면 다른 언어로 폴백).
     const voiceForLang = useCallback((lang: "ko" | "en"): SpeechSynthesisVoice | null => {
         const st = stateRef.current
@@ -153,9 +225,15 @@ export default function TtsReader() {
                 return
             }
             const s = sen[idx]
+            const spoken = stripForSpeech(s.text, stateRef.current.excludeRegexes)
+            if (!spoken) {
+                // 제외 후 남는 내용이 없으면(인용만 있는 문장 등) 건너뛴다.
+                speakIndex(idx + 1, myGen)
+                return
+            }
             setActiveIdx(idx)
 
-            const utter = new SpeechSynthesisUtterance(s.text)
+            const utter = new SpeechSynthesisUtterance(spoken)
             const voice = voiceForLang(s.lang)
             if (voice) {
                 utter.voice = voice
@@ -239,13 +317,38 @@ export default function TtsReader() {
     const current = Math.min(activeIdx + 1, total)
     const progress = total ? (current / total) * 100 : 0
 
+    // 특정 구간 [aStart, aEnd)를 렌더링하되 제외 구간은 취소선/흐리게 표시.
+    const renderRange = useCallback(
+        (aStart: number, aEnd: number, keyPrefix: string): React.ReactNode[] => {
+            const out: React.ReactNode[] = []
+            let pos = aStart
+            let k = 0
+            for (const [es, ee] of excludedRanges) {
+                if (ee <= aStart || es >= aEnd) continue
+                const s2 = Math.max(es, aStart)
+                const e2 = Math.min(ee, aEnd)
+                if (s2 > pos) out.push(<React.Fragment key={`${keyPrefix}-n${k}`}>{fullText.slice(pos, s2)}</React.Fragment>)
+                out.push(
+                    <span key={`${keyPrefix}-x${k}`} style={{ opacity: 0.4, textDecoration: "line-through" }}>
+                        {fullText.slice(s2, e2)}
+                    </span>
+                )
+                pos = e2
+                k++
+            }
+            if (pos < aEnd) out.push(<React.Fragment key={`${keyPrefix}-n${k}`}>{fullText.slice(pos, aEnd)}</React.Fragment>)
+            return out
+        },
+        [excludedRanges, fullText]
+    )
+
     // 리더 뷰: 문장별 span을 렌더링하며 원본 공백/줄바꿈을 보존한다.
     const readerNodes = useMemo(() => {
         const nodes: React.ReactNode[] = []
         let cursor = 0
         sentences.forEach((s, i) => {
             if (s.start > cursor) {
-                nodes.push(<React.Fragment key={`t${i}`}>{fullText.slice(cursor, s.start)}</React.Fragment>)
+                nodes.push(<React.Fragment key={`gap${i}`}>{fullText.slice(cursor, s.start)}</React.Fragment>)
             }
             const isActive = i === activeIdx
             const isDone = i < activeIdx
@@ -269,7 +372,7 @@ export default function TtsReader() {
                         ...(isDone ? { color: "var(--ifm-color-emphasis-500)" } : {}),
                     }}
                 >
-                    {fullText.slice(s.start, s.end)}
+                    {renderRange(s.start, s.end, `s${i}`)}
                 </span>
             )
             cursor = s.end
@@ -278,7 +381,7 @@ export default function TtsReader() {
             nodes.push(<React.Fragment key="tail">{fullText.slice(cursor)}</React.Fragment>)
         }
         return nodes
-    }, [sentences, activeIdx, fullText, speakFrom])
+    }, [sentences, activeIdx, fullText, speakFrom, renderRange])
 
     const renderVoiceOptions = (list: VoiceEntry[]) =>
         list.length ? (
@@ -384,8 +487,39 @@ export default function TtsReader() {
                         </div>
                     </div>
 
+                    {/* 읽기 제외 */}
+                    <div
+                        className="mt-4 rounded-md p-3"
+                        style={{ border: "1px solid var(--ifm-color-emphasis-200)" }}
+                    >
+                        <div className="flex items-center gap-2">
+                            <Switch id="excl-latex" checked={excludeLatex} onCheckedChange={setExcludeLatex} />
+                            <Label htmlFor="excl-latex" className="cursor-pointer">
+                                LaTeX 인용·참조 제외{" "}
+                                <span className="text-muted-foreground font-normal">(\cite, \ref, \label 등)</span>
+                            </Label>
+                        </div>
+                        <div className="mt-3 flex flex-col gap-1.5">
+                            <Label htmlFor="excl-custom" className="text-xs text-muted-foreground">
+                                직접 제외 (정규식, 한 줄에 하나)
+                            </Label>
+                            <Textarea
+                                id="excl-custom"
+                                value={customExclude}
+                                onChange={(e) => setCustomExclude(e.target.value)}
+                                placeholder={"예)\n\\[[0-9]+\\]\n\\(cf\\.[^)]*\\)"}
+                                className="min-h-[56px] font-mono text-xs"
+                            />
+                            {regexError && (
+                                <p className="text-xs text-red-600">잘못된 정규식(무시됨): {regexError}</p>
+                            )}
+                        </div>
+                    </div>
+
                     <p className="text-xs text-muted-foreground mt-3">
-                        ⭐ = 프리미엄(자연스러운) 목소리 · 문장마다 언어를 자동 감지해 해당 목소리로 읽습니다.
+                        ⭐ = 프리미엄(자연스러운) 목소리 · 문장마다 언어를 자동 감지해 해당 목소리로 읽습니다. 제외된
+                        부분은 <span style={{ textDecoration: "line-through", opacity: 0.6 }}>취소선</span>으로
+                        표시됩니다.
                     </p>
 
                     {/* 버튼 */}
