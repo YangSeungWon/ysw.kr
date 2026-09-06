@@ -1,0 +1,248 @@
+/* ---- Featured card ---- */
+.card {
+  position: relative;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--ifm-card-background-color);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.09);
+}
+
+[data-theme='dark'] .card:hover {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+}
+
+.banner {
+  position: relative;
+  height: 104px;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  overflow: hidden;
+}
+
+.banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+  background-size: 14px 14px;
+  opacity: 0.7;
+}
+
+.bannerImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bannerIcon {
+  position: relative;
+  z-index: 1;
+  font-size: 2.6rem;
+  line-height: 1;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.4));
+}
+
+.bannerIconImage {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+}
+
+.cardBody {
+  padding: 1rem 1.25rem 1.1rem;
+}
+
+.cardHead {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.3rem;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 650;
+}
+
+.cardTitle a {
+  color: var(--ifm-heading-color);
+  text-decoration: none;
+}
+
+.card:hover .cardTitle a {
+  color: var(--ifm-color-primary);
+}
+
+/* whole-card click target without nesting anchors */
+.stretch::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.cardDesc {
+  margin: 0 0 0.75rem;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.pills {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-emphasis-800);
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.pill:hover {
+  background: var(--ifm-color-emphasis-200);
+  border-color: var(--ifm-color-emphasis-300);
+  color: var(--ifm-color-emphasis-900);
+  text-decoration: none;
+}
+
+/* ---- Minor rows ---- */
+.row {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+}
+
+.row:hover {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.rowIcon {
+  font-size: 1rem;
+  line-height: 1;
+  width: 1.2rem;
+  flex: none;
+}
+
+.rowIconImage {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.rowName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ifm-heading-color);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.row:hover .rowName {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+.rowBlurb {
+  flex: 1 1 12rem;
+  min-width: 0;
+  font-size: 0.83rem;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.rowMeta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: none;
+  margin-left: auto;
+}
+
+.rowRepo {
+  color: var(--ifm-color-emphasis-500);
+  display: inline-flex;
+  line-height: 0;
+}
+
+.rowRepo:hover {
+  color: var(--ifm-color-primary);
+}
+
+/* keeps the arrow column aligned for projects without a repo */
+.rowRepoSlot {
+  width: 15px;
+}
+
+/* ---- shared bits ---- */
+.kind {
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ifm-color-emphasis-500);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 999px;
+  padding: 0.05rem 0.45rem;
+  flex: none;
+}
+
+.year {
+  font-size: 0.78rem;
+  color: var(--ifm-color-emphasis-500);
+  font-variant-numeric: tabular-nums;
+  flex: none;
+}
+
+.arrow {
+  color: var(--ifm-color-emphasis-400);
+  flex: none;
+}
+
+.row:hover .arrow {
+  color: var(--ifm-color-primary);
+}
+
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ifm-color-emphasis-600);
+  font-weight: 600;
+}
+
+.sectionLabel::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--ifm-color-emphasis-200);
+}
