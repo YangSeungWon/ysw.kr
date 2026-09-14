@@ -1,6 +1,6 @@
 # Survival Game
 
-[![Survival Game](https://ysw.kr/img/survival-game.png)](https://survival.game.ysw.kr)
+[![Survival Game](https://ysw.kr/img/survival-game.webp)](https://survival.game.ysw.kr)
 
 Here is a web-based survival game that I made.
 

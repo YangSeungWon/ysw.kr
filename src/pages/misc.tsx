@@ -303,9 +303,9 @@ const FeaturedCard: React.FC<{ project: Project }> = ({ project }) => {
         }
       >
         {project.image ? (
-          <img className={styles.bannerImage} src={project.image} alt="" />
+          <img className={styles.bannerImage} src={project.image} alt="" loading="lazy" decoding="async" />
         ) : project.iconIsImage ? (
-          <img className={styles.bannerIconImage} src={project.icon} alt="" />
+          <img className={styles.bannerIconImage} src={project.icon} alt="" loading="lazy" decoding="async" />
         ) : (
           <span className={styles.bannerIcon}>{project.icon}</span>
         )}
@@ -347,7 +347,7 @@ const MinorRow: React.FC<{ project: Project }> = ({ project }) => (
   <div className={styles.row}>
     <span className={styles.rowIcon}>
       {project.iconIsImage ? (
-        <img className={styles.rowIconImage} src={project.icon} alt="" />
+        <img className={styles.rowIconImage} src={project.icon} alt="" loading="lazy" decoding="async" />
       ) : (
         project.icon
       )}

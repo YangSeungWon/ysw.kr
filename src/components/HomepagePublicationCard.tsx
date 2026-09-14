@@ -23,6 +23,8 @@ export default function HomepagePublicationCard({ publication }: HomepagePublica
           src={publication.thumbnail}
           alt={publication.title}
           className="publication-card-thumbnail"
+          loading="lazy"
+          decoding="async"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             target.style.display = 'none';

@@ -58,9 +58,13 @@ function HeroSection() {
       </button>
 
       <img
-        src="/img/seungwon.jpg"
+        src="/img/seungwon.webp"
         alt="Seungwon Yang"
         className="homepage-hero-image"
+        width={440}
+        height={440}
+        decoding="async"
+        fetchPriority="high"
       />
       <h1 className="homepage-hero-title">{siteConfig.title}</h1>
 

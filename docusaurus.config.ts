@@ -55,7 +55,7 @@ const config: Config = {
       title: "Seungwon Yang",
       logo: {
         alt: "photo",
-        src: "img/seungwon.jpg",
+        src: "img/seungwon.webp",
       },
       items: [
 { to: "/publications", label: "Publications", position: "left" },

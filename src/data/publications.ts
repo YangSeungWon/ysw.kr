@@ -23,7 +23,7 @@ export const publications: Publication[] = [
     venue: 'CHI 2025',
     year: 2025,
     citation: 'Hyojin Ju, Jungeun Lee, <strong>Seungwon Yang</strong>, Jungseul Ok, and Inseok Hwang (2025). "Toward Affective Empathy via Personalized Analogy Generation: A Case Study on Microaggression". In: Proceedings of the 2025 CHI Conference on Human Factors in Computing Systems (ACM CHI 2025).',
-    thumbnail: '/img/pub/emosync-chi2025-paper.jpeg',
+    thumbnail: '/img/pub/emosync-chi2025-paper.webp',
     links: [
       { type: 'YouTube', url: 'https://www.youtube.com/watch?v=sT1gxhITWyU' },
       { type: 'DOI', url: 'https://doi.org/10.1145/3706598.3714122' },
@@ -40,7 +40,7 @@ export const demonstrations: Publication[] = [
     venue: 'UIST 2025 Poster',
     year: 2025,
     citation: '<strong>Seungwon Yang</strong>, Suwon Yoon, Jeongwon Choi, and Inseok Hwang (2025). "Chameleon: A Surface-Anchored Smartphone AR Prototype with Visually Blended Mobile Display". In: Adjunct Proceedings of the 38th Annual ACM Symposium on User Interface Software and Technology (ACM UIST 2025 Poster).',
-    thumbnail: '/img/pub/chameleon-uist2025-poster.jpeg',
+    thumbnail: '/img/pub/chameleon-uist2025-poster.webp',
     links: [
       { type: 'arXiv', url: 'https://arxiv.org/abs/2509.14643' },
       { type: 'DOI', url: 'https://doi.org/10.1145/3746058.3758440' },
@@ -55,7 +55,7 @@ export const demonstrations: Publication[] = [
     venue: 'CHI 2025 Interactivity',
     year: 2025,
     citation: 'Hyojin Ju, Jungeun Lee, <strong>Seungwon Yang</strong>, Jungseul Ok, and Inseok Hwang (2025). "Toward Affective Empathy via Personalized Analogy Generation: A Case Study on Microaggression". In: Extended Abstracts of the CHI Conference on Human Factors in Computing Systems (ACM CHI 2025 Interactivity).',
-    thumbnail: '/img/pub/emosync-chi2025-demo.jpeg',
+    thumbnail: '/img/pub/emosync-chi2025-demo.webp',
     links: [
       { type: 'Link', url: 'https://programs.sigchi.org/chi/2025/program/content/194724' },
     ],
@@ -68,7 +68,7 @@ export const demonstrations: Publication[] = [
     venue: 'CHI 2025 Workshop',
     year: 2025,
     citation: 'Suwon Yoon, <strong>Seungwon Yang</strong>, Jeongwon Choi, Wonjeong Park, and Inseok Hwang (2025). "Chatperone: An LLM-Based Negotiable Scaffolding System for Mediating Adolescent Mobile Interactions". In: ACM CHI 2025 Workshop.',
-    thumbnail: '/img/pub/chatperone-chi2025-workshop.jpeg',
+    thumbnail: '/img/pub/chatperone-chi2025-workshop.webp',
     links: [
       { type: 'arXiv', url: 'https://arxiv.org/abs/2504.17997' },
       { type: 'DOI', url: 'https://doi.org/10.48550/arXiv.2504.17997' }

@@ -1,6 +1,6 @@
 # Lime Game
 
-[![Lime Game](https://ysw.kr/img/lime-game.png)](https://li.me.kr)
+[![Lime Game](https://ysw.kr/img/lime-game.webp)](https://li.me.kr)
 
 Original: [Fruit Box (사과게임)](https://en.gamesaien.com/game/fruit_box/)
 
