@@ -1,295 +1,14 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
-import PageTitle from '@/components/PageTitle';
-import Badge from '@/components/Badge';
-import Tag from '@/components/Tag';
-import EmptyState from '@/components/EmptyState';
-import { useCardHover } from '@/hooks/useCardHover';
-import { TRANSITIONS, BORDER_RADIUS } from '@/constants/styles';
-import { FONT_SIZES, SPACING } from '@/constants/typography';
-
-const categories = [
-  { key: 'all', label: 'All', icon: '⚡' },
-  { key: 'image', label: 'Image', icon: '🖼️' },
-  { key: 'text', label: 'Text', icon: '📝' },
-  { key: 'utility', label: 'Utility', icon: '🔧' },
-  { key: 'time', label: 'Time/Date', icon: '⏰' },
-  { key: 'audio', label: 'Audio', icon: '🎵' },
-];
-
-interface Tool {
-  to: string;
-  name: string;
-  description: string;
-  category: string;
-  tags?: string[];
-}
-
-const ToolCard: React.FC<{ tool: Tool }> = ({ tool }) => {
-  const { styles, handlers } = useCardHover({ scale: 'SCALE_MEDIUM', shadow: 'LG', lift: true });
-  return (
-    <Link
-      to={tool.to}
-      className="card"
-      style={{
-        height: '100%',
-        textDecoration: 'none',
-        border: '2px solid var(--ifm-color-emphasis-200)',
-        backgroundColor: 'var(--ifm-card-background-color)',
-        transition: TRANSITIONS.SLOW,
-        display: 'flex',
-        flexDirection: 'column',
-        transform: styles.transform,
-        borderColor: styles.borderColor,
-        boxShadow: styles.boxShadow,
-      }}
-      {...handlers}
-    >
-      <div className="card__header" style={{ padding: '0.75rem 0.75rem 0.25rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <h3 style={{
-            margin: 0,
-            fontSize: FONT_SIZES.BASE,
-            color: 'var(--ifm-color-primary)',
-            fontWeight: 600
-          }}>
-            {tool.name}
-          </h3>
-          <span style={{
-            fontSize: FONT_SIZES.XS,
-            opacity: 0.6,
-            color: 'var(--ifm-color-emphasis-600)'
-          }}>
-            {tool.category}
-          </span>
-        </div>
-      </div>
-      <div className="card__body" style={{ flex: 1, padding: '0.25rem 0.75rem 0.75rem' }}>
-        <p style={{
-          color: 'var(--ifm-color-emphasis-700)',
-          marginBottom: '0.4rem',
-          lineHeight: 1.35,
-          fontSize: FONT_SIZES.SM
-        }}>
-          {tool.description}
-        </p>
-        {tool.tags && (
-          <div style={{
-            display: 'flex',
-            gap: '0.2rem',
-            flexWrap: 'wrap'
-          }}>
-            {tool.tags.map((tag, tagIdx) => (
-              <Tag key={tagIdx}>#{tag}</Tag>
-            ))}
-          </div>
-        )}
-      </div>
-    </Link>
-  );
-};
-
-const ListItem: React.FC<{ tool: Tool }> = ({ tool }) => {
-  const { styles, handlers } = useCardHover({ scale: 'SCALE_SMALL', shadow: 'SM', lift: true });
-  return (
-    <Link
-      to={tool.to}
-      style={{
-        display: 'block',
-        padding: '0.75rem 1rem',
-        marginBottom: '0.5rem',
-        textDecoration: 'none',
-        border: '1px solid var(--ifm-color-emphasis-200)',
-        borderRadius: BORDER_RADIUS.MD,
-        backgroundColor: 'var(--ifm-card-background-color)',
-        transition: TRANSITIONS.SLOW,
-        transform: styles.transform,
-        borderColor: styles.borderColor,
-        boxShadow: styles.boxShadow,
-      }}
-      {...handlers}
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' }}>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <h3 style={{
-              margin: 0,
-              fontSize: FONT_SIZES.BASE,
-              color: 'var(--ifm-color-primary)',
-              fontWeight: 600
-            }}>
-              {tool.name}
-            </h3>
-            <span style={{
-              fontSize: FONT_SIZES.XS,
-              opacity: 0.5,
-              color: 'var(--ifm-color-emphasis-600)'
-            }}>
-              {tool.category}
-            </span>
-          </div>
-          <p style={{
-            color: 'var(--ifm-color-emphasis-600)',
-            margin: '0.25rem 0 0',
-            fontSize: FONT_SIZES.SM,
-          }}>
-            {tool.description}
-          </p>
-        </div>
-        <div style={{
-          color: 'var(--ifm-color-primary)',
-          fontSize: FONT_SIZES.BASE,
-          opacity: 0.6,
-          flexShrink: 0,
-        }}>
-          →
-        </div>
-      </div>
-    </Link>
-  );
-};
-
-const tools: Tool[] = [
-  {
-    to: "/tools/ip",
-    name: "IP",
-    description: "Get your IP address",
-    category: 'utility',
-    tags: ['network', 'address'],
-  },
-  {
-    to: "/tools/coordinates",
-    name: "Coordinates",
-    description: "Get GPS coordinates and convert to multiple formats",
-    category: 'utility',
-    tags: ['gps', 'location', 'map'],
-  },
-  {
-    to: "/tools/signature",
-    name: "Email Signature",
-    description: "Generate email signature",
-    category: 'text',
-    tags: ['email', 'signature'],
-  },
-  {
-    to: "/tools/base64",
-    name: "Base64",
-    description: "Encode/Decode Base64 with text and images",
-    category: 'text',
-    tags: ['encode', 'decode', 'base64'],
-  },
-  {
-    to: "/tools/image-crop",
-    name: "Image Crop",
-    description: "Crop images",
-    category: 'image',
-    tags: ['crop', 'edit'],
-  },
-  {
-    to: "/tools/emoji",
-    name: "Emoji Generator",
-    description: "Convert images to Slack/Discord emoji format (transparent background, square, <128KB)",
-    category: 'image',
-    tags: ['emoji', 'slack', 'discord'],
-  },
-  {
-    to: "/tools/qrcode-scanner",
-    name: "QR Code Scanner",
-    description: "Scan QR codes from images",
-    category: 'image',
-    tags: ['qr', 'scan', 'decode'],
-  },
-  {
-    to: "/tools/qrcode-generator",
-    name: "QR Code Generator",
-    description: "Generate QR codes",
-    category: 'image',
-    tags: ['qr', 'generate', 'encode'],
-  },
-  {
-    to: "/tools/qrcode-multi",
-    name: "Multi QR Code Generator",
-    description: "Generate multiple QR codes for different fields",
-    category: 'image',
-    tags: ['qr', 'batch', 'multiple'],
-  },
-  {
-    to: "/tools/image-resizer",
-    name: "Image Resizer",
-    description: "Resize images by scale factor",
-    category: 'image',
-    tags: ['resize', 'scale'],
-  },
-  {
-    to: "/tools/color-vision-simulator",
-    name: "Color Vision Simulator",
-    description: "Simulate how images appear with different color vision deficiencies",
-    category: 'image',
-    tags: ['color', 'vision', 'accessibility'],
-  },
-  {
-    to: "/tools/audio-checker",
-    name: "Audio Checker",
-    description: "Check and test connected speakers and microphones",
-    category: 'audio',
-    tags: ['audio', 'test', 'microphone', 'speaker'],
-  },
-  {
-    to: "/tools/tts-reader",
-    name: "TTS Reader",
-    description: "Read text aloud with per-sentence Korean/English voice detection",
-    category: 'audio',
-    tags: ['tts', 'speech', 'voice', 'read', 'accessibility'],
-  },
-  {
-    to: "/tools/digital-clock",
-    name: "Digital Clock",
-    description: "Display the current time in different timezones",
-    category: 'time',
-    tags: ['clock', 'time', 'timezone'],
-  },
-  {
-    to: "/tools/timer-stopwatch",
-    name: "Timer/Stopwatch",
-    description: "Timer and stopwatch",
-    category: 'time',
-    tags: ['timer', 'stopwatch', 'countdown'],
-  },
-  {
-    to: "/tools/contact-importer",
-    name: "Contact Importer",
-    description: "Import spreadsheet contacts to Android (VCF format)",
-    category: 'utility',
-    tags: ['contact', 'vcf', 'android', 'import'],
-  },
-  {
-    to: "/tools/character-counter",
-    name: "Character Counter",
-    description: "Count characters, words, lines, and analyze text composition",
-    category: 'text',
-    tags: ['character', 'word', 'count', 'text', 'analysis'],
-  },
-  {
-    to: "/tools/text-splitter",
-    name: "Text Splitter",
-    description: "Split text by delimiter and click to copy each part",
-    category: 'text',
-    tags: ['split', 'delimiter', 'copy', 'parse'],
-  },
-  {
-    to: "/tools/doi-bibtex",
-    name: "DOI to BibTeX",
-    description: "Fetch BibTeX citation from a DOI",
-    category: 'text',
-    tags: ['doi', 'bibtex', 'citation', 'paper', 'reference'],
-  },
-];
+import styles from '@/components/PlainPage.module.css';
+import { tools, toolCategories as categories, type ToolCategory } from '@/data/tools';
 
 const Tools: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState<ToolCategory>('all');
   const [search, setSearch] = useState('');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const searchRef = useRef<HTMLInputElement>(null);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
 
   const filteredTools = useMemo(() => {
     return tools.filter(tool => {
@@ -316,9 +35,11 @@ const Tools: React.FC = () => {
       // Ctrl/Cmd + K to focus search
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
-        const searchInput = document.querySelector('input[type="search"]') as HTMLInputElement;
-        searchInput?.focus();
+        searchRef.current?.focus();
+        return;
       }
+      const target = e.target as HTMLElement;
+      if (target.closest('input, textarea, select, [contenteditable="true"]')) return;
       // Ctrl/Cmd + G to toggle view mode
       if ((e.ctrlKey || e.metaKey) && e.key === 'g') {
         e.preventDefault();
@@ -339,169 +60,46 @@ const Tools: React.FC = () => {
 
   return (
     <Layout title="Tools" description="Free online developer tools - image editing, QR codes, text utilities, and more">
-      <div className="container margin-vert--lg">
-        <div style={{ marginBottom: SPACING.XL, textAlign: 'center' }}>
-          <PageTitle>Developer Tools</PageTitle>
-          <p style={{
-            fontSize: FONT_SIZES.BASE,
-            color: 'var(--ifm-color-emphasis-700)',
-          }}>
-            {filteredTools.length} of {tools.length} tools
-          </p>
-        </div>
-
-        <div style={{
-          marginBottom: '2rem',
-          position: 'sticky',
-          top: '60px',
-          zIndex: 10,
-          background: 'var(--ifm-background-color)',
-          padding: '0.75rem 0',
-          borderBottom: '1px solid var(--ifm-color-emphasis-200)'
-        }}>
-          {/* Search + view toggle */}
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '0.75rem' }}>
-            <div style={{
-              position: 'relative',
-              flex: 1,
-            }}>
-              <input
-                type="search"
-                placeholder="Search tools..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '0.6rem 2.5rem 0.6rem 1rem',
-                  borderRadius: BORDER_RADIUS.LG,
-                  border: '2px solid var(--ifm-color-emphasis-300)',
-                  background: 'var(--ifm-background-surface-color)',
-                  color: 'var(--ifm-font-color-base)',
-                  fontSize: FONT_SIZES.SM,
-                  transition: TRANSITIONS.BORDER,
-                  outline: 'none'
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = 'var(--ifm-color-primary)';
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = 'var(--ifm-color-emphasis-300)';
-                }}
-              />
-              {search && (
-                <button
-                  onClick={() => setSearch('')}
-                  style={{
-                    position: 'absolute',
-                    right: '0.5rem',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    background: 'none',
-                    border: 'none',
-                    color: 'var(--ifm-color-emphasis-600)',
-                    cursor: 'pointer',
-                    padding: '0.25rem',
-                    fontSize: '1.2rem',
-                    lineHeight: 1,
-                  }}
-                  title="Clear search"
-                >
-                  ×
-                </button>
-              )}
-            </div>
-
-            <div style={{ display: 'flex', gap: '0.25rem', flexShrink: 0 }}>
-              <button
-                className={`button button--sm ${viewMode === 'grid' ? 'button--primary' : 'button--outline'}`}
-                onClick={() => setViewMode('grid')}
-                title="Grid view (Ctrl+G)"
-                style={{ padding: '0.5rem' }}
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/>
-                </svg>
-              </button>
-              <button
-                className={`button button--sm ${viewMode === 'list' ? 'button--primary' : 'button--outline'}`}
-                onClick={() => setViewMode('list')}
-                title="List view (Ctrl+G)"
-                style={{ padding: '0.5rem' }}
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                  <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                </svg>
-              </button>
+      <div className={styles.page}>
+        <h1>Developer Tools</h1>
+        <div className={styles.controls}>
+          <div className={styles.searchRow}>
+            <label htmlFor="tool-search">Search</label>
+            <input
+              ref={searchRef}
+              id="tool-search"
+              type="search"
+              placeholder="Name, description, or tag"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+            {search && <button type="button" onClick={() => setSearch('')}>Clear</button>}
+            <div className={styles.views} role="group" aria-label="View">
+              <button type="button" aria-pressed={viewMode === 'list'} onClick={() => setViewMode('list')}>List</button>
+              <button type="button" aria-pressed={viewMode === 'grid'} onClick={() => setViewMode('grid')}>Grid</button>
             </div>
           </div>
-
-          {/* Category filters */}
-          <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', alignItems: 'center' }}>
-            {categories.map((cat, index) => (
-              <button
-                key={cat.key}
-                className={`button button--sm ${selectedCategory === cat.key ? 'button--primary' : 'button--outline'}`}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.3rem',
-                  transition: TRANSITIONS.DEFAULT,
-                  fontSize: '0.75rem',
-                }}
-                onClick={() => setSelectedCategory(cat.key)}
-              >
-                <span>{cat.icon}</span>
-                {cat.label}
-                <Badge variant="default" className="ml-1">
-                  {categoryStats[cat.key] || 0}
-                </Badge>
+          <div className={styles.filters} role="group" aria-label="Tool category">
+            {categories.map(cat => (
+              <button type="button" key={cat.key} aria-pressed={selectedCategory === cat.key} onClick={() => setSelectedCategory(cat.key)}>
+                {cat.label} ({categoryStats[cat.key] || 0})
               </button>
             ))}
           </div>
         </div>
-
-        {search && filteredTools.length > 0 && (
-          <div style={{
-            marginBottom: SPACING.MD,
-            padding: `${SPACING.SM} ${SPACING.MD}`,
-            background: 'var(--ifm-color-primary-lightest)',
-            borderRadius: BORDER_RADIUS.LG,
-            borderLeft: '3px solid var(--ifm-color-primary)',
-            fontSize: FONT_SIZES.SM,
-            color: 'var(--ifm-color-emphasis-800)'
-          }}>
-            Found {filteredTools.length} match{filteredTools.length !== 1 ? 'es' : ''} for "{search}"
-          </div>
-        )}
-
-        {viewMode === 'grid' ? (
-          <div>
-            {filteredTools.length === 0 ? (
-              <EmptyState icon={<div style={{ fontSize: '3rem' }}>🔍</div>} message="No tools found. Try adjusting your search or filter." />
-            ) : (
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-                gap: '1rem',
-              }}>
-                {filteredTools.map((tool, idx) => (
-                  <ToolCard key={idx} tool={tool} />
-                ))}
-              </div>
-            )}
-          </div>
+        <p className={styles.count} role="status">{filteredTools.length} of {tools.length} tools</p>
+        {filteredTools.length === 0 ? (
+          <p>No tools found. Try another search or category.</p>
         ) : (
-          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-            {filteredTools.length === 0 ? (
-              <EmptyState icon={<div style={{ fontSize: '3rem' }}>🔍</div>} message="No tools found. Try adjusting your search or filter." />
-            ) : (
-              filteredTools.map((tool, idx) => (
-                <ListItem key={idx} tool={tool} />
-              ))
-            )}
-          </div>
+          <ul className={`${styles.tools} ${viewMode === 'grid' ? styles.grid : ''}`}>
+            {filteredTools.map(tool => (
+              <li key={tool.to} className={styles.tool}>
+                <Link to={tool.to}>{tool.name}</Link>
+                <p>{tool.description}</p>
+              </li>
+            ))}
+          </ul>
         )}
-
       </div>
     </Layout>
   );

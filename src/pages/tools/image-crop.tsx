@@ -256,8 +256,7 @@ export function ImageCropper() {
 export default function ImageCropPage() {
     return (
         <ToolLayout
-            title="Image Crop Tool"
-            description="Crop your images with precision"
+            toolId="image-crop"
             icon={<CropIcon className="h-8 w-8 text-primary" />}
             maxWidth="max-w-5xl"
         >

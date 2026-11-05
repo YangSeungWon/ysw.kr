@@ -157,8 +157,7 @@ const EmojiGenerator: React.FC = () => {
 
     return (
         <ToolLayout
-            title="이모지 생성기"
-            description="Slack/Discord 이모지로 사용하기 좋은 형식으로 변환"
+            toolId="emoji"
             icon={<Smile className="h-8 w-8 text-primary" />}
             maxWidth="max-w-5xl"
         >

@@ -1,0 +1,51 @@
+.page {
+  max-width: 960px;
+  margin: 2rem auto 3rem;
+  padding: 0 1.25rem;
+  font-size: 17px;
+  line-height: 1.6;
+}
+.page h1 { font-size: 2rem; margin: 0 0 1.25rem; }
+.page h2 { font-size: 1.25rem; margin: 1.75rem 0 0.75rem; }
+.page a { text-decoration: underline; text-underline-offset: 3px; }
+.publications { list-style: none; padding: 0; margin: 0; }
+.publication { display: grid; grid-template-columns: 3.25rem minmax(0, 1fr); gap: 0.5rem; margin-bottom: 1.25rem; }
+.publication p { margin: 0; }
+.page .publicationTitle { font-size: inherit; font-weight: 600; line-height: inherit; margin: 0 0 0.15rem; }
+.number { color: var(--ifm-color-emphasis-700); }
+.links { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; margin-top: 0.2rem; }
+.award { font-weight: 600; }
+.controls { margin-bottom: 1rem; }
+.searchRow { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; }
+.searchRow label { font-weight: 600; }
+.searchRow input { flex: 1; min-width: 160px; padding: 0.35rem 0.5rem; border: 1px solid var(--ifm-color-emphasis-500); border-radius: 0; background: var(--ifm-background-color); color: inherit; font: inherit; }
+.page button { background: transparent; color: var(--ifm-link-color); border: 0; border-radius: 0; padding: 0.25rem 0; font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.page button[aria-pressed='true'] { color: var(--ifm-font-color-base); font-weight: 700; text-decoration: none; }
+.page :is(a, button, input):focus-visible { outline: 2px solid var(--ifm-color-primary); outline-offset: 3px; }
+.filters, .views { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
+.filters { margin-top: 0.5rem; }
+.count { margin: 0.5rem 0; color: var(--ifm-color-emphasis-700); }
+.tools { list-style: none; padding: 0; margin: 0; }
+.tool { display: block; padding: 0.65rem 0; border-bottom: 1px solid var(--ifm-color-emphasis-200); }
+.tool a { font-weight: 600; }
+.tool p { margin: 0.15rem 0 0; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 2rem; }
+.grid .tool { display: block; }
+@media (max-width: 600px) {
+  .page { margin-top: 1.25rem; padding: 0 1rem; }
+  .tool { grid-template-columns: 1fr; gap: 0.1rem; }
+  .grid { grid-template-columns: 1fr; }
+  .publication { grid-template-columns: 2.75rem minmax(0, 1fr); gap: 0.25rem; }
+}
+/* Keep controls usable on touch screens without shrinking the text. */
+.page { overflow-wrap: anywhere; }
+.links a, .tool > a { display: inline-flex; align-items: center; min-height: 44px; }
+.page button { min-height: 44px; padding-left: 0.25rem; padding-right: 0.25rem; }
+@media (max-width: 600px) {
+  .searchRow input { min-width: 0; width: 100%; flex-basis: 100%; }
+  .publication { display: block; }
+  .number { display: block; margin-bottom: 0.2rem; }
+}
+/* External markers must not force long titles beyond the mobile viewport. */
+.page a:has(svg[aria-hidden='true']) { white-space: normal; }
+.page a > svg[aria-hidden='true'] { flex-shrink: 0; display: inline-block; width: 0.8em; height: 0.8em; margin-left: 0.25em; vertical-align: baseline; }

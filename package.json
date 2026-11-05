@@ -12,7 +12,9 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "check:tools": "node scripts/check-tools.cjs",
+    "prebuild": "npm run check:tools"
   },
   "dependencies": {
     "@docusaurus/core": "3.4.0",

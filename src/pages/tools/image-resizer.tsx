@@ -95,8 +95,7 @@ export default function ImageResizer() {
 
     return (
         <ToolLayout
-            title="Image Resizer"
-            description="Resize images by scale factor"
+            toolId="image-resizer"
             icon={<Image className="h-8 w-8 text-primary" />}
             maxWidth="max-w-5xl"
         >

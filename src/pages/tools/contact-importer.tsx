@@ -154,8 +154,7 @@ const ContactImporter: React.FC = () => {
 
   return (
     <ToolLayout
-      title="연락처 일괄 가져오기"
-      description="스프레드시트에서 안드로이드 연락처로"
+      toolId="contact-importer"
       icon={<FileText className="h-8 w-8 text-primary" />}
       maxWidth="max-w-5xl"
     >

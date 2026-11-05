@@ -1,0 +1,28 @@
+.profile { display: grid; grid-template-columns: 144px minmax(0, 1fr) 44px; gap: 1.5rem; align-items: start; margin: 2rem 0; }
+.photo { width: 144px; height: 144px; object-fit: cover; border-radius: 50%; }
+.profile h1 { margin: 0 0 0.25rem; }
+.profile p { margin: 0 0 0.4rem; }
+.identity { min-width: 0; }
+.theme { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+.links { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
+.links a { display: inline-flex; align-items: center; min-height: 44px; }
+.cv { font-weight: 700; }
+.navigation { border-bottom: 1px solid var(--ifm-color-emphasis-200); padding-bottom: 0.5rem; font-weight: 600; }
+.section { margin: 2rem 0; }
+.section p { margin: 0 0 0.8rem; }
+.papers { list-style: none; padding: 0; margin: 0; }
+.paper { display: grid; grid-template-columns: 180px minmax(0, 1fr); align-items: start; gap: 1.25rem; margin: 0 0 1.5rem; }
+.thumbnail { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--ifm-color-emphasis-100); }
+.details { min-width: 0; }
+.details h3 { font-size: 1.0625rem; line-height: 1.5; margin: 0 0 0.25rem; }
+.details p { margin: 0; }
+.award { font-weight: 600; }
+.footer { border-top: 1px solid var(--ifm-color-emphasis-200); padding: 1rem 0; margin-top: 2rem; }
+@media (max-width: 600px) {
+  .profile { grid-template-columns: minmax(0, 1fr) 44px; gap: 0.75rem; margin: 0.5rem 0 1.5rem; }
+  .photo { width: 112px; height: 112px; }
+  .identity { grid-column: 1 / -1; grid-row: 2; }
+  .theme { grid-column: 2; grid-row: 1; }
+  .paper { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+  .thumbnail { max-width: 240px; }
+}

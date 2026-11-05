@@ -109,8 +109,7 @@ export default function DigitalClockPage() {
 
     return (
         <ToolLayout
-            title="Digital Clock"
-            description="Customizable world clock with multiple themes"
+            toolId="digital-clock"
             icon={<Clock className="h-8 w-8 text-primary" />}
             maxWidth="max-w-5xl"
         >

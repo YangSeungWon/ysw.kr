@@ -46,3 +46,21 @@ If you are using GitHub pages for hosting, this command is a convenient way to b
 ```
 npx shadcn@latest add select
 ```
+
+### Managing tools
+
+Tool names, descriptions, categories, routes, and search tags live in
+`src/data/tools.ts`. The Tools directory and individual page headings use this
+registry. `pageTitle` and `pageDescription` are optional overrides for localized
+page copy; omit them to use the directory name and description.
+
+To add a tool:
+
+1. Add an entry to `toolDefinitions` in `src/data/tools.ts`, using a unique ID
+   and the matching `/tools/<id>` route.
+2. Create `src/pages/tools/<id>.tsx` and wrap its content in
+   `<ToolLayout toolId="<id>">...</ToolLayout>`.
+3. Run `npm run check:tools` and `npm run typecheck`.
+
+`npm run build` also runs the registry check automatically. It checks for
+missing or unregistered pages, duplicate IDs/routes, and mismatched layout IDs.

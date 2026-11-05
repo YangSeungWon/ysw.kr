@@ -59,7 +59,7 @@ const config: Config = {
       },
       items: [
 { to: "/publications", label: "Publications", position: "left" },
-        { to: "/misc", label: "Misc", position: "left" },
+        { to: "/misc", label: "Projects", position: "left" },
         { to: "/tools", label: "Tools", position: "left" },
       ],
     },

@@ -210,8 +210,7 @@ export default function CoordinatesPage() {
 
     return (
         <ToolLayout
-            title="Coordinate Conversion Tool"
-            description="Convert GPS coordinates to multiple formats"
+            toolId="coordinates"
             icon={<MapPin className="h-8 w-8 text-primary" />}
             maxWidth="max-w-5xl"
         >

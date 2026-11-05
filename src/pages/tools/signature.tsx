@@ -87,8 +87,7 @@ export default function SignaturePage() {
 
     return (
         <ToolLayout
-            title="Email Signature Generator"
-            description="Create a professional email signature"
+            toolId="signature"
             icon={<Mail className="h-8 w-8 text-primary" />}
             maxWidth="max-w-6xl"
         >

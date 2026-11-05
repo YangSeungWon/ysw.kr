@@ -150,8 +150,7 @@ export default function QRCodeGenerator() {
 
     return (
         <ToolLayout
-            title="QR Code Generator"
-            description="Generate QR codes easily"
+            toolId="qrcode-generator"
             icon={<QrCode className="h-8 w-8 text-primary" />}
             maxWidth="max-w-5xl"
         >

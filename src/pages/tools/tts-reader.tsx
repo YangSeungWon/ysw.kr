@@ -398,8 +398,7 @@ export default function TtsReader() {
 
     return (
         <ToolLayout
-            title="TTS Reader"
-            description="텍스트를 붙여넣고 목소리를 골라 들어보세요"
+            toolId="tts-reader"
             icon={<Volume2 className="h-8 w-8 text-primary" />}
             maxWidth="max-w-4xl"
         >

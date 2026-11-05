@@ -157,8 +157,7 @@ export function ColorVisionSimulator() {
 export default function ColorVisionSimulatorPage() {
     return (
         <ToolLayout
-            title="Color Vision Simulator"
-            description="Upload an image or paste from clipboard to see how it appears with different types of color vision deficiencies"
+            toolId="color-vision-simulator"
             icon={<Eye className="h-8 w-8 text-primary" />}
             maxWidth="max-w-7xl"
         >

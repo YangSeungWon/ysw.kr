@@ -315,8 +315,7 @@ export default function QRCodeMulti() {
 
     return (
         <ToolLayout
-            title="Multi QR Code Generator"
-            description="Generate multiple QR codes for different fields"
+            toolId="qrcode-multi"
             icon={<QrCode className="h-8 w-8 text-primary" />}
             maxWidth="max-w-5xl"
         >

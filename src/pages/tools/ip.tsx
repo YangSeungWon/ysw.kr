@@ -42,8 +42,7 @@ export default function IPPage() {
 
   return (
     <ToolLayout
-      title="IP Address Tool"
-      description="Get your public IP address"
+      toolId="ip"
       icon={<Globe className="h-8 w-8 text-primary" />}
       maxWidth="max-w-5xl"
     >

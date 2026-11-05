@@ -557,8 +557,7 @@ export default function AudioChecker() {
     if (loading) {
         return (
             <ToolLayout
-                title="Audio Device Checker"
-                description="Test your microphone and speakers"
+                toolId="audio-checker"
                 icon={<Speaker className="h-8 w-8 text-primary" />}
                 maxWidth="max-w-4xl"
             >
@@ -573,8 +572,7 @@ export default function AudioChecker() {
     if (!permissionGranted) {
         return (
             <ToolLayout
-                title="Audio Device Checker"
-                description="Test your microphone and speakers"
+                toolId="audio-checker"
                 icon={<Speaker className="h-8 w-8 text-primary" />}
                 maxWidth="max-w-4xl"
             >
@@ -593,8 +591,7 @@ export default function AudioChecker() {
 
     return (
         <ToolLayout
-            title="Audio Device Checker"
-            description="Test your microphone and speakers"
+            toolId="audio-checker"
             icon={<Speaker className="h-8 w-8 text-primary" />}
             maxWidth="max-w-4xl"
         >

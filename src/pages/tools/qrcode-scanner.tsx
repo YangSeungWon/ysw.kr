@@ -70,8 +70,7 @@ export default function QRCodeScanner() {
 
     return (
         <ToolLayout
-            title="QR Code Scanner"
-            description="Scan QR codes from images or clipboard"
+            toolId="qrcode-scanner"
             icon={<QrCode className="h-8 w-8 text-primary" />}
             maxWidth="max-w-5xl"
         >

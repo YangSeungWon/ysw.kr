@@ -85,8 +85,7 @@ const CharacterCounter: React.FC = () => {
 
   return (
     <ToolLayout
-      title="Character Counter"
-      description="Count characters, words, lines, and analyze text composition"
+      toolId="character-counter"
       icon={<FileText className="h-8 w-8 text-primary" />}
       maxWidth="max-w-5xl"
     >

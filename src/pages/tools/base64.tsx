@@ -127,8 +127,7 @@ export default function Base64Page() {
 
     return (
         <ToolLayout
-            title="Base64 Encoder/Decoder"
-            description="Encode and decode Base64 text and images"
+            toolId="base64"
             icon={<FileCode className="h-8 w-8 text-primary" />}
         >
             <Toaster />

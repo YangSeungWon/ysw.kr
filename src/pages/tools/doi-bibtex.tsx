@@ -121,8 +121,7 @@ export default function DoiBibtexPage() {
 
     return (
         <ToolLayout
-            title="DOI to BibTeX"
-            description="Fetch BibTeX citation from a DOI"
+            toolId="doi-bibtex"
             icon={<span style={{ fontSize: '1.5rem' }}>📚</span>}
         >
             <Toaster position="top-center" richColors />

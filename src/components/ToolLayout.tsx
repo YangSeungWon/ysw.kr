@@ -2,22 +2,24 @@ import React from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import { ArrowLeft } from 'lucide-react';
+import { getTool, type ToolId } from '@/data/tools';
 
 interface ToolLayoutProps {
-    title: string;
-    description?: string;
+    toolId: ToolId;
     icon?: React.ReactNode;
     children: React.ReactNode;
     maxWidth?: 'max-w-4xl' | 'max-w-5xl' | 'max-w-6xl' | 'max-w-7xl';
 }
 
 export default function ToolLayout({
-    title,
-    description,
+    toolId,
     icon,
     children,
     maxWidth = 'max-w-5xl'
 }: ToolLayoutProps) {
+    const tool = getTool(toolId);
+    const title = tool.pageTitle ?? tool.name;
+    const description = tool.pageDescription ?? tool.description;
     return (
         <Layout title={title} description={description}>
             <div className={`container mx-auto px-4 py-4 ${maxWidth}`}>

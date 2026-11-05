@@ -1,236 +1,74 @@
 import React from 'react';
-import Link from '@docusaurus/Link';
+import Link from '@/components/SiteLink';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { useColorMode } from '@docusaurus/theme-common';
-import { FaGithub, FaLinkedin, FaOrcid } from 'react-icons/fa';
-import { SiGooglescholar } from 'react-icons/si';
-import { ChevronDown, FileText, Wrench, Folder, User, Sun, Moon } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
 import HomepageLayout from '@/components/HomepageLayout';
 import HomepagePublicationCard from '@/components/HomepagePublicationCard';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { getAllPublications } from '@/data/publications';
+import plain from '@/components/PlainPage.module.css';
+import styles from '@/components/Homepage.module.css';
 
-// Animated section wrapper
-function AnimatedSection({
-  children,
-  className = '',
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  const { ref, isVisible } = useScrollAnimation<HTMLElement>();
-
-  return (
-    <section
-      ref={ref}
-      className={`homepage-section section-animate ${isVisible ? 'visible' : ''} ${className}`}
-    >
-      {children}
-    </section>
-  );
-}
-
-// Hero Section
-function HeroSection() {
+function Profile() {
   const { siteConfig } = useDocusaurusContext();
   const { colorMode, setColorMode } = useColorMode();
-
-  const scrollToContent = () => {
-    window.scrollTo({
-      top: window.innerHeight,
-      behavior: 'smooth',
-    });
-  };
-
-  const toggleColorMode = () => {
-    setColorMode(colorMode === 'dark' ? 'light' : 'dark');
-  };
-
   return (
-    <section className="homepage-hero">
-      {/* Dark Mode Toggle */}
-      <button
-        className="homepage-theme-toggle"
-        onClick={toggleColorMode}
-        aria-label="Toggle dark mode"
-      >
+    <header className={styles.profile}>
+      <img src="/img/seungwon.webp" alt="Seungwon Yang" className={styles.photo} width={144} height={144} decoding="async" fetchPriority="high" />
+      <div className={styles.identity}>
+        <h1>{siteConfig.title}</h1>
+        <p>Ph.D. Student @ <Link href="https://his-lab.org" target="_blank" rel="noopener noreferrer">HISLab</Link>, <Link href="https://postech.ac.kr" target="_blank" rel="noopener noreferrer">POSTECH</Link></p>
+        <div className={styles.links}>
+          <a href="/cv.pdf" className={styles.cv}>CV (PDF)</a>
+          <Link href="https://scholar.google.com/citations?user=YJm0n7gAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</Link>
+          <Link href="https://github.com/YangSeungWon" target="_blank" rel="noopener noreferrer">GitHub</Link>
+          <Link href="https://www.linkedin.com/in/seungwon-yang" target="_blank" rel="noopener noreferrer">LinkedIn</Link>
+          <Link href="https://orcid.org/0009-0009-0755-2450" target="_blank" rel="noopener noreferrer">ORCID</Link>
+        </div>
+      </div>
+      <button type="button" className={styles.theme} onClick={() => setColorMode(colorMode === 'dark' ? 'light' : 'dark')} aria-label={colorMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
         {colorMode === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
       </button>
-
-      <img
-        src="/img/seungwon.webp"
-        alt="Seungwon Yang"
-        className="homepage-hero-image"
-        width={440}
-        height={440}
-        decoding="async"
-        fetchPriority="high"
-      />
-      <h1 className="homepage-hero-title">{siteConfig.title}</h1>
-
-      {/* Affiliation */}
-      <p className="homepage-hero-affiliation">
-        Ph.D. Student @{' '}
-        <a href="https://his-lab.org" target="_blank" rel="noopener noreferrer">
-          HISLab
-        </a>
-        ,{' '}
-        <a href="https://postech.ac.kr" target="_blank" rel="noopener noreferrer">
-          POSTECH
-        </a>
-      </p>
-
-      {/* CTA Buttons */}
-      <div className="homepage-hero-buttons">
-        <a href={require('/cv.pdf').default} className="homepage-hero-btn">
-          CV
-        </a>
-        <Link to="/publications" className="homepage-hero-btn homepage-hero-btn-outline">
-          Publications
-        </Link>
-      </div>
-
-      {/* Social Links */}
-      <div className="homepage-social-links">
-        <a
-          href="https://scholar.google.com/citations?user=YJm0n7gAAAAJ"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="homepage-social-link"
-          aria-label="Google Scholar"
-        >
-          <SiGooglescholar size={24} />
-        </a>
-        <a
-          href="https://github.com/YangSeungWon"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="homepage-social-link"
-          aria-label="GitHub"
-        >
-          <FaGithub size={24} />
-        </a>
-        <a
-          href="https://www.linkedin.com/in/seungwon-yang"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="homepage-social-link"
-          aria-label="LinkedIn"
-        >
-          <FaLinkedin size={24} />
-        </a>
-        <a
-          href="https://orcid.org/0009-0009-0755-2450"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="homepage-social-link"
-          aria-label="ORCID"
-        >
-          <FaOrcid size={24} />
-        </a>
-      </div>
-
-      {/* Scroll Indicator */}
-      <button
-        className="scroll-indicator"
-        onClick={scrollToContent}
-        aria-label="Scroll down"
-      >
-        <span>Scroll</span>
-        <ChevronDown size={24} className="scroll-indicator-arrow" />
-      </button>
-    </section>
-  );
-}
-
-// About Section (below the fold)
-function AboutSection() {
-  return (
-    <AnimatedSection className="homepage-about-section">
-      <h2 className="homepage-section-title">About</h2>
-      <p className="homepage-about-text">
-        Seungwon Yang is a third-year Ph.D. student in Computer Science and Engineering at POSTECH. His research focuses on building human-centered systems that support social interaction and human agency, primarily through AR/VR applications. He has attended CHI 2024, CHI 2025, and UIST 2025. He envisions a future where technology empowers people in their everyday lives by supporting their agency, confidence, and meaningful social connections. He received his bachelor's degree in Computer Science and Engineering from POSTECH in 2023.
-      </p>
-    </AnimatedSection>
-  );
-}
-
-// Publications Section
-function PublicationsSection() {
-  const allPublications = getAllPublications();
-
-  return (
-    <AnimatedSection>
-      <h2 className="homepage-section-title">Publications</h2>
-      <div className="publications-grid">
-        {allPublications.map((pub) => (
-          <HomepagePublicationCard key={pub.id} publication={pub} />
-        ))}
-      </div>
-      <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-        <Link to="/publications" className="link-button-secondary link-button">
-          View All Publications
-        </Link>
-      </div>
-    </AnimatedSection>
-  );
-}
-
-// Quick Links Section
-function QuickLinksSection() {
-  const quickLinks = [
-{ to: '/publications', icon: <FileText size={24} />, label: 'Publications' },
-    { to: '/tools', icon: <Wrench size={24} />, label: 'Tools' },
-    { to: '/misc', icon: <Folder size={24} />, label: 'Misc' },
-  ];
-
-  return (
-    <AnimatedSection>
-      <h2 className="homepage-section-title">Explore</h2>
-      <div className="quick-links-grid">
-        {quickLinks.map((link) => (
-          <Link key={link.to} to={link.to} className="quick-link-card">
-            <span className="quick-link-icon">{link.icon}</span>
-            <span className="quick-link-label">{link.label}</span>
-          </Link>
-        ))}
-      </div>
-    </AnimatedSection>
-  );
-}
-
-// Footer Section (simple, replaces navbar footer)
-function FooterSection() {
-  return (
-    <footer
-      style={{
-        textAlign: 'center',
-        padding: '2rem',
-        color: 'var(--ifm-font-color-secondary)',
-        fontSize: '0.875rem',
-        borderTop: '1px solid var(--ifm-color-emphasis-200)',
-      }}
-    >
-      <p style={{ margin: 0 }}>
-        Copyright {new Date().getFullYear()} Seungwon Yang. Built with Docusaurus.
-      </p>
-    </footer>
+    </header>
   );
 }
 
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
-
   return (
-    <HomepageLayout
-      title={siteConfig.title}
-      description={siteConfig.tagline}
-    >
-      <HeroSection />
-      <AboutSection />
-      <PublicationsSection />
-      <QuickLinksSection />
-      <FooterSection />
+    <HomepageLayout title={siteConfig.title} description={siteConfig.tagline}>
+      <div className={plain.page}>
+        <Profile />
+        <nav className={`${styles.links} ${styles.navigation}`} aria-label="Main navigation">
+          <Link to="/publications">Publications</Link>
+          <Link to="/misc">Projects</Link>
+          <Link to="/tools">Tools</Link>
+        </nav>
+        <section className={styles.section}>
+          <h2>About</h2>
+          <p>Seungwon Yang is a Ph.D. student in Computer Science and Engineering at POSTECH. His research focuses on building human-centered systems that support social interaction and human agency, primarily through AR/VR applications.</p>
+          <p>He has attended CHI 2024, CHI 2025, and UIST 2025. He envisions a future where technology empowers people in their everyday lives by supporting their agency, confidence, and meaningful social connections.</p>
+          <p>He is also interested in how the AI-driven democratization of software creation reshapes the relationship between people and technology.</p>
+          <p>He received his bachelor's degree in Computer Science and Engineering from POSTECH in 2023.</p>
+        </section>
+        <section className={styles.section}>
+          <h2>Publications</h2>
+          <ul className={styles.papers}>
+            {getAllPublications().map(pub => <HomepagePublicationCard key={pub.id} publication={pub} />)}
+          </ul>
+          <div className={styles.links}><Link to="/publications">All publications</Link></div>
+        </section>
+        <section className={styles.section}>
+          <h2>Academic Service</h2>
+          <p><strong>Artefact Evaluation Committee Member</strong><br />
+            <Link href="https://www.sigmobile.org/mobisys/2026/artifact_evaluation_committee/" target="_blank" rel="noopener noreferrer">ACM MobiSys 2026</Link>
+          </p>
+          <p><strong>Reviewer</strong><br />
+            CHI 2027 Papers<br />CHI 2026 Posters (Special Recognition)<br />DIS 2026 Papers<br />UIST 2026 Papers
+          </p>
+        </section>
+        <footer className={styles.footer}>Copyright {new Date().getFullYear()} Seungwon Yang. Built with Docusaurus.</footer>
+      </div>
     </HomepageLayout>
   );
 }

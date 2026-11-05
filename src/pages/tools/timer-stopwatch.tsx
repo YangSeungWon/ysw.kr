@@ -154,8 +154,7 @@ export default function TimerStopwatchPage() {
 
     return (
         <ToolLayout
-            title="Timer & Stopwatch"
-            description="Precision timing tool with customizable themes"
+            toolId="timer-stopwatch"
             icon={<Timer className="h-8 w-8 text-primary" />}
             maxWidth="max-w-5xl"
         >
