@@ -22,9 +22,9 @@ function Profile() {
           <a href="/cv.pdf" className={styles.cv}>CV (PDF)</a>
           <Link href="https://scholar.google.com/citations?user=YJm0n7gAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</Link>
           <Link href="https://dblp.org/pid/53/759-2.html" target="_blank" rel="noopener noreferrer">DBLP</Link>
+          <Link href="https://orcid.org/0009-0009-0755-2450" target="_blank" rel="noopener noreferrer">ORCID</Link>
           <Link href="https://github.com/YangSeungWon" target="_blank" rel="noopener noreferrer">GitHub</Link>
           <Link href="https://www.linkedin.com/in/seungwon-yang" target="_blank" rel="noopener noreferrer">LinkedIn</Link>
-          <Link href="https://orcid.org/0009-0009-0755-2450" target="_blank" rel="noopener noreferrer">ORCID</Link>
         </div>
       </div>
       <button type="button" className={styles.theme} onClick={() => setColorMode(colorMode === 'dark' ? 'light' : 'dark')} aria-label={colorMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
