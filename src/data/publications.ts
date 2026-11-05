@@ -1,5 +1,5 @@
 export interface PublicationLink {
-  type: 'YouTube' | 'PDF' | 'DOI' | 'arXiv' | 'Link' | 'Program' | 'Workshop';
+  type: 'YouTube' | 'PDF' | 'DOI' | 'arXiv' | 'Link' | 'Workshop';
   url: string;
 }
 
@@ -51,9 +51,9 @@ export const demonstrations: Publication[] = [
     publicationVenue: 'ACM UbiComp/ISWC 2026, PEACE Workshop: Proactive Embodied Assistants in Context-aware Environments',
     links: [
       { type: 'DOI', url: 'https://doi.org/10.1145/3798063.3839203' },
-      { type: 'Program', url: 'https://peace-workshop.github.io/' }
+      { type: 'Workshop', url: 'https://peace-workshop.github.io/' }
     ],
-    award: 'Best Paper Award — PEACE 2026 Workshop'
+    award: 'Best Paper Award'
   },
   {
     id: 'P.1',

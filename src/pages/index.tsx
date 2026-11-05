@@ -60,11 +60,14 @@ export default function Home(): JSX.Element {
         </section>
         <section className={styles.section}>
           <h2>Academic Service</h2>
-          <p><strong>Artefact Evaluation Committee Member</strong><br />
-            <Link href="https://www.sigmobile.org/mobisys/2026/artifact_evaluation_committee/" target="_blank" rel="noopener noreferrer">ACM MobiSys 2026</Link>
-          </p>
           <p><strong>Reviewer</strong><br />
-            CHI 2027 Papers<br />CHI 2026 Posters (Special Recognition)<br />DIS 2026 Papers<br />UIST 2026 Papers
+            CHI 2027 — Papers<br />
+            CHI 2026 — Posters · Special Recognition for Reviewing<br />
+            DIS 2026 — Papers<br />
+            UIST 2026 — Papers
+          </p>
+          <p><strong>Artefact Evaluation Committee</strong><br />
+            <Link href="https://www.sigmobile.org/mobisys/2026/artifact_evaluation_committee/" target="_blank" rel="noopener noreferrer">MobiSys 2026</Link>
           </p>
         </section>
         <footer className={styles.footer}>Copyright {new Date().getFullYear()} Seungwon Yang. Built with Docusaurus.</footer>
